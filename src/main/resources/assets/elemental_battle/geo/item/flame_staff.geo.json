@@ -1,0 +1,52 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.flame_staff",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 3,
+				"visible_bounds_offset": [0, 0.5, 0]
+			},
+			"bones": [
+				{
+					"name": "Staff",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-1, -7, 0.5], "size": [2, 20, 2], "uv": [0, 0]},
+						{"origin": [-1.5, -8.4, -1.6], "size": [3, 2.9, 2.9], "pivot": [0, -9.5, -0.6], "rotation": [-45, 0, 0], "uv": [8, 6]},
+						{"origin": [-1, 13.7, 3], "size": [2, 4, 2], "uv": [8, 0]},
+						{"origin": [-0.7, 11.3, 1.3], "size": [1.4, 4, 1.8], "pivot": [0, 12.3, 2.2], "rotation": [-45, 0, 0], "uv": [12, 14]},
+						{"origin": [-0.7, 11.3, -0.1], "size": [1.4, 4, 1.8], "pivot": [0, 12.3, 0.8], "rotation": [45, 0, 0], "uv": [8, 14]}
+					]
+				},
+				{
+					"name": "Fire",
+					"parent": "Staff",
+					"pivot": [0, 13.7, 4],
+					"cubes": [
+						{"origin": [-1, 15, 0.3], "size": [2, 2, 2], "uv": [8, 10]}
+					]
+				},
+				{
+					"name": "Smoke",
+					"parent": "Fire",
+					"pivot": [0, 17.7, 2.1],
+					"cubes": [
+						{"origin": [-2.2, 18.4, 0.3], "size": [1, 1, 1], "uv": [14, 10]}
+					]
+				},
+				{
+					"name": "ExtensionA",
+					"parent": "Fire",
+					"pivot": [0, 17.7, 2.1],
+					"cubes": [
+						{"origin": [-0.1, 17.2, 1.4], "size": [1, 1, 1], "uv": [6, 0]}
+					]
+				}
+			]
+		}
+	]
+}

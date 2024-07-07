@@ -1,0 +1,66 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.frost_staff",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 4,
+				"visible_bounds_offset": [0, 1, 0]
+			},
+			"bones": [
+				{
+					"name": "FrostStaff",
+					"pivot": [2.5, 7, -12],
+					"rotation": [-90, 0, 0],
+					"cubes": [
+						{"origin": [-1, 19.5, -19], "size": [2, 2, 20], "uv": [0, 0]},
+						{"origin": [-2, 18.5, 1], "size": [4, 4, 4], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Left",
+					"parent": "FrostStaff",
+					"pivot": [0.52857, 20.5, -17.04352],
+					"cubes": [
+						{"origin": [0.6, 19.5, -21.2], "size": [2, 2, 4.62], "pivot": [1.6, 20.8, -18.2], "rotation": [0, -50, 0], "uv": [8, 10]}
+					]
+				},
+				{
+					"name": "Right",
+					"parent": "FrostStaff",
+					"pivot": [-0.3, 20.5, -17.2],
+					"cubes": [
+						{"origin": [-2.6, 19.5, -21.2], "size": [2, 2, 4.62], "pivot": [-1.6, 20.8, -18.2], "rotation": [0, 50, 0], "uv": [0, 8]}
+					]
+				},
+				{
+					"name": "Bottom",
+					"parent": "FrostStaff",
+					"pivot": [-0.5, 20, -17],
+					"cubes": [
+						{"origin": [-1, 19.02326, -21.60883], "size": [2, 2, 4.62], "pivot": [-0.3, 19.9, -17.2], "rotation": [50, 0, 0], "uv": [0, 14]}
+					]
+				},
+				{
+					"name": "Top",
+					"parent": "FrostStaff",
+					"pivot": [-0.5, 21, -17],
+					"cubes": [
+						{"origin": [-1, 19.97674, -21.60883], "size": [2, 2, 4.62], "pivot": [-0.3, 21.1, -17.2], "rotation": [-50, 0, 0], "uv": [0, 22]}
+					]
+				},
+				{
+					"name": "Ice",
+					"parent": "FrostStaff",
+					"pivot": [0.5, 19.55, -22],
+					"cubes": [
+						{"origin": [-1, 19.5, -23], "size": [2, 2, 2], "uv": [12, 0]}
+					]
+				}
+			]
+		}
+	]
+}
