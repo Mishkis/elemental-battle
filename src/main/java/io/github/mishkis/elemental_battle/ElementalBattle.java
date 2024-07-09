@@ -1,6 +1,8 @@
 package io.github.mishkis.elemental_battle;
 
+import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.item.ElementalBattleItems;
+import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,5 +16,7 @@ public class ElementalBattle implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Starting Elemental Battle.");
         ElementalBattleItems.initialize();
+        ElementalBattleEntities.initialize();
+        ElementalBattleParticles.initialize();
     }
 }

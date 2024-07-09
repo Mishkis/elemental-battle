@@ -16,6 +16,9 @@
   "entrypoints": {
     "main": [
       "io.github.mishkis.elemental_battle.ElementalBattle"
+    ],
+    "client": [
+      "io.github.mishkis.elemental_battle.ElementalBattleClient"
     ]
   },
   "depends": {
