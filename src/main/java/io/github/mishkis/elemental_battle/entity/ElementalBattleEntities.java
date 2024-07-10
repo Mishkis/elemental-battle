@@ -1,7 +1,7 @@
 package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.entity.frost_staff.SpikeBallEntity;
+import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -10,10 +10,10 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class ElementalBattleEntities {
-    public static final EntityType<SpikeBallEntity> SPIKEBALL =
+    public static final EntityType<IcicleBallEntity> ICICLE_BALL =
             register(
-                    "spikeball",
-                    EntityType.Builder.create(SpikeBallEntity::new, SpawnGroup.MISC)
+                    "icicle_ball",
+                    EntityType.Builder.create(IcicleBallEntity::new, SpawnGroup.MISC)
                             .dimensions(0.5F, 0.5F)
             );
 

@@ -6,8 +6,8 @@ import net.minecraft.util.Identifier;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class SpikeBallRenderer extends GeoEntityRenderer<SpikeBallEntity> {
-    public SpikeBallRenderer(EntityRendererFactory.Context renderManager) {
-        super(renderManager, new DefaultedEntityGeoModel<>(Identifier.of(ElementalBattle.MOD_ID, "spike_ball")));
+public class IcicleBallRenderer extends GeoEntityRenderer<IcicleBallEntity> {
+    public IcicleBallRenderer(EntityRendererFactory.Context renderManager) {
+        super(renderManager, new DefaultedEntityGeoModel<>(Identifier.of(ElementalBattle.MOD_ID, "icicle_ball")));
     }
 }

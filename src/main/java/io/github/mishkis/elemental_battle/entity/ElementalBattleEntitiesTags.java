@@ -14,6 +14,6 @@ public class ElementalBattleEntitiesTags extends FabricTagProvider.EntityTypeTag
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        getOrCreateTagBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE).add(ElementalBattleEntities.SPIKEBALL);
+        getOrCreateTagBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE).add(ElementalBattleEntities.ICICLE_BALL);
     }
 }
