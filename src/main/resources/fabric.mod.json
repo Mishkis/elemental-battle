@@ -14,6 +14,9 @@
   "icon": "assets/elemental_battle/icon.png",
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "io.github.mishkis.elemental_battle.ElementalBattleDataGenerator"
+    ],
     "main": [
       "io.github.mishkis.elemental_battle.ElementalBattle"
     ],

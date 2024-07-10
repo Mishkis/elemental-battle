@@ -14,7 +14,7 @@ public class ElementalBattleEntities {
             register(
                     "spikeball",
                     EntityType.Builder.create(SpikeBallEntity::new, SpawnGroup.MISC)
-                            .dimensions(1F, 1F)
+                            .dimensions(0.5F, 0.5F)
             );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
