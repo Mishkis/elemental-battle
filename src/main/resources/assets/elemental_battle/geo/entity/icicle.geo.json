@@ -1,0 +1,32 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.icicle",
+				"texture_width": 16,
+				"texture_height": 16,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Icicle",
+					"pivot": [-1, 1.41421, 1.41421],
+					"cubes": [
+						{"origin": [-2, 0, -2], "size": [2, 2.82843, 4.82843], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Tip",
+					"parent": "Icicle",
+					"pivot": [-1, 1.40503, 2.81924],
+					"cubes": [
+						{"origin": [-1.9, 0.42, 1.81924], "size": [1.8, 2, 2], "pivot": [-1, 1.40503, 2.81924], "rotation": [-45, 0, 0], "uv": [0, 6]}
+					]
+				}
+			]
+		}
+	]
+}

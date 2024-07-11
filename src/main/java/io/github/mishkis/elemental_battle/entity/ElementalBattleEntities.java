@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
+import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -15,6 +16,12 @@ public class ElementalBattleEntities {
                     "icicle_ball",
                     EntityType.Builder.create(IcicleBallEntity::new, SpawnGroup.MISC)
                             .dimensions(0.5F, 0.5F)
+            );
+    public static final EntityType<IcicleEntity> ICICLE =
+            register(
+                    "icicle",
+                    EntityType.Builder.create(IcicleEntity::new, SpawnGroup.MISC)
+                            .dimensions(0.3F, 0.15F)
             );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
