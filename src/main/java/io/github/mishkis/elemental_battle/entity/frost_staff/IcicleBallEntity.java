@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
+import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -8,6 +9,7 @@ import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -46,18 +48,38 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
 
     @Override
     protected void onCollision(HitResult hitResult) {
+        World world = this.getWorld();
+
         super.onCollision(hitResult);
-        if (!this.getWorld().isClient) {
-            this.discard();
+        if (!world.isClient) {
+            this.explode(world);
         }
     }
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
+        World world = this.getWorld();
+
         super.onEntityHit(entityHitResult);
-        if (!this.getWorld().isClient) {
-            this.discard();
+        if (!world.isClient) {
+            this.explode(world);
         }
+    }
+
+    private void explode(World world) {
+        int spawnCount = 8;
+
+        for (int i = 0; i < spawnCount; i++) {
+            Vec3d spawnPos = this.getPos();
+
+            IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, world);
+            icicle.setPosition(spawnPos);
+
+            Vec3d velocity = new Vec3d(0.2, 0.3, 0);
+            icicle.setVelocity(velocity.rotateY((float) ((Math.PI * 2 * i)/spawnCount)));
+            world.spawnEntity(icicle);
+        }
+        this.discard();
     }
 
     @Override
