@@ -26,9 +26,13 @@ public class FrostStaff extends IdleAnimatedItem {
 
         Vec3d spawnPos = user.getPos().add(user.getRotationVector().multiply(3)).offset(Direction.UP, 1.3);
 
-        IcicleBallEntity spikeBall = new IcicleBallEntity(ElementalBattleEntities.ICICLE_BALL, world);
-        spikeBall.setPosition(spawnPos);
-        world.spawnEntity(spikeBall);
+        IcicleBallEntity icicleBall = new IcicleBallEntity(ElementalBattleEntities.ICICLE_BALL, world);
+        icicleBall.setPosition(spawnPos);
+
+        icicleBall.setOwner(user);
+        icicleBall.setDamage(5);
+
+        world.spawnEntity(icicleBall);
 
         return TypedActionResult.success(user.getStackInHand(hand));
     }

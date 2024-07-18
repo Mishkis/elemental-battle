@@ -21,7 +21,7 @@ public class ElementalBattleEntities {
             register(
                     "icicle",
                     EntityType.Builder.create(IcicleEntity::new, SpawnGroup.MISC)
-                            .dimensions(0.3F, 0.15F)
+                            .dimensions(0.5F, 0.5F)
             );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
