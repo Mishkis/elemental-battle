@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.entity;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.hit.BlockHitResult;
@@ -9,6 +10,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public abstract class MagicProjectileEntity extends ProjectileEntity {
+    private Vec3d gravity = new Vec3d(0, 0.05, 0);
+    private int expireTime = 10 * 20;
     private float damage;
 
     protected abstract void playTravelParticle(double x, double y, double z);
@@ -25,9 +28,21 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         return this.damage;
     }
 
+    public void setExpireTime(int expireTime) {
+        this.expireTime = expireTime;
+    }
+
+    public void setGravity(Vec3d gravity) {
+        this.gravity = gravity;
+    }
+
     @Override
     public void tick() {
         super.tick();
+
+        if (expireTime <= age) {
+            this.discard();
+        }
 
         // Check collision
         HitResult hitResult = ProjectileUtil.getCollision(this, this::canHit);
@@ -36,7 +51,7 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         }
 
         // Move projectile
-        this.setVelocity(this.getVelocity().subtract(0, 0.05, 0));
+        this.setVelocity(this.getVelocity().subtract(gravity));
 
         Vec3d velocity = this.getVelocity();
         double x = this.getX() + velocity.x;
@@ -71,4 +86,7 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
             this.discard();
         }
     }
+
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {}
 }

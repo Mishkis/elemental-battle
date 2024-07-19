@@ -5,7 +5,6 @@ import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -57,7 +56,4 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
-
-    @Override
-    protected void initDataTracker(DataTracker.Builder builder) {}
 }
