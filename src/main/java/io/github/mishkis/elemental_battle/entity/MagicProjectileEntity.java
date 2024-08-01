@@ -32,6 +32,10 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         this.expireTime = expireTime;
     }
 
+    public int getExpireTime() {
+        return expireTime;
+    }
+
     public void setGravity(Vec3d gravity) {
         this.gravity = gravity;
     }
@@ -50,14 +54,16 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
             this.onCollision(hitResult);
         }
 
-        // Move projectile
+        // Apply gravity.
         this.setVelocity(this.getVelocity().subtract(gravity));
 
+        // Movement
         Vec3d velocity = this.getVelocity();
         double x = this.getX() + velocity.x;
         double y = this.getY() + velocity.y;
         double z = this.getZ() + velocity.z;
 
+        // Calculate rotation of projectile to make it face towards moving direction.
         double baseAngle = Math.abs(velocity.x) + Math.abs(velocity.z);
         boolean negative = velocity.z < 0;
         int addedAngle = negative ? -180 : 0;

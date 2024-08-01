@@ -28,7 +28,7 @@ public class ElementalBattleEntities {
             register(
                     "cone_of_fire",
                     EntityType.Builder.create(ConeOfFireEntity::new, SpawnGroup.MISC)
-                            .dimensions(0.2F, 0.2F)
+                            .dimensions(1F, 1F)
             );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
