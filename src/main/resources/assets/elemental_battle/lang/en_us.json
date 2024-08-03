@@ -5,5 +5,12 @@
   "entity.elemental_battle.icicle_ball": "Icicle Ball",
   "entity.elemental_battle.icicle": "Icicle",
 
-  "itemGroup.elemental_battle": "Elemental Battle"
+  "itemGroup.elemental_battle": "Elemental Battle",
+
+  "keyGroup.elemental_battle": "Elemental Battle",
+  "key.elemental_battle.shield": "Shield",
+  "key.elemental_battle.dash": "Dash",
+  "key.elemental_battle.area_attack": "Area Attack",
+  "key.elemental_battle.special": "Special",
+  "key.elemental_battle.ultimate": "Ultimate"
 }

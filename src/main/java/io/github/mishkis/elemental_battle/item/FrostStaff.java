@@ -2,7 +2,7 @@ package io.github.mishkis.elemental_battle.item;
 
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
-import io.github.mishkis.elemental_battle.item.helpers.IdleAnimatedItem;
+import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +12,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class FrostStaff extends IdleAnimatedItem {
+public class FrostStaff extends MagicWandItem {
     public FrostStaff() {
         super("frost_staff", new Item.Settings());
     }
@@ -35,5 +35,30 @@ public class FrostStaff extends IdleAnimatedItem {
         world.spawnEntity(icicleBall);
 
         return TypedActionResult.success(user.getStackInHand(hand));
+    }
+
+    @Override
+    public TypedActionResult shield(World world, PlayerEntity user, Hand hand) {
+        return null;
+    }
+
+    @Override
+    public TypedActionResult dash(World world, PlayerEntity user, Hand hand) {
+        return null;
+    }
+
+    @Override
+    public TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand) {
+        return null;
+    }
+
+    @Override
+    public TypedActionResult special(World world, PlayerEntity user, Hand hand) {
+        return null;
+    }
+
+    @Override
+    public TypedActionResult ultimate(World world, PlayerEntity user, Hand hand) {
+        return null;
     }
 }

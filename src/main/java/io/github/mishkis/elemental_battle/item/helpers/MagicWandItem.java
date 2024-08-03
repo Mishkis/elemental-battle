@@ -1,7 +1,12 @@
 package io.github.mishkis.elemental_battle.item.helpers;
 
 import io.github.mishkis.elemental_battle.item.helpers.client.AnimatedItemRenderer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -12,12 +17,26 @@ import software.bernie.geckolib.animation.*;
 
 import java.util.function.Consumer;
 
-public class IdleAnimatedItem extends Item implements GeoItem {
+public abstract class MagicWandItem extends Item implements GeoItem {
     private final String id;
 
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    public IdleAnimatedItem(String id, Settings settings) {
+    // Main Attack
+    @Override
+    public abstract TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand);
+
+    public abstract TypedActionResult shield(World world, PlayerEntity user, Hand hand);
+
+    public abstract TypedActionResult dash(World world, PlayerEntity user, Hand hand);
+
+    public abstract TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand);
+
+    public abstract TypedActionResult special(World world, PlayerEntity user, Hand hand);
+
+    public abstract TypedActionResult ultimate(World world, PlayerEntity user, Hand hand);
+
+    public MagicWandItem(String id, Settings settings) {
         super(settings);
 
         this.id = id;

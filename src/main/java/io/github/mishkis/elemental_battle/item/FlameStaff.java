@@ -3,8 +3,7 @@ package io.github.mishkis.elemental_battle.item;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
-import io.github.mishkis.elemental_battle.item.helpers.IdleAnimatedItem;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
+import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -14,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class FlameStaff extends IdleAnimatedItem {
+public class FlameStaff extends MagicWandItem {
     Random random = Random.create();
 
     public FlameStaff() {
@@ -57,5 +56,30 @@ public class FlameStaff extends IdleAnimatedItem {
         }
 
         return TypedActionResult.pass(user.getStackInHand(hand));
+    }
+
+    @Override
+    public TypedActionResult shield(World world, PlayerEntity user, Hand hand) {
+        return null;
+    }
+
+    @Override
+    public TypedActionResult dash(World world, PlayerEntity user, Hand hand) {
+        return null;
+    }
+
+    @Override
+    public TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand) {
+        return null;
+    }
+
+    @Override
+    public TypedActionResult special(World world, PlayerEntity user, Hand hand) {
+        return null;
+    }
+
+    @Override
+    public TypedActionResult ultimate(World world, PlayerEntity user, Hand hand) {
+        return null;
     }
 }

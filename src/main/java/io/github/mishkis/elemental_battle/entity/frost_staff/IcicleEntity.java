@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
@@ -19,13 +20,13 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
     private final RawAnimation SPAWN_ANIMATION = RawAnimation.begin().thenPlay("animation.icicle.spawn");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    public IcicleEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
+        super(entityType, world);
+    }
+
     @Override
     protected void playTravelParticle(double x, double y, double z) {
         this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, x, y, z, 0, 0, 0);
-    }
-
-    public IcicleEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
-        super(entityType, world);
     }
 
     @Override
