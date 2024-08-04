@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,9 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -20,8 +24,35 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
     private final RawAnimation SPAWN_ANIMATION = RawAnimation.begin().thenPlay("animation.icicle.spawn");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    private PlayerEntity orbitTarget;
+    private Vec3d orbitPoint;
+    private float orbitSpeed = 0;
+    private float yOffset;
+
     public IcicleEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    public void setOrbit(PlayerEntity orbitTarget, float orbitSpeed, float yOffset) {
+        this.orbitTarget = orbitTarget;
+        this.orbitSpeed = orbitSpeed;
+        this.yOffset = yOffset;
+
+        this.orbitPoint = orbitTarget.getPos().relativize(this.getPos().offset(Direction.DOWN, yOffset));
+    }
+
+    @Override
+    public void tick() {
+        if (orbitTarget != null) {
+            orbitPoint = orbitPoint.rotateY((float) Math.toRadians(orbitSpeed));
+            Vec3d targetPos = orbitPoint.add(orbitTarget.getPos());
+            Vec3d currentPos = this.getPos().offset(Direction.DOWN, yOffset);
+
+            Vec3d pointedVector = targetPos.subtract(currentPos);
+
+            this.setVelocity(pointedVector);
+        }
+        super.tick();
     }
 
     @Override

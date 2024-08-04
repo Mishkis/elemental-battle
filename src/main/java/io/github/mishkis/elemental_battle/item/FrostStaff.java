@@ -1,7 +1,9 @@
 package io.github.mishkis.elemental_battle.item;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
+import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleEntity;
 import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -49,7 +51,40 @@ public class FrostStaff extends MagicWandItem {
 
     @Override
     public TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand) {
-        return null;
+        if (!world.isClient) {
+            int spawnCount = 8;
+            for (int i = 0; i < spawnCount; i++) {
+                IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, world);
+
+                icicle.setOwner(user);
+
+                int rotationSpeed = 3;
+                float yOffset = 0.8F;
+                float spawnDistance = 1.5F;
+
+                if (i >= spawnCount/2) {
+                    rotationSpeed *= 2;
+                    spawnDistance *= 2;
+                }
+
+                Vec3d spawnNormal = user.getRotationVector().multiply(1, 0, 1).normalize();
+                spawnNormal = spawnNormal.rotateY((float) (4 * i * Math.PI / spawnCount)).multiply(spawnDistance);
+
+                Vec3d spawnPos = user.getPos().add(spawnNormal).offset(Direction.UP, yOffset);
+                icicle.setPosition(spawnPos);
+
+                icicle.setOrbit(user, rotationSpeed, yOffset);
+                icicle.setNoGravity(true);
+
+                icicle.setVelocity(0.01, 0, 0); // for visual rotation on first tick spawned
+
+                icicle.setDamage(3);
+
+                world.spawnEntity(icicle);
+            }
+            return TypedActionResult.success(user.getStackInHand(hand));
+        }
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
     @Override

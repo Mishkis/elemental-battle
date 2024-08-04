@@ -60,7 +60,7 @@ public class ElementalBattleClient implements ClientModInitializer {
             }
 
             while (areaAttack.wasPressed()) {
-                ClientPlayNetworking.send(new KeybindPayload("area_attack"));
+                ClientPlayNetworking.send(new KeybindPayload("areaAttack"));
             }
 
             while (special.wasPressed()) {

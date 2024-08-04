@@ -1,17 +1,19 @@
 package io.github.mishkis.elemental_battle.entity;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public abstract class MagicProjectileEntity extends ProjectileEntity {
-    private Vec3d gravity = new Vec3d(0, 0.05, 0);
-    private int expireTime = 10 * 20;
+    private int expireTime = 20 * 20;
+    private double gravity = 0.05;
     private float damage;
 
     protected abstract void playTravelParticle(double x, double y, double z);
@@ -36,15 +38,20 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         return expireTime;
     }
 
-    public void setGravity(Vec3d gravity) {
+    public void setGravity(double gravity) {
         this.gravity = gravity;
+    }
+
+    @Override
+    public double getGravity() {
+        return this.gravity;
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (expireTime <= age) {
+        if (this.getExpireTime() <= age) {
             this.discard();
         }
 
@@ -54,8 +61,7 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
             this.onCollision(hitResult);
         }
 
-        // Apply gravity.
-        this.setVelocity(this.getVelocity().subtract(gravity));
+        this.applyGravity();
 
         // Movement
         Vec3d velocity = this.getVelocity();
@@ -74,8 +80,10 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
             newYaw += 360;
         }
 
+        float newPitch = (float) ((90 * velocity.y)/(baseAngle + Math.abs(velocity.y)));
+
         this.setYaw(newYaw);
-        this.setPitch((float) ((90 * velocity.y)/(baseAngle + Math.abs(velocity.y))));
+        this.setPitch(newPitch);
 
         this.setPosition(x, y, z);
 

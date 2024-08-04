@@ -42,7 +42,7 @@ public class ElementalBattle implements ModInitializer {
                         case "dash":
                             ((MagicWandItem) heldItem).dash(player.getWorld(), player, hand);
                             break;
-                        case "area_attack":
+                        case "areaAttack":
                             ((MagicWandItem) heldItem).areaAttack(player.getWorld(), player, hand);
                             break;
                         case "special":
