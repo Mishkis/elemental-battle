@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.entity.flame_staff;
 
+import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
 import net.minecraft.entity.Entity;

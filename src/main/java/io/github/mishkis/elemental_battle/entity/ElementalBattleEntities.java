@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleEntity;
+import io.github.mishkis.elemental_battle.entity.frost_staff.ShatteringWallEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -24,6 +25,13 @@ public class ElementalBattleEntities {
                     EntityType.Builder.create(IcicleEntity::new, SpawnGroup.MISC)
                             .dimensions(0.5F, 0.5F)
             );
+    public static final EntityType<ShatteringWallEntity> SHATTERING_WALL =
+            register(
+                    "shattering_wall",
+                    EntityType.Builder.create(ShatteringWallEntity::new, SpawnGroup.MISC)
+                            .dimensions(2F, 2F)
+            );
+
     public static final EntityType<ConeOfFireEntity> CONE_OF_FIRE =
             register(
                     "cone_of_fire",
