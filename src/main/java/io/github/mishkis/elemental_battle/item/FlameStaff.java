@@ -1,6 +1,5 @@
 package io.github.mishkis.elemental_battle.item;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
 import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
@@ -34,7 +33,7 @@ public class FlameStaff extends MagicWandItem {
 
                 coneOfFire.setOwner(user);
                 coneOfFire.setDamage(5);
-                coneOfFire.setExpireTime(15);
+                coneOfFire.setUptime(15);
 
                 coneOfFire.setGravity(0); // Normally would use setNoGravity(true), but here it creates a nice looking chaotic effect.
 

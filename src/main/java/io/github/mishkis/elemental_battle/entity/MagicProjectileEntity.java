@@ -1,18 +1,16 @@
 package io.github.mishkis.elemental_battle.entity;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public abstract class MagicProjectileEntity extends ProjectileEntity {
-    private int expireTime = 20 * 20;
+    private int uptime = 20 * 20;
     private double gravity = 0.05;
     private float damage;
 
@@ -30,12 +28,12 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         return this.damage;
     }
 
-    public void setExpireTime(int expireTime) {
-        this.expireTime = expireTime;
+    public void setUptime(int uptime) {
+        this.uptime = uptime;
     }
 
-    public int getExpireTime() {
-        return expireTime;
+    public int getUptime() {
+        return uptime;
     }
 
     public void setGravity(double gravity) {
@@ -51,16 +49,6 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
     public void tick() {
         super.tick();
 
-        if (this.getExpireTime() <= age) {
-            this.discard();
-        }
-
-        // Check collision
-        HitResult hitResult = ProjectileUtil.getCollision(this, this::canHit);
-        if (hitResult.getType() != HitResult.Type.MISS) {
-            this.onCollision(hitResult);
-        }
-
         this.applyGravity();
 
         // Movement
@@ -75,12 +63,21 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         int addedAngle = negative ? -180 : 0;
         int multipliedBy = negative ? -1 : 1;
 
-        float newYaw = (float) ((addedAngle + ((90 * velocity.x)/(baseAngle) * multipliedBy)));
+        float newYaw = (float) ((addedAngle + ((90 * velocity.x) / (baseAngle) * multipliedBy)));
         if (newYaw < -180) {
             newYaw += 360;
         }
 
-        float newPitch = (float) ((90 * velocity.y)/(baseAngle + Math.abs(velocity.y)));
+        float newPitch = (float) ((90 * velocity.y) / (baseAngle + Math.abs(velocity.y)));
+        if (this.getUptime() <= age) {
+            this.discard();
+        }
+
+        // Check collision
+        HitResult hitResult = ProjectileUtil.getCollision(this, this::canHit);
+        if (hitResult.getType() != HitResult.Type.MISS) {
+            this.onCollision(hitResult);
+        }
 
         this.setYaw(newYaw);
         this.setPitch(newPitch);

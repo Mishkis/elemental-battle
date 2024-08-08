@@ -1,0 +1,89 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.shattering_wall.idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"ShatteringWall": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 360, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5": {
+							"vector": [0, -1, 0]
+						},
+						"1.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"Spikes": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
+							"vector": [1, 0.7, 1],
+							"easing": "easeInQuart"
+						},
+						"1.0": {
+							"vector": [1, 1, 1],
+							"easing": "easeOutQuart"
+						}
+					}
+				}
+			}
+		},
+		"animation.shattering_wall.spawn": {
+			"animation_length": 1,
+			"bones": {
+				"ShatteringWall": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 360, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"Spikes": {
+					"position": {
+						"0.5": {
+							"vector": [4, 0, 8]
+						},
+						"1.0": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"scale": {
+						"0.5": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [1, 1.1, 1]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

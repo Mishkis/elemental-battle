@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleEntity;
+import io.github.mishkis.elemental_battle.entity.frost_staff.ShatteringWallEntity;
 import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -41,7 +42,17 @@ public class FrostStaff extends MagicWandItem {
 
     @Override
     public TypedActionResult shield(World world, PlayerEntity user, Hand hand) {
-        return null;
+        if (!world.isClient) {
+            ShatteringWallEntity shatteringWall = new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world);
+
+            shatteringWall.setOwner(user);
+            shatteringWall.setUptime(100);
+
+            world.spawnEntity(shatteringWall);
+
+            return TypedActionResult.success(user.getStackInHand(hand));
+        }
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
     @Override

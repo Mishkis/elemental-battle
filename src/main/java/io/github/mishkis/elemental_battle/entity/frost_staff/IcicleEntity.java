@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
@@ -50,7 +51,7 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
 
             Vec3d pointedVector = targetPos.subtract(currentPos);
 
-            this.setVelocity(pointedVector);
+            this.setVelocity(this.getVelocity().lerp(pointedVector, 0.5));
         }
         super.tick();
     }
