@@ -40,9 +40,8 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
 
     @Override
     public void shieldEffect(PlayerEntity owner) {
-        if (!this.getWorld().isClient()) {
-            owner.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 10, 2));
-        }
+        super.shieldEffect(owner);
+        owner.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 10, 2));
     }
 
     @Override
@@ -50,20 +49,25 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
         if (!this.getWorld().isClient()) {
             IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, this.getWorld());
 
-            icicle.setOwner(this.getOwner());
-            icicle.setDamage(5);
-            icicle.setPosition(this.getPos().offset(Direction.UP, 1));
-
-            icicle.setVelocity(random.nextBetween(-10, 10) * 0.1, 0.3, random.nextBetween(-10, 10) * 0.1);
-
+            // Make icicle target hit source.
             Entity entity = source.getSource();
             if (entity instanceof Ownable) {
                 Entity owner = ((Ownable) entity).getOwner();
 
                 if (owner != null) {
+                    if (owner == this.getOwner()) {
+                        return true;
+                    }
+
                     icicle.setTarget(owner);
                 }
             }
+
+            icicle.setOwner(this.getOwner());
+            icicle.setDamage(5);
+            icicle.setPosition(this.getPos().offset(Direction.UP, 1));
+
+            icicle.setVelocity(random.nextBetween(-10, 10) * 0.1, 0.3, random.nextBetween(-10, 10) * 0.1);
 
             this.getWorld().spawnEntity(icicle);
         }

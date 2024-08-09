@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.misc.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
@@ -17,6 +18,10 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stat;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -72,10 +77,8 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
 
         PlayerEntity owner = this.getOwner();
         if (owner != null) {
-            shieldEffect(owner);
-
             if (!this.getWorld().isClient()) {
-                owner.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10, 255));
+                shieldEffect(owner);
 
                 if (uptime <= age) {
                     owner.setInvulnerable(false);
@@ -94,7 +97,7 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
     }
 
     @Override
-    public boolean canHit() {
+    public boolean canBeHitByProjectile() {
         return true;
     }
 
@@ -105,7 +108,9 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
     }
 
     // Override to add custom functionality to tick.
-    public void shieldEffect(PlayerEntity owner) {}
+    public void shieldEffect(PlayerEntity owner) {
+        owner.addStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 255));
+    }
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {}

@@ -4,6 +4,11 @@
 
   "entity.elemental_battle.icicle_ball": "Icicle Ball",
   "entity.elemental_battle.icicle": "Icicle",
+  "entity.elemental_battle.shattering_wall": "Shattering Wall",
+
+  "entity.elemental_battle.cone_of_fire": "Cone of Fire",
+
+  "effect.elemental_battle.shield": "Shield",
 
   "itemGroup.elemental_battle": "Elemental Battle",
 

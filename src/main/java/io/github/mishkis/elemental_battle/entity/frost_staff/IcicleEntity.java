@@ -76,8 +76,6 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
                 double delta = age - startAge;
                 delta *= 0.05;
 
-                ElementalBattle.LOGGER.info(String.valueOf(delta));
-
                 this.setVelocity(Vec3d.ZERO.lerp(target.getEyePos().subtract(this.getPos()), delta));
             }
 

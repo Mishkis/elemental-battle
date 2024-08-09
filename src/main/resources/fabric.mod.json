@@ -24,6 +24,9 @@
       "io.github.mishkis.elemental_battle.ElementalBattleClient"
     ]
   },
+  "mixins": [
+    "elemental_battle.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.15.11",
     "fabric": "*",
