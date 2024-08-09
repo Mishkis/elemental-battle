@@ -30,6 +30,10 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
     private float orbitSpeed = 0;
     private float yOffset;
 
+    private Entity target;
+    private boolean slowingDown;
+    private double startAge;
+
     public IcicleEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -42,6 +46,11 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
         this.orbitPoint = orbitTarget.getPos().relativize(this.getPos().offset(Direction.DOWN, yOffset));
     }
 
+    public void setTarget(Entity target) {
+        this.target = target;
+        this.slowingDown = true;
+    }
+
     @Override
     public void tick() {
         if (orbitTarget != null) {
@@ -52,6 +61,30 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
             Vec3d pointedVector = targetPos.subtract(currentPos);
 
             this.setVelocity(this.getVelocity().lerp(pointedVector, 0.5));
+        }
+        else if (target != null) {
+            if (slowingDown) {
+                this.setVelocity(this.getVelocity().lerp(Vec3d.ZERO, 0.2));
+
+                if (this.getVelocity().getY() <= 0) {
+                    slowingDown = false;
+                    this.setNoGravity(true);
+                    startAge = age;
+                };
+            }
+            else {
+                double delta = age - startAge;
+                delta *= 0.05;
+
+                ElementalBattle.LOGGER.info(String.valueOf(delta));
+
+                this.setVelocity(Vec3d.ZERO.lerp(target.getEyePos().subtract(this.getPos()), delta));
+            }
+
+            if (target.isRemoved()) {
+                this.target = null;
+                this.setNoGravity(false);
+            }
         }
         super.tick();
     }

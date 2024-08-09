@@ -1,13 +1,20 @@
 package io.github.mishkis.elemental_battle.entity;
 
+import com.mojang.serialization.Codec;
+import io.github.mishkis.elemental_battle.ElementalBattle;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public abstract class MagicProjectileEntity extends ProjectileEntity {
     private int uptime = 20 * 20;
@@ -99,5 +106,6 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {}
+    protected void initDataTracker(DataTracker.Builder builder) {
+    }
 }

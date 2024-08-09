@@ -1,11 +1,14 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Ownable;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -37,7 +40,9 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
 
     @Override
     public void shieldEffect(PlayerEntity owner) {
-        owner.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 2));
+        if (!this.getWorld().isClient()) {
+            owner.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 10, 2));
+        }
     }
 
     @Override
@@ -50,6 +55,15 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
             icicle.setPosition(this.getPos().offset(Direction.UP, 1));
 
             icicle.setVelocity(random.nextBetween(-10, 10) * 0.1, 0.3, random.nextBetween(-10, 10) * 0.1);
+
+            Entity entity = source.getSource();
+            if (entity instanceof Ownable) {
+                Entity owner = ((Ownable) entity).getOwner();
+
+                if (owner != null) {
+                    icicle.setTarget(owner);
+                }
+            }
 
             this.getWorld().spawnEntity(icicle);
         }

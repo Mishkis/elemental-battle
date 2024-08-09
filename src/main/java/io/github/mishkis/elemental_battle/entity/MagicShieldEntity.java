@@ -8,6 +8,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Ownable;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -73,7 +75,7 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
             shieldEffect(owner);
 
             if (!this.getWorld().isClient()) {
-                owner.setInvulnerable(true);
+                owner.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10, 255));
 
                 if (uptime <= age) {
                     owner.setInvulnerable(false);
@@ -85,6 +87,9 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
             if (this.getWorld().isClient) {
                 this.playParticle(owner.getPos());
             }
+        }
+        else {
+            this.discard();
         }
     }
 

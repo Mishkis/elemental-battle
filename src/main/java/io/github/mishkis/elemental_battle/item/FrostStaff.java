@@ -79,6 +79,9 @@ public class FrostStaff extends MagicWandItem {
                 }
 
                 Vec3d spawnNormal = user.getRotationVector().multiply(1, 0, 1).normalize();
+                if (spawnNormal == Vec3d.ZERO) {
+                    spawnNormal = new Vec3d(1, 0, 0);
+                }
                 spawnNormal = spawnNormal.rotateY((float) (4 * i * Math.PI / spawnCount)).multiply(spawnDistance);
 
                 Vec3d spawnPos = user.getPos().add(spawnNormal).offset(Direction.UP, yOffset);
