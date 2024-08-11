@@ -1,8 +1,11 @@
 package io.github.mishkis.elemental_battle.entity;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Ownable;
@@ -16,6 +19,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -26,6 +30,9 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
     private PlayerEntity owner;
     private UUID ownerUuid;
     private float uptime;
+
+    // This is used in the shield effect mixin.
+    public static final AttachmentType<MagicShieldEntity> SHIELD_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "shield_attachment"));
 
     public MagicShieldEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -38,6 +45,9 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
         if (owner != null) {
             this.owner = owner;
             this.ownerUuid = owner.getUuid();
+
+            // Tell owner that there is a shield attached.
+            this.getOwner().setAttached(SHIELD_ATTACHMENT, this);
         }
     }
 
@@ -72,6 +82,7 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
 
                 if (uptime < age) {
                     onTimeOut(owner);
+                    owner.removeAttached(SHIELD_ATTACHMENT);
                     this.discard();
                 }
             }
@@ -94,12 +105,18 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
     // Override to create custom on hit effect.
     @Override
     public boolean damage(DamageSource source, float amount) {
+        onDamaged(source);
         return true;
+    }
+
+    @Override
+    public void onDamaged(DamageSource damageSource) {
+        super.onDamaged(damageSource);
     }
 
     // Override to add custom functionality to tick.
     public void shieldEffect(PlayerEntity owner) {
-        owner.addStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 0));
+        owner.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 0), this);
     }
 
     // Override to add custom functionality on time out.
