@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
+import io.github.mishkis.elemental_battle.entity.frost_staff.IceTargetEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.ShatteringWallEntity;
@@ -13,6 +14,12 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class ElementalBattleEntities {
+    // Frost Magic
+    public static final EntityType<IceTargetEntity> ICE_TARGET =
+            register(
+                    "ice_target",
+                    EntityType.Builder.create(IceTargetEntity::new, SpawnGroup.MISC)
+            );
     public static final EntityType<IcicleBallEntity> ICICLE_BALL =
             register(
                     "icicle_ball",
@@ -32,6 +39,7 @@ public class ElementalBattleEntities {
                             .dimensions(2F, 2F)
             );
 
+    // Flame Magic
     public static final EntityType<ConeOfFireEntity> CONE_OF_FIRE =
             register(
                     "cone_of_fire",

@@ -55,12 +55,9 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
             return this.owner;
         }
         else {
-            if (this.ownerUuid != null) {
-                World world = this.getWorld();
-                if (world instanceof ServerWorld) {
-                    this.owner = world.getPlayerByUuid(ownerUuid);
-                    return this.owner;
-                }
+            if (this.ownerUuid != null && this.getWorld() instanceof ServerWorld world) {
+                this.owner = world.getPlayerByUuid(ownerUuid);
+                return this.owner;
             }
 
             return null;
@@ -80,7 +77,7 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
             if (!this.getWorld().isClient()) {
                 shieldEffect(owner);
 
-                if (uptime <= age) {
+                if (uptime < age) {
                     owner.setInvulnerable(false);
                     this.discard();
                 }

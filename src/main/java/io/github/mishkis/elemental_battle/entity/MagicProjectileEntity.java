@@ -76,7 +76,7 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         }
 
         float newPitch = (float) ((90 * velocity.y) / (baseAngle + Math.abs(velocity.y)));
-        if (this.getUptime() <= age) {
+        if (this.getUptime() < age) {
             this.discard();
         }
 

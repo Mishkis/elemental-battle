@@ -35,7 +35,7 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
     @Override
     @Environment(EnvType.CLIENT)
     public void playParticle(Vec3d pos) {
-        this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, pos.getX() + random.nextBetween(-1, 1), pos.getY() + 1, pos.getZ() + random.nextBetween(-1, 1), 0, 0, 0);
+        this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, pos.getX() + random.nextBetween(-1, 1), pos.getY() + 1, pos.getZ() + random.nextBetween(-1, 1), 0, random.nextBetween(1, 3) * 0.1, 0);
     }
 
     @Override
@@ -52,14 +52,22 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
             // Make icicle target hit source.
             Entity entity = source.getSource();
             if (entity instanceof Ownable) {
-                Entity owner = ((Ownable) entity).getOwner();
+                Entity target = ((Ownable) entity).getOwner();
 
-                if (owner != null) {
-                    if (owner == this.getOwner()) {
+                if (target != null) {
+                    if (target == this.getOwner()) {
                         return true;
                     }
 
-                    icicle.setTarget(owner);
+                    icicle.setTarget(target);
+
+                    // Spawn a target on the entity
+                    IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, this.getWorld());
+
+                    iceTarget.setTarget(target);
+                    iceTarget.setPosition(target.getPos());
+
+                    this.getWorld().spawnEntity(iceTarget);
                 }
             }
 
