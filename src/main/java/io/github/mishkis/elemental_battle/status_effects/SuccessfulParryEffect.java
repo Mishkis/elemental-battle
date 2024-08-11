@@ -1,10 +1,10 @@
-package io.github.mishkis.elemental_battle.misc.status_effects;
+package io.github.mishkis.elemental_battle.status_effects;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 
-public class ShieldEffect extends StatusEffect {
-    protected ShieldEffect() {
+public class SuccessfulParryEffect extends StatusEffect {
+    protected SuccessfulParryEffect() {
         super(StatusEffectCategory.BENEFICIAL, 0x737eae);
     }
 }

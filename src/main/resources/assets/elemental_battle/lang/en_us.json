@@ -2,6 +2,7 @@
   "item.elemental_battle.frost_staff": "Frost Staff",
   "item.elemental_battle.flame_staff": "Flame Staff",
 
+  "entity.elemental_battle.ice_target": "Ice Target",
   "entity.elemental_battle.icicle_ball": "Icicle Ball",
   "entity.elemental_battle.icicle": "Icicle",
   "entity.elemental_battle.shattering_wall": "Shattering Wall",
@@ -9,6 +10,7 @@
   "entity.elemental_battle.cone_of_fire": "Cone of Fire",
 
   "effect.elemental_battle.shield": "Shield",
+  "effect.elemental_battle.successful_parry": "Successful Parry",
 
   "itemGroup.elemental_battle": "Elemental Battle",
 

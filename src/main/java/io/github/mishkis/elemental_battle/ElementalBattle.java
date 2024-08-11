@@ -4,7 +4,7 @@ import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.item.ElementalBattleItems;
 import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
 import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
-import io.github.mishkis.elemental_battle.misc.status_effects.ElementalBattleStatusEffects;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import io.github.mishkis.elemental_battle.network.KeybindPayload;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;

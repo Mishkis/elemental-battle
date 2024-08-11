@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
@@ -39,14 +40,19 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
     }
 
     @Override
-    public void shieldEffect(PlayerEntity owner) {
-        super.shieldEffect(owner);
-        owner.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 10, 2));
+    public void onTimeOut(PlayerEntity owner) {
+        if (owner.getStatusEffect(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT) == null) {
+            owner.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2));
+        }
     }
 
     @Override
     public boolean damage(DamageSource source, float amount) {
         if (!this.getWorld().isClient()) {
+            if (this.getOwner() != null) {
+                this.getOwner().setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT, 100, 0), this);
+            }
+
             IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, this.getWorld());
 
             // Make icicle target hit source.

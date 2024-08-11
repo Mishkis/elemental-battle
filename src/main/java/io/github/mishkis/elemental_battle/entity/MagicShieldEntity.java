@@ -1,7 +1,6 @@
 package io.github.mishkis.elemental_battle.entity;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.misc.status_effects.ElementalBattleStatusEffects;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
@@ -10,7 +9,6 @@ import net.minecraft.entity.Ownable;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -18,11 +16,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stat;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -78,7 +71,7 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
                 shieldEffect(owner);
 
                 if (uptime < age) {
-                    owner.setInvulnerable(false);
+                    onTimeOut(owner);
                     this.discard();
                 }
             }
@@ -106,8 +99,11 @@ public abstract class MagicShieldEntity extends Entity implements Ownable {
 
     // Override to add custom functionality to tick.
     public void shieldEffect(PlayerEntity owner) {
-        owner.addStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 255));
+        owner.addStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 0));
     }
+
+    // Override to add custom functionality on time out.
+    public void onTimeOut(PlayerEntity owner) {}
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {}
