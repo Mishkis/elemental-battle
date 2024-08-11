@@ -1,9 +1,7 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
-import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -13,7 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -89,7 +86,9 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
 
     @Override
     protected void playTravelParticle(double x, double y, double z) {
-        this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, x, y, z, 0, 0, 0);
+        if (this.getWorld().isClient()) {
+            this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, x, y, z, 0, 0, 0);
+        }
     }
 
     @Override

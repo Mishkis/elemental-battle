@@ -1,26 +1,21 @@
 package io.github.mishkis.elemental_battle.entity;
 
-import com.mojang.serialization.Codec;
-import io.github.mishkis.elemental_battle.ElementalBattle;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
-import net.minecraft.entity.Entity;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 public abstract class MagicProjectileEntity extends ProjectileEntity {
     private int uptime = 20 * 20;
     private double gravity = 0.05;
     private float damage;
 
+    // Called on both client and server sides, make sure to check.
     protected abstract void playTravelParticle(double x, double y, double z);
 
     public MagicProjectileEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
@@ -91,9 +86,7 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
 
         this.setPosition(x, y, z);
 
-        if (this.getWorld().isClient) {
-            this.playTravelParticle(x, y, z);
-        }
+        this.playTravelParticle(x, y, z);
     }
 
     @Override

@@ -1,15 +1,15 @@
 package io.github.mishkis.elemental_battle.entity.flame_staff;
 
-import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
-import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -26,16 +26,19 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
 
     @Override
     protected void playTravelParticle(double x, double y, double z) {
-        SimpleParticleType particle;
-        if (age < 5) {
-            particle = ElementalBattleParticles.FLAME_PARTICLE_FULL;
-        } else if (age < 10) {
-            particle = ElementalBattleParticles.FLAME_PARTICLE_PARTIAL;
-        } else {
-            particle = ElementalBattleParticles.FLAME_PARTICLE_SMOKE;
-        }
+        World world = this.getWorld();
+        if (!world.isClient()) {
+            SimpleParticleType particle;
+            if (age < 5) {
+                particle = ElementalBattleParticles.FLAME_PARTICLE_FULL;
+            } else if (age < 10) {
+                particle = ElementalBattleParticles.FLAME_PARTICLE_PARTIAL;
+            } else {
+                particle = ElementalBattleParticles.FLAME_PARTICLE_SMOKE;
+            }
 
-        this.getWorld().addParticle(particle, x, y, z, 0, 0, 0);
+            ((ServerWorld) world).spawnParticles(particle, x, y, z, 1, 0, 0, 0, 1);
+        }
     }
 
     @Override

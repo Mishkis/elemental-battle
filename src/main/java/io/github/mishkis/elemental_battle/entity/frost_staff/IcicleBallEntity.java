@@ -1,7 +1,7 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
-import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -10,6 +10,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
@@ -64,7 +65,7 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
 
         World world = this.getWorld();
         if (!world.isClient) {
-            this.explode(world);
+            this.explode((ServerWorld) world);
         }
     }
 
@@ -81,7 +82,9 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
         }
     }
 
-    private void explode(World world) {
+    private void explode(ServerWorld world) {
+        world.spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 1);
+
         int spawnCount = 8 + random.nextBetween(-1, 1);
 
         double startRotation = Math.toRadians(random.nextInt(45));

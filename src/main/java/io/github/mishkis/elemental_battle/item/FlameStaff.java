@@ -35,7 +35,7 @@ public class FlameStaff extends MagicWandItem {
                 coneOfFire.setDamage(5);
                 coneOfFire.setUptime(15);
 
-                coneOfFire.setGravity(0); // Normally would use setNoGravity(true), but here it creates a nice looking chaotic effect.
+                coneOfFire.setNoGravity(true);
 
                 Vec3d offset = new Vec3d(0.3 + randomSpread, 0, 0).rotateZ((float) (2 * Math.PI * i / spawnCount));
 

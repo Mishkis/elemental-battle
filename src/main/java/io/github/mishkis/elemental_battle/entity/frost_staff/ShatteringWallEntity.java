@@ -1,9 +1,8 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
-import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,12 +13,10 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -48,12 +45,17 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (!this.getWorld().isClient()) {
+        World world = this.getWorld();
+
+        if (!world.isClient()) {
             if (this.getOwner() != null) {
+                Vec3d particlePos = this.getOwner().getEyePos().add(this.getOwner().getRotationVector().multiply(0.5));
+                ((ServerWorld) world).spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, particlePos.getX(), particlePos.getY(), particlePos.getZ(), 1, 0, 0, 0, 1);
+
                 this.getOwner().setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT, 100, 0), this);
             }
 
-            IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, this.getWorld());
+            IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, world);
 
             // Make icicle target hit source.
             Entity entity = source.getSource();
@@ -68,12 +70,12 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
                     icicle.setTarget(target);
 
                     // Spawn a target on the entity
-                    IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, this.getWorld());
+                    IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world);
 
                     iceTarget.setTarget(target);
                     iceTarget.setPosition(target.getPos());
 
-                    this.getWorld().spawnEntity(iceTarget);
+                    world.spawnEntity(iceTarget);
                 }
             }
 

@@ -1,10 +1,9 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.misc.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -12,7 +11,6 @@ import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -58,7 +56,7 @@ public class IceTargetEntity extends Entity implements GeoEntity {
         if (target != null) {
             this.setPosition(target.getPos());
             if (this.getWorld().isClient()) {
-                this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, this.getPos().getX() + random.nextBetween(-1, 1), this.getPos().getY() + 1, this.getPos().getZ() + random.nextBetween(-1, 1), 0, random.nextBetween(1, 3) * 0.1, 0);
+                this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, this.getX() + random.nextBetween(-1, 1), this.getY() + 1, this.getZ() + random.nextBetween(-1, 1), 0, random.nextBetween(1, 3) * 0.1, 0);
             }
         }
 
