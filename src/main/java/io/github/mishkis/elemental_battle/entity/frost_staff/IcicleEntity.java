@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -89,6 +90,11 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
         if (this.getWorld().isClient()) {
             this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, x, y, z, 0, 0, 0);
         }
+    }
+
+    @Override
+    protected void playDiscardParticle(double x, double y, double z) {
+        ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.SMALL_FROST_SHATTER_PARTICLE, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 1);
     }
 
     @Override

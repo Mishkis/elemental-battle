@@ -42,6 +42,9 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
     }
 
     @Override
+    protected void playDiscardParticle(double x, double y, double z) {}
+
+    @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
 

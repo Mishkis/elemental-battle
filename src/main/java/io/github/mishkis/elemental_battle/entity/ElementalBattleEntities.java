@@ -2,10 +2,7 @@ package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
-import io.github.mishkis.elemental_battle.entity.frost_staff.IceTargetEntity;
-import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
-import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleEntity;
-import io.github.mishkis.elemental_battle.entity.frost_staff.ShatteringWallEntity;
+import io.github.mishkis.elemental_battle.entity.frost_staff.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -36,7 +33,13 @@ public class ElementalBattleEntities {
             register(
                     "shattering_wall",
                     EntityType.Builder.create(ShatteringWallEntity::new, SpawnGroup.MISC)
-                            .dimensions(2F, 2F)
+                            .dimensions(2F, 2.5F)
+            );
+    public static final EntityType<FrozenSlideEntity> FROZEN_SLIDE =
+            register(
+                    "frozen_slide",
+                    EntityType.Builder.create(FrozenSlideEntity::new, SpawnGroup.MISC)
+                            .dimensions(2F, 2.5F)
             );
 
     // Flame Magic

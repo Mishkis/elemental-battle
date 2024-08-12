@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.entity;
 
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
@@ -17,6 +18,9 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
 
     // Called on both client and server sides, make sure to check.
     protected abstract void playTravelParticle(double x, double y, double z);
+
+    //@Environment(EnvType.SERVER)
+    protected abstract void playDiscardParticle(double x, double y, double z);
 
     public MagicProjectileEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -71,7 +75,8 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         }
 
         float newPitch = (float) ((90 * velocity.y) / (baseAngle + Math.abs(velocity.y)));
-        if (this.getUptime() < age) {
+        if (this.getUptime() < age && !this.getWorld().isClient) {
+            this.playDiscardParticle(x, y, z);
             this.discard();
         }
 
@@ -94,6 +99,7 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         super.onBlockHit(blockHitResult);
 
         if (!this.getWorld().isClient) {
+            this.playDiscardParticle(this.getX(), this.getY(), this.getZ());
             this.discard();
         }
     }

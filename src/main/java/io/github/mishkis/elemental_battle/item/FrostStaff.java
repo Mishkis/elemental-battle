@@ -2,10 +2,12 @@ package io.github.mishkis.elemental_battle.item;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
+import io.github.mishkis.elemental_battle.entity.frost_staff.FrozenSlideEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.ShatteringWallEntity;
 import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +24,7 @@ public class FrostStaff extends MagicWandItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (world.isClient) {
+        if (world.isClient()) {
             return TypedActionResult.pass(user.getStackInHand(hand));
         }
         user.getItemCooldownManager().set(this, 1);
@@ -42,7 +44,7 @@ public class FrostStaff extends MagicWandItem {
 
     @Override
     public TypedActionResult shield(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             ShatteringWallEntity shatteringWall = new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world);
 
             shatteringWall.setOwner(user);
@@ -57,12 +59,22 @@ public class FrostStaff extends MagicWandItem {
 
     @Override
     public TypedActionResult dash(World world, PlayerEntity user, Hand hand) {
-        return null;
+        if (!world.isClient()) {
+            FrozenSlideEntity frozenSlide = new FrozenSlideEntity(ElementalBattleEntities.FROZEN_SLIDE, world);
+
+            frozenSlide.setOwner(user);
+            frozenSlide.setPosition(user.getPos());
+
+            world.spawnEntity(frozenSlide);
+
+            return TypedActionResult.success(user.getStackInHand(hand));
+        }
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
     @Override
     public TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             int spawnCount = 8;
             for (int i = 0; i < spawnCount; i++) {
                 IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, world);

@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 public class ElementalBattleParticles {
     public static final SimpleParticleType FROST_SHATTER_PARTICLE = FabricParticleTypes.simple();
+    public static final SimpleParticleType SMALL_FROST_SHATTER_PARTICLE = FabricParticleTypes.simple();
     public static final SimpleParticleType FROST_PARTICLE = FabricParticleTypes.simple();
 
     public static final SimpleParticleType FLAME_PARTICLE_FULL = FabricParticleTypes.simple();
@@ -24,6 +25,7 @@ public class ElementalBattleParticles {
 
     public static void initialize() {
         Registry.register(Registries.PARTICLE_TYPE, Identifier.of(ElementalBattle.MOD_ID, "frost_shatter_particle"), FROST_SHATTER_PARTICLE);
+        Registry.register(Registries.PARTICLE_TYPE, Identifier.of(ElementalBattle.MOD_ID, "small_frost_shatter_particle"), SMALL_FROST_SHATTER_PARTICLE);
         Registry.register(Registries.PARTICLE_TYPE, Identifier.of(ElementalBattle.MOD_ID, "frost_particle"), FROST_PARTICLE);
 
         Registry.register(Registries.PARTICLE_TYPE, Identifier.of(ElementalBattle.MOD_ID, "flame_particle_full"), FLAME_PARTICLE_FULL);
