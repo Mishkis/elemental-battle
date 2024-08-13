@@ -24,8 +24,8 @@ import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class FlamingDashEntity extends MagicDashEntity implements GeoEntity {
-    AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     RawAnimation ANIMATION = RawAnimation.begin().thenPlay("animation.flaming_dash.spawn").thenLoop("animation.flaming_dash.idle");
+    AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public FlamingDashEntity(EntityType<?> type, World world) {
         super(type, world);

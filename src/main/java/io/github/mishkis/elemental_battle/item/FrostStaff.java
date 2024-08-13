@@ -48,7 +48,7 @@ public class FrostStaff extends MagicWandItem {
             ShatteringWallEntity shatteringWall = new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world);
 
             shatteringWall.setOwner(user);
-            shatteringWall.setUptime(100);
+            shatteringWall.setUptime(60);
 
             world.spawnEntity(shatteringWall);
 

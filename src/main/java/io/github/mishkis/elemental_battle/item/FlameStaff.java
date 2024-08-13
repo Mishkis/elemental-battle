@@ -3,6 +3,7 @@ package io.github.mishkis.elemental_battle.item;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlamingDashEntity;
+import io.github.mishkis.elemental_battle.entity.flame_staff.WallOfFireEntity;
 import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -60,7 +61,17 @@ public class FlameStaff extends MagicWandItem {
 
     @Override
     public TypedActionResult shield(World world, PlayerEntity user, Hand hand) {
-        return null;
+        if (!world.isClient()) {
+            WallOfFireEntity wallOfFire = new WallOfFireEntity(ElementalBattleEntities.WALL_OF_FIRE, world);
+
+            wallOfFire.setOwner(user);
+            wallOfFire.setUptime(100);
+
+            world.spawnEntity(wallOfFire);
+
+            return TypedActionResult.success(user.getStackInHand(hand));
+        }
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
     @Override

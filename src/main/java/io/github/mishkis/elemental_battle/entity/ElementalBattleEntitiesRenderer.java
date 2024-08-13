@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireRenderer;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlamingDashRenderer;
+import io.github.mishkis.elemental_battle.entity.flame_staff.WallOfFireEntityRenderer;
 import io.github.mishkis.elemental_battle.entity.frost_staff.*;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 
@@ -16,6 +17,7 @@ public class ElementalBattleEntitiesRenderer {
 
         // Flame Magic
         EntityRendererRegistry.register(ElementalBattleEntities.CONE_OF_FIRE, ConeOfFireRenderer::new);
+        EntityRendererRegistry.register(ElementalBattleEntities.WALL_OF_FIRE, WallOfFireEntityRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.FLAMING_DASH, FlamingDashRenderer::new);
     }
 }
