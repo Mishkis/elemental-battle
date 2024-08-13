@@ -1,9 +1,7 @@
 package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
-import io.github.mishkis.elemental_battle.entity.flame_staff.FlamingDashEntity;
-import io.github.mishkis.elemental_battle.entity.flame_staff.WallOfFireEntity;
+import io.github.mishkis.elemental_battle.entity.flame_staff.*;
 import io.github.mishkis.elemental_battle.entity.frost_staff.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -62,6 +60,12 @@ public class ElementalBattleEntities {
                     "flaming_dash",
                     EntityType.Builder.create(FlamingDashEntity::new, SpawnGroup.MISC)
                             .dimensions(2F, 2.5F)
+            );
+    public static final EntityType<FlameVortexEntity> FLAME_VORTEX =
+            register(
+                    "flame_vortex",
+                    EntityType.Builder.create(FlameVortexEntity::new, SpawnGroup.MISC)
+                            .dimensions(6F, 1F)
             );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {

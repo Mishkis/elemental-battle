@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.item;
 
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
+import io.github.mishkis.elemental_battle.entity.flame_staff.FlameVortexEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlamingDashEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.WallOfFireEntity;
 import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
@@ -91,7 +92,14 @@ public class FlameStaff extends MagicWandItem {
 
     @Override
     public TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand) {
-        return null;
+        FlameVortexEntity flameVortex = new FlameVortexEntity(ElementalBattleEntities.FLAME_VORTEX, world);
+
+        flameVortex.setOwner(user);
+        flameVortex.setPosition(user.getPos().offset(Direction.UP, 1));
+
+        world.spawnEntity(flameVortex);
+
+        return TypedActionResult.success(user.getStackInHand(hand));
     }
 
     @Override
