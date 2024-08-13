@@ -77,7 +77,11 @@ public abstract class MagicDashEntity extends Entity implements Ownable {
                 ownerVelocity = ownerVelocity.multiply(this.getBlocksTraveled()/this.getUptime());
 
                 this.setYaw(-owner.getYaw());
+
+                // Trick the game into preventing fall damage by claiming it's an "explosion".
+                owner.currentExplosionImpactPos = owner.getPos();
             }
+            owner.setIgnoreFallDamageFromCurrentExplosion(true);
 
             owner.setVelocity(ownerVelocity);
 

@@ -19,7 +19,6 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
     // Called on both client and server sides, make sure to check.
     protected abstract void playTravelParticle(double x, double y, double z);
 
-    //@Environment(EnvType.SERVER)
     protected abstract void playDiscardParticle(double x, double y, double z);
 
     public MagicProjectileEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
