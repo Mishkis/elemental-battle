@@ -2,10 +2,7 @@ package io.github.mishkis.elemental_battle.item;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
-import io.github.mishkis.elemental_battle.entity.frost_staff.FrozenSlideEntity;
-import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
-import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleEntity;
-import io.github.mishkis.elemental_battle.entity.frost_staff.ShatteringWallEntity;
+import io.github.mishkis.elemental_battle.entity.frost_staff.*;
 import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -74,43 +71,14 @@ public class FrostStaff extends MagicWandItem {
 
     @Override
     public TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient()) {
-            int spawnCount = 8;
-            for (int i = 0; i < spawnCount; i++) {
-                IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, world);
+        ChillingAirEntity chillingAir = new ChillingAirEntity(ElementalBattleEntities.CHILLING_AIR, world);
 
-                icicle.setOwner(user);
+        chillingAir.setOwner(user);
+        chillingAir.setPosition(user.getPos().offset(Direction.UP, 1));
 
-                int rotationSpeed = 3;
-                float yOffset = 0.8F;
-                float spawnDistance = 1.5F;
+        world.spawnEntity(chillingAir);
 
-                if (i >= spawnCount/2) {
-                    rotationSpeed *= 2;
-                    spawnDistance *= 2;
-                }
-
-                Vec3d spawnNormal = user.getRotationVector().multiply(1, 0, 1).normalize();
-                if (spawnNormal == Vec3d.ZERO) {
-                    spawnNormal = new Vec3d(1, 0, 0);
-                }
-                spawnNormal = spawnNormal.rotateY((float) (4 * i * Math.PI / spawnCount)).multiply(spawnDistance);
-
-                Vec3d spawnPos = user.getPos().add(spawnNormal).offset(Direction.UP, yOffset);
-                icicle.setPosition(spawnPos);
-
-                icicle.setOrbit(user, rotationSpeed, yOffset);
-                icicle.setNoGravity(true);
-
-                icicle.setVelocity(0.01, 0, 0); // for visual rotation on first tick spawned
-
-                icicle.setDamage(3);
-
-                world.spawnEntity(icicle);
-            }
-            return TypedActionResult.success(user.getStackInHand(hand));
-        }
-        return TypedActionResult.pass(user.getStackInHand(hand));
+        return TypedActionResult.success(user.getStackInHand(hand));
     }
 
     @Override

@@ -9,12 +9,11 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.util.RenderUtil;
 
-public class FrozenSlideEntityRenderer extends GeoEntityRenderer<FrozenSlideEntity> {
-    public FrozenSlideEntityRenderer(EntityRendererFactory.Context renderManager) {
+public class FrozenSlideRenderer extends GeoEntityRenderer<FrozenSlideEntity> {
+    public FrozenSlideRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(Identifier.of(ElementalBattle.MOD_ID, "frozen_slide")));
     }
 

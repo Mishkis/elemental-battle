@@ -18,8 +18,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class WallOfFireEntity extends MagicShieldEntity implements GeoEntity {
     // We use the same model for both Wall of Fire and Flaming Dash.
-    RawAnimation ANIMATION = RawAnimation.begin().thenPlay("animation.flaming_dash.spawn").thenLoop("animation.flaming_dash.idle");
-    AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final RawAnimation ANIMATION = RawAnimation.begin().thenPlay("animation.flaming_dash.spawn").thenLoop("animation.flaming_dash.idle");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 
     public WallOfFireEntity(EntityType<?> type, World world) {
@@ -35,6 +35,7 @@ public class WallOfFireEntity extends MagicShieldEntity implements GeoEntity {
     public void shieldEffect(PlayerEntity owner) {
         super.shieldEffect(owner);
 
+        owner.setOnFireForTicks(10);
         owner.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 1), this);
     }
 

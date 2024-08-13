@@ -41,6 +41,12 @@ public class ElementalBattleEntities {
                     EntityType.Builder.create(FrozenSlideEntity::new, SpawnGroup.MISC)
                             .dimensions(2F, 2.5F)
             );
+    public static final EntityType<ChillingAirEntity> CHILLING_AIR =
+            register(
+                    "chilling_air",
+                    EntityType.Builder.create(ChillingAirEntity::new, SpawnGroup.MISC)
+                            .dimensions(5.5F, 1F)
+            );
 
     // Flame Magic
     public static final EntityType<ConeOfFireEntity> CONE_OF_FIRE =

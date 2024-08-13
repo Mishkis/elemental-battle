@@ -14,7 +14,8 @@ public class ElementalBattleEntitiesRenderer {
         EntityRendererRegistry.register(ElementalBattleEntities.ICICLE_BALL, IcicleBallRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.ICICLE, IcicleRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.SHATTERING_WALL, ShatteringWallRenderer::new);
-        EntityRendererRegistry.register(ElementalBattleEntities.FROZEN_SLIDE, FrozenSlideEntityRenderer::new);
+        EntityRendererRegistry.register(ElementalBattleEntities.FROZEN_SLIDE, FrozenSlideRenderer::new);
+        EntityRendererRegistry.register(ElementalBattleEntities.CHILLING_AIR, ChillingAirRenderer::new);
 
         // Flame Magic
         EntityRendererRegistry.register(ElementalBattleEntities.CONE_OF_FIRE, ConeOfFireRenderer::new);
