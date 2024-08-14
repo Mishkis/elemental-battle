@@ -1,9 +1,11 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.entity.MagicAreaAttackEntity;
+import io.github.mishkis.elemental_battle.ElementalBattle;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -11,21 +13,27 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class ChillingAirEntity extends MagicAreaAttackEntity implements GeoEntity {
-    private final RawAnimation ANIMATION = RawAnimation.begin().thenPlay("animation.chilling_air.spawn");
+public class FrozenSolidEntity extends Entity implements GeoEntity {
+    private final RawAnimation ANIMATION = RawAnimation.begin().thenPlay("animation.frozen_solid.spawn");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public ChillingAirEntity(EntityType<?> type, World world) {
+    public FrozenSolidEntity(EntityType<?> type, World world) {
         super(type, world);
     }
 
     @Override
-    protected int getUptime() {
-        return 20;
+    protected void initDataTracker(DataTracker.Builder builder) {
+
     }
 
     @Override
-    protected void onEntityCollision(LivingEntity entity) {
+    protected void readCustomDataFromNbt(NbtCompound nbt) {
+
+    }
+
+    @Override
+    protected void writeCustomDataToNbt(NbtCompound nbt) {
+
     }
 
     @Override
@@ -33,7 +41,7 @@ public class ChillingAirEntity extends MagicAreaAttackEntity implements GeoEntit
         controllers.add(new AnimationController<>(this, "spawn", this::animation));
     }
 
-    public <E extends ChillingAirEntity> PlayState animation(AnimationState<E> animationState) {
+    private <E extends FrozenSolidEntity> PlayState animation(AnimationState animationState) {
         return animationState.setAndContinue(ANIMATION);
     }
 

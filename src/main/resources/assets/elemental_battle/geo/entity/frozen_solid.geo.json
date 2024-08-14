@@ -1,0 +1,39 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.frozen_solid",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 6,
+				"visible_bounds_offset": [0, 1, 0]
+			},
+			"bones": [
+				{
+					"name": "FrozenSolid",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "Spike1",
+					"parent": "FrozenSolid",
+					"pivot": [0, 0, 1],
+					"rotation": [-15, 0, 0],
+					"cubes": [
+						{"origin": [-9, -2, -8], "size": [20, 38, 18], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Spike2",
+					"parent": "FrozenSolid",
+					"pivot": [0, 0, 1],
+					"rotation": [14, -44, -10],
+					"cubes": [
+						{"origin": [-7, 0, -7], "size": [15, 46, 15], "uv": [0, 56]}
+					]
+				}
+			]
+		}
+	]
+}

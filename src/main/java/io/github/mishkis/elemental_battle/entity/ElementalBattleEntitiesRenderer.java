@@ -16,6 +16,7 @@ public class ElementalBattleEntitiesRenderer {
         EntityRendererRegistry.register(ElementalBattleEntities.SHATTERING_WALL, ShatteringWallRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.FROZEN_SLIDE, FrozenSlideRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.CHILLING_AIR, ChillingAirRenderer::new);
+        EntityRendererRegistry.register(ElementalBattleEntities.FROZEN_SOLID, FrozenSolidRenderer::new);
 
         // Flame Magic
         EntityRendererRegistry.register(ElementalBattleEntities.CONE_OF_FIRE, ConeOfFireRenderer::new);
