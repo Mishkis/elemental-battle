@@ -6,8 +6,14 @@
   "entity.elemental_battle.icicle_ball": "Icicle Ball",
   "entity.elemental_battle.icicle": "Icicle",
   "entity.elemental_battle.shattering_wall": "Shattering Wall",
+  "entity.elemental_battle.frozen_slide": "Frozen Slide",
+  "entity.elemental_battle.chilling_air": "Chilling Air",
+  "entity.elemental_battle.frozen_solid": "Frozen Solid",
 
   "entity.elemental_battle.cone_of_fire": "Cone of Fire",
+  "entity.elemental_battle.wall_of_fire": "Wall of Fire",
+  "entity.elemental_battle.flaming_dash": "Flaming Dash",
+  "entity.elemental_battle.flame_vortex": "Flame Vortex",
 
   "effect.elemental_battle.shield": "Shield",
   "effect.elemental_battle.successful_parry": "Successful Parry",
