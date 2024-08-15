@@ -2,12 +2,14 @@ package io.github.mishkis.elemental_battle.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -99,9 +101,13 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
 
         if (!this.getWorld().isClient) {
             this.playDiscardParticle(this.getX(), this.getY(), this.getZ());
+            onBlockHit();
             this.discard();
         }
     }
+
+    // Override to add more functionality on block hit.
+    protected void onBlockHit() {}
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {

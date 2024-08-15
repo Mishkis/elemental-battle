@@ -5,7 +5,7 @@ import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlameVortexEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlamingDashEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.WallOfFireEntity;
-import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
+import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class FlameStaff extends MagicWandItem {
+public class FlameStaff extends MagicStaffItem {
     Random random = Random.create();
 
     public FlameStaff() {

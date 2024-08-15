@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.entity;
 
+import io.github.mishkis.elemental_battle.entity.air_staff.GustRenderer;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireRenderer;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlameVortexRenderer;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlamingDashRenderer;
@@ -23,5 +24,8 @@ public class ElementalBattleEntitiesRenderer {
         EntityRendererRegistry.register(ElementalBattleEntities.WALL_OF_FIRE, WallOfFireEntityRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.FLAMING_DASH, FlamingDashRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.FLAME_VORTEX, FlameVortexRenderer::new);
+
+        // Air Magic
+        EntityRendererRegistry.register(ElementalBattleEntities.GUST, GustRenderer::new);
     }
 }

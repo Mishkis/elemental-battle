@@ -1,6 +1,7 @@
 {
   "item.elemental_battle.frost_staff": "Frost Staff",
   "item.elemental_battle.flame_staff": "Flame Staff",
+  "item.elemental_battle.air_staff": "Air Staff",
 
   "entity.elemental_battle.ice_target": "Ice Target",
   "entity.elemental_battle.icicle_ball": "Icicle Ball",

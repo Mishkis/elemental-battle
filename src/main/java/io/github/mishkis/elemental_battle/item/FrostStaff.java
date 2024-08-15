@@ -1,10 +1,8 @@
 package io.github.mishkis.elemental_battle.item;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.*;
-import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
-import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
+import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,7 +12,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class FrostStaff extends MagicWandItem {
+public class FrostStaff extends MagicStaffItem {
     public FrostStaff() {
         super("frost_staff", new Item.Settings());
     }

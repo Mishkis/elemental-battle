@@ -1,0 +1,41 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.air_staff",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 3,
+				"visible_bounds_offset": [0, 0.5, 0]
+			},
+			"bones": [
+				{
+					"name": "Staff",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-1, -7, 0.5], "size": [2, 20, 2], "uv": [0, 0]},
+						{"origin": [-0.8, -12, 0.7], "size": [1.6, 3, 1.6], "uv": [20, 8]}
+					]
+				},
+				{
+					"name": "SpinningHandle",
+					"parent": "Staff",
+					"pivot": [0, 13.25, 1.5],
+					"cubes": [
+						{"origin": [-1.9, 2, -0.4], "size": [3.8, 13, 3.8], "uv": [8, 8]}
+					]
+				},
+				{
+					"name": "AirVortex",
+					"parent": "Staff",
+					"pivot": [0, 18, 1.5],
+					"cubes": [
+						{"origin": [-4, 18, -2.5], "size": [8, 0, 8], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

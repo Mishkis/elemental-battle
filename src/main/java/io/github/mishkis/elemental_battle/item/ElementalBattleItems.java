@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier;
 public class ElementalBattleItems {
     public static final Item FROST_STAFF = register(new FrostStaff(), "frost_staff");
     public static final Item FLAME_STAFF = register(new FlameStaff(), "flame_staff");
+    public static final Item AIR_STAFF = register(new AirStaff(), "air_staff");
 
     public static final RegistryKey<ItemGroup> TESTING_MOD_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(ElementalBattle.MOD_ID, "item_group"));
     public static final ItemGroup TESTING_MOD_ITEM_GROUP = FabricItemGroup.builder()
@@ -34,6 +35,7 @@ public class ElementalBattleItems {
         ItemGroupEvents.modifyEntriesEvent(TESTING_MOD_ITEM_GROUP_KEY).register(itemGroup -> {
             itemGroup.add(FROST_STAFF);
             itemGroup.add(FLAME_STAFF);
+            itemGroup.add(AIR_STAFF);
         });
     }
 }

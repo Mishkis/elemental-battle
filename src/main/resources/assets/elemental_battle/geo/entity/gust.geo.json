@@ -1,0 +1,32 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.gust",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Gust",
+					"pivot": [0, 3, 0],
+					"cubes": [
+						{"origin": [-3, 0, -3], "size": [6, 6, 6], "uv": [0, 16]}
+					]
+				},
+				{
+					"name": "Ring",
+					"parent": "Gust",
+					"pivot": [0, 3, 0],
+					"cubes": [
+						{"origin": [-7, 2, -7], "size": [14, 2, 14], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

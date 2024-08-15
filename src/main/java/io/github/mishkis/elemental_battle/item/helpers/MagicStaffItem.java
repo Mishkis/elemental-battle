@@ -17,7 +17,7 @@ import software.bernie.geckolib.animation.*;
 
 import java.util.function.Consumer;
 
-public abstract class MagicWandItem extends Item implements GeoItem {
+public abstract class MagicStaffItem extends Item implements GeoItem {
     private final String id;
 
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
@@ -36,7 +36,7 @@ public abstract class MagicWandItem extends Item implements GeoItem {
 
     public abstract TypedActionResult ultimate(World world, PlayerEntity user, Hand hand);
 
-    public MagicWandItem(String id, Settings settings) {
+    public MagicStaffItem(String id, Settings settings) {
         super(settings);
 
         this.id = id;

@@ -1,0 +1,46 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.air_staff.idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"SpinningHandle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 360, 0]
+						}
+					}
+				},
+				"AirVortex": {
+					"rotation": {
+						"0.0": {
+							"vector": [-13.27463, -19.50645, 4.50432]
+						},
+						"0.5": {
+							"vector": [17.10967, 356.26829, 11.93845]
+						},
+						"1.0": {
+							"vector": [0, 720, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
+							"vector": [1.2, 1, 1.2]
+						},
+						"1.0": {
+							"vector": [1, 1, 1]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

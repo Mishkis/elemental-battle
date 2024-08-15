@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.*;
 import io.github.mishkis.elemental_battle.entity.frost_staff.*;
 import net.minecraft.entity.Entity;
@@ -78,6 +79,14 @@ public class ElementalBattleEntities {
                     "flame_vortex",
                     EntityType.Builder.create(FlameVortexEntity::new, SpawnGroup.MISC)
                             .dimensions(6F, 1F)
+            );
+
+    // Air Magic
+    public static final EntityType<GustEntity> GUST =
+            register(
+                    "gust",
+                    EntityType.Builder.create(GustEntity::new, SpawnGroup.MISC)
+                            .dimensions(0.5F, 0.5F)
             );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {

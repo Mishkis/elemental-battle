@@ -2,7 +2,7 @@ package io.github.mishkis.elemental_battle;
 
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.item.ElementalBattleItems;
-import io.github.mishkis.elemental_battle.item.helpers.MagicWandItem;
+import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import io.github.mishkis.elemental_battle.network.KeybindPayload;
@@ -36,22 +36,22 @@ public class ElementalBattle implements ModInitializer {
                 Hand hand = player.getActiveHand();
                 Item heldItem = player.getStackInHand(hand).getItem();
 
-                if (heldItem.getClass().getSuperclass().equals(MagicWandItem.class)) {
+                if (heldItem.getClass().getSuperclass().equals(MagicStaffItem.class)) {
                     switch (payload.type()) {
                         case "shield":
-                            ((MagicWandItem) heldItem).shield(player.getWorld(), player, hand);
+                            ((MagicStaffItem) heldItem).shield(player.getWorld(), player, hand);
                             break;
                         case "dash":
-                            ((MagicWandItem) heldItem).dash(player.getWorld(), player, hand);
+                            ((MagicStaffItem) heldItem).dash(player.getWorld(), player, hand);
                             break;
                         case "areaAttack":
-                            ((MagicWandItem) heldItem).areaAttack(player.getWorld(), player, hand);
+                            ((MagicStaffItem) heldItem).areaAttack(player.getWorld(), player, hand);
                             break;
                         case "special":
-                            ((MagicWandItem) heldItem).special(player.getWorld(), player, hand);
+                            ((MagicStaffItem) heldItem).special(player.getWorld(), player, hand);
                             break;
                         case "ultimate":
-                            ((MagicWandItem) heldItem).ultimate(player.getWorld(), player, hand);
+                            ((MagicStaffItem) heldItem).ultimate(player.getWorld(), player, hand);
                             break;
                     }
                 }
