@@ -20,6 +20,8 @@ public class AirStaff extends MagicStaffItem {
         if (!world.isClient()) {
             GustEntity gust = new GustEntity(ElementalBattleEntities.GUST, world);
 
+            gust.setOwner(user);
+
             gust.setVelocity(user.getRotationVector());
             gust.setPosition(user.getEyePos().add(user.getRotationVector()));
 

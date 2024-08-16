@@ -3,8 +3,10 @@ package io.github.mishkis.elemental_battle.entity.air_staff;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
@@ -44,10 +46,12 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     }
     
     private void blowBackEntity(Entity entity) {
-        Vec3d knockback_vec = entity.getPos().subtract(this.getPos());
-        knockback_vec = knockback_vec.normalize().offset(Direction.UP, 0.5).multiply(2.5 - this.getPos().distanceTo(entity.getPos()) * 0.5);
+        Vec3d knockback_vec = entity.getEyePos().subtract(this.getPos());
+        knockback_vec = knockback_vec.normalize().multiply(2 / knockback_vec.length());
 
         entity.setVelocity(knockback_vec);
+
+        // This still sometimes doesn't knockback owner, find a way to call on both client and server to fix <3
     }
 
     @Override
@@ -55,7 +59,9 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
         super.onEntityHit(entityHitResult);
 
         Entity entity = entityHitResult.getEntity();
-        entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), 5);
+        if (entity != this.getOwner()) {
+            entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), 5);
+        }
 
         onBlockHit();
 
@@ -64,10 +70,8 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
     @Override
     protected void onBlockHit() {
-        if (this.getWorld() instanceof ServerWorld serverWorld) {
-            for (Entity entity : serverWorld.getOtherEntities(null, this.getBoundingBox().expand(5, 5, 5))) {
-                blowBackEntity(entity);
-            }
+        for (Entity entity : this.getWorld().getOtherEntities(null, this.getBoundingBox().expand(5, 5, 5))) {
+            blowBackEntity(entity);
         }
     }
 

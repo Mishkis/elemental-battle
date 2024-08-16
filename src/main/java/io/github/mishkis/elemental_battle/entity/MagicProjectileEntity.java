@@ -98,10 +98,10 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
+        onBlockHit();
 
         if (!this.getWorld().isClient) {
             this.playDiscardParticle(this.getX(), this.getY(), this.getZ());
-            onBlockHit();
             this.discard();
         }
     }
