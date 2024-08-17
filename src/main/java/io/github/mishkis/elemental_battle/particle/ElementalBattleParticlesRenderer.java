@@ -12,5 +12,8 @@ public class ElementalBattleParticlesRenderer {
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_FULL, ExplosionLargeParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_PARTIAL, SonicBoomParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_SMOKE, GustParticle.Factory::new);
+
+        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.GUST_PARTICLE, GustParticle.SmallGustFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.GUST_EXPLOSION_PARTICLE, GustParticle.Factory::new);
     }
 }

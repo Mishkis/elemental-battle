@@ -57,9 +57,8 @@ public abstract class MagicDashEntity extends MagicEntity {
 
                 // Trick the game into preventing fall damage by claiming it's an "explosion".
                 owner.currentExplosionImpactPos = owner.getPos();
+                owner.setIgnoreFallDamageFromCurrentExplosion(true);
             }
-            owner.setIgnoreFallDamageFromCurrentExplosion(true);
-
             owner.setVelocity(ownerVelocity);
 
             this.setPosition(owner.getPos());

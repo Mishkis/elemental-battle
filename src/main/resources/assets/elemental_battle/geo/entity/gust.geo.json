@@ -13,17 +13,17 @@
 			"bones": [
 				{
 					"name": "Gust",
-					"pivot": [0, 3, 0],
+					"pivot": [0, 0, 0],
 					"cubes": [
-						{"origin": [-3, 0, -3], "size": [6, 6, 6], "uv": [0, 16]}
+						{"origin": [-3, -3, -3], "size": [6, 6, 6], "uv": [0, 16]}
 					]
 				},
 				{
 					"name": "Ring",
 					"parent": "Gust",
-					"pivot": [0, 3, 0],
+					"pivot": [0, 0, 0],
 					"cubes": [
-						{"origin": [-7, 2, -7], "size": [14, 2, 14], "uv": [0, 0]}
+						{"origin": [-7, -1, -7], "size": [14, 2, 14], "uv": [0, 0]}
 					]
 				}
 			]

@@ -94,7 +94,7 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
 
     @Override
     protected void playDiscardParticle(double x, double y, double z) {
-        ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.SMALL_FROST_SHATTER_PARTICLE, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 1);
+        ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.SMALL_FROST_SHATTER_PARTICLE, x, y, z, 1, 0, 0, 0, 1);
     }
 
     @Override

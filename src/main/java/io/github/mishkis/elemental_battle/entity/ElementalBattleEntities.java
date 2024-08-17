@@ -86,7 +86,7 @@ public class ElementalBattleEntities {
             register(
                     "gust",
                     EntityType.Builder.create(GustEntity::new, SpawnGroup.MISC)
-                            .dimensions(0.5F, 0.5F)
+                            .dimensions(1F, 1F)
             );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {

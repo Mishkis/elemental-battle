@@ -1,20 +1,17 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
-import net.minecraft.client.world.ClientWorld;
+import io.github.mishkis.elemental_battle.item.AirStaff;
+import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -37,12 +34,15 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
     @Override
     protected void playTravelParticle(double x, double y, double z) {
-
+        if (this.getWorld().isClient) {
+            this.getWorld().addParticle(ElementalBattleParticles.GUST_PARTICLE, x + random.nextBetween(-5, 5) * 0.1, y + random.nextBetween(-5, 5) * 0.1, z + random.nextBetween(-5, 5) * 0.1, 0, 0, 0);
+        }
     }
 
     @Override
     protected void playDiscardParticle(double x, double y, double z) {
-
+        ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.GUST_EXPLOSION_PARTICLE, x, y + 0.5, z, 3, 1, 0.2, 1, 1);
+        ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.GUST_PARTICLE, x, y + 0.5, z, 5, 1, 1, 1, 2);
     }
     
     private void blowBackEntity(Entity entity) {
@@ -51,7 +51,17 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
         entity.setVelocity(knockback_vec);
 
-        // This still sometimes doesn't knockback owner, find a way to call on both client and server to fix <3
+        if (entity instanceof ServerPlayerEntity player) {
+            player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
+
+            if (player == this.getOwner()) {
+                player.currentExplosionImpactPos = player.getPos();
+                player.setIgnoreFallDamageFromCurrentExplosion(true);
+            }
+        }
+        else if (entity instanceof ProjectileEntity projectileEntity) {
+            projectileEntity.setOwner(this.getOwner());
+        }
     }
 
     @Override
@@ -65,12 +75,16 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
         onBlockHit();
 
+        if (!this.getWorld().isClient()) {
+            playDiscardParticle(this.getX(), this.getY(), this.getZ());
+        }
+
         this.discard();
     }
 
     @Override
     protected void onBlockHit() {
-        for (Entity entity : this.getWorld().getOtherEntities(null, this.getBoundingBox().expand(5, 5, 5))) {
+        for (Entity entity : this.getWorld().getOtherEntities(null, this.getBoundingBox().expand(3, 3, 3))) {
             blowBackEntity(entity);
         }
     }
