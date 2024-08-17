@@ -1,17 +1,23 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.item.AirStaff;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -23,9 +29,19 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     private final RawAnimation IDLE_ANIMATION = RawAnimation.begin().thenLoop("animation.gust.idle");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    public static final AttachmentType<Boolean> EMPOWERED_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "gust_empowered_attachment"));
+
+    private boolean empowered = false;
+
     @Override
     public float getDamage() {
         return 5;
+    }
+
+    public void setEmpowered() {
+        this.setVelocity(this.getVelocity().multiply(2));
+
+        empowered = true;
     }
 
     public GustEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
@@ -49,6 +65,16 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
         Vec3d knockback_vec = entity.getEyePos().subtract(this.getPos());
         knockback_vec = knockback_vec.normalize().multiply(2 / knockback_vec.length());
 
+        if (empowered && entity != this.getOwner()) {
+            entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), 5);
+
+            if (knockback_vec.y < 1) {
+                knockback_vec = new Vec3d(knockback_vec.x, 1, knockback_vec.z);
+            }
+
+            knockback_vec = knockback_vec.multiply(1.2);
+        }
+
         entity.setVelocity(knockback_vec);
 
         if (entity instanceof ServerPlayerEntity player) {
@@ -57,6 +83,8 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
             if (player == this.getOwner()) {
                 player.currentExplosionImpactPos = player.getPos();
                 player.setIgnoreFallDamageFromCurrentExplosion(true);
+
+                player.setAttached(EMPOWERED_ATTACHMENT, true);
             }
         }
         else if (entity instanceof ProjectileEntity projectileEntity) {

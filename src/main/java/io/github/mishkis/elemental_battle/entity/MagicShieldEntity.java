@@ -31,7 +31,7 @@ public abstract class MagicShieldEntity extends MagicEntity {
     private UUID ownerUuid;
     private float uptime;
 
-    // This is used in the shield effect mixin.
+    // This is used in the shield effect mixin to call the ondamaged effect of the shield.
     public static final AttachmentType<MagicShieldEntity> SHIELD_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "shield_attachment"));
 
     @Override

@@ -3,7 +3,7 @@
   "package": "io.github.mishkis.elemental_battle.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PlayerShieldEffectMixin"
+    "PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

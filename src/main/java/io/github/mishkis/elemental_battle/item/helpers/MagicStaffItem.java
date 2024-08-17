@@ -1,6 +1,6 @@
 package io.github.mishkis.elemental_battle.item.helpers;
 
-import io.github.mishkis.elemental_battle.item.helpers.client.AnimatedItemRenderer;
+import io.github.mishkis.elemental_battle.item.helpers.client.MagicStaffItemRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,12 +47,12 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private AnimatedItemRenderer renderer;
+            private MagicStaffItemRenderer renderer;
 
             @Override
-            public AnimatedItemRenderer getGeoItemRenderer() {
+            public MagicStaffItemRenderer getGeoItemRenderer() {
                 if (this.renderer == null)
-                    this.renderer = new AnimatedItemRenderer(id);
+                    this.renderer = new MagicStaffItemRenderer(id);
 
                 return renderer;
             }

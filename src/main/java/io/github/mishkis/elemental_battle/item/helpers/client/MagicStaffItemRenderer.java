@@ -6,8 +6,8 @@ import net.minecraft.util.Identifier;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
-public class AnimatedItemRenderer extends GeoItemRenderer<MagicStaffItem> {
-    public AnimatedItemRenderer(String current_item) {
+public class MagicStaffItemRenderer extends GeoItemRenderer<MagicStaffItem> {
+    public MagicStaffItemRenderer(String current_item) {
         super(new DefaultedItemGeoModel<>(Identifier.of(ElementalBattle.MOD_ID, current_item)));
     }
 }

@@ -87,8 +87,12 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
             this.onCollision(hitResult);
         }
 
-        this.setYaw(newYaw);
-        this.setPitch(newPitch);
+        if (!Double.isNaN(newYaw)) {
+            this.setYaw(newYaw);
+        }
+        if (!Double.isNaN(newPitch)) {
+            this.setPitch(newPitch);
+        }
 
         this.setPosition(x, y, z);
 
