@@ -20,8 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerShieldEffectMixin extends LivingEntity{
-    @Shadow public abstract float getAttackCooldownProgress(float baseTime);
-
     protected PlayerShieldEffectMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -31,6 +29,8 @@ public abstract class PlayerShieldEffectMixin extends LivingEntity{
         if (this.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) != null) {
             // Call the on damaged call on the current Elemental Battle activated shield.
             MagicShieldEntity magicShield = this.getAttached(MagicShieldEntity.SHIELD_ATTACHMENT);
+
+            ElementalBattle.LOGGER.info(String.valueOf(magicShield));
             if (magicShield != null) {
                 magicShield.onDamaged(source);
             }

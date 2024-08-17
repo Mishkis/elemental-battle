@@ -34,6 +34,14 @@ public abstract class MagicShieldEntity extends MagicEntity {
     // This is used in the shield effect mixin.
     public static final AttachmentType<MagicShieldEntity> SHIELD_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "shield_attachment"));
 
+    @Override
+    public void setOwner(PlayerEntity owner) {
+        super.setOwner(owner);
+
+        // Tell owner that a shield is attached.
+        this.getOwner().setAttached(SHIELD_ATTACHMENT, this);
+    }
+
     public MagicShieldEntity(EntityType<?> type, World world) {
         super(type, world);
     }
