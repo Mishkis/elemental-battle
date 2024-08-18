@@ -1,9 +1,13 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicAreaAttackEntity;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -25,12 +29,17 @@ public class ChillingAirEntity extends MagicAreaAttackEntity implements GeoEntit
 
     @Override
     protected void onEntityCollision(LivingEntity entity) {
-        FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
+        if (entity.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) == null) {
+            FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
 
-        frozenSolid.setTarget(entity);
-        frozenSolid.setPosition(entity.getPos());
+            frozenSolid.setTarget(entity);
+            frozenSolid.setPosition(entity.getPos());
 
-        this.getWorld().spawnEntity(frozenSolid);
+            this.getWorld().spawnEntity(frozenSolid);
+        }
+        else {
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), this);
+        }
     }
 
     @Override

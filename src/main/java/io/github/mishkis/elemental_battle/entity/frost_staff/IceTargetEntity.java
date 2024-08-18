@@ -1,8 +1,12 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -24,6 +28,9 @@ public class IceTargetEntity extends Entity implements GeoEntity {
 
     private Entity target;
     private UUID targetUuid;
+
+    // Controls whether this should summon a Frozen Solid entity or not.
+    private Boolean freezing = false;
 
     public IceTargetEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -50,6 +57,10 @@ public class IceTargetEntity extends Entity implements GeoEntity {
         }
     }
 
+    public void setFreezing() {
+        this.freezing = true;
+    }
+
     @Override
     public void tick() {
         Entity target = this.getTarget();
@@ -61,7 +72,16 @@ public class IceTargetEntity extends Entity implements GeoEntity {
         }
 
         // 1.25 is the exact time it takes for ANIMATION to finish. Multiply by 20. Add a little so it can finish.
-        if (26 < age) {
+        if (26 < age && !this.getWorld().isClient) {
+            if (freezing && this.getTarget() instanceof LivingEntity livingTarget && livingTarget.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) == null) {
+                FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
+
+                frozenSolid.setTarget(livingTarget);
+                frozenSolid.setPosition(livingTarget.getPos());
+
+                this.getWorld().spawnEntity(frozenSolid);
+            }
+
             this.discard();
         }
     }
