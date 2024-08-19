@@ -2,11 +2,11 @@ package io.github.mishkis.elemental_battle.entity.air_staff;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
-import io.github.mishkis.elemental_battle.item.AirStaff;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -17,7 +17,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -32,6 +31,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     public static final AttachmentType<Boolean> EMPOWERED_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "gust_empowered_attachment"));
 
     private boolean empowered = false;
+    private Spell parentSpell;
 
     @Override
     public float getDamage() {
@@ -42,6 +42,10 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
         this.setVelocity(this.getVelocity().multiply(2));
 
         empowered = true;
+    }
+
+    public void setParentSpell(Spell parentSpell) {
+        this.parentSpell = parentSpell;
     }
 
     public GustEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
@@ -85,6 +89,10 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
                 player.setIgnoreFallDamageFromCurrentExplosion(true);
 
                 player.setAttached(EMPOWERED_ATTACHMENT, true);
+
+                if (!empowered) {
+                    player.getAttached(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
+                }
             }
         }
         else if (entity instanceof ProjectileEntity projectileEntity) {

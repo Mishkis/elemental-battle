@@ -26,9 +26,7 @@ public class SpellCooldownManager {
         Iterator<Map.Entry<Spell, Integer>> iterator = cooldownMap.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            Map.Entry<Spell, Integer> pair = iterator.next();
-
-            if (pair.getValue() <= tick) {
+            if (iterator.next().getValue() <= tick) {
                 iterator.remove();
             }
         }
@@ -36,6 +34,10 @@ public class SpellCooldownManager {
 
     public void put(Spell spell, Integer cooldown) {
         cooldownMap.put(spell, tick + cooldown);
+    }
+
+    public void remove(Spell spell) {
+        cooldownMap.remove(spell);
     }
 
     public int ticksLeft(Spell spell) {
