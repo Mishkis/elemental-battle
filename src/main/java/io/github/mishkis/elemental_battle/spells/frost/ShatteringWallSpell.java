@@ -18,14 +18,12 @@ public class ShatteringWallSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
+    protected void onCast(World world, PlayerEntity user) {
         ShatteringWallEntity shatteringWall = new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world);
 
         shatteringWall.setOwner(user);
         shatteringWall.setUptime(60);
 
         world.spawnEntity(shatteringWall);
-
-        return true;
     }
 }

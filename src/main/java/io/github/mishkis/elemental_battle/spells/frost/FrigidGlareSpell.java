@@ -13,6 +13,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class FrigidGlareSpell extends Spell {
+    private HitResult hitResult;
+
     @Override
     protected Elements getElement() {
         return Elements.FROST;
@@ -24,13 +26,18 @@ public class FrigidGlareSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
-        Double distance = 1000d;
-        Vec3d start = user.getEyePos();
-        Vec3d end = user.getEyePos().add(user.getRotationVector().multiply(distance));
-        HitResult hit = ProjectileUtil.raycast(user, start, end, new Box(start.x, start.y, start.z, end.x, end.y, end.z), entity -> {return true;}, distance);
+    public boolean canCast(World world, PlayerEntity user) {
+        raycast(user);
 
-        if (hit.getType() == HitResult.Type.ENTITY && ((EntityHitResult) hit).getEntity() instanceof LivingEntity livingEntity) {
+        if (this.hitResult.getType() == HitResult.Type.ENTITY) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onCast(World world, PlayerEntity user) {
+        if (((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity) {
             IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world);
 
             iceTarget.setTarget(livingEntity);
@@ -38,9 +45,13 @@ public class FrigidGlareSpell extends Spell {
             iceTarget.setFreezing();
 
             world.spawnEntity(iceTarget);
-
-            return true;
         }
-        return false;
+    }
+
+    private void raycast(PlayerEntity user) {
+        Double distance = 1000d;
+        Vec3d start = user.getEyePos();
+        Vec3d end = user.getEyePos().add(user.getRotationVector().multiply(distance));
+        this.hitResult = ProjectileUtil.raycast(user, start, end, new Box(start.x, start.y, start.z, end.x, end.y, end.z), entity -> {return true;}, distance);
     }
 }

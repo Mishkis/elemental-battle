@@ -19,14 +19,12 @@ public class FlameVortexSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
+    protected void onCast(World world, PlayerEntity user) {
         FlameVortexEntity flameVortex = new FlameVortexEntity(ElementalBattleEntities.FLAME_VORTEX, world);
 
         flameVortex.setOwner(user);
         flameVortex.setPosition(user.getPos().offset(Direction.UP, 1));
 
         world.spawnEntity(flameVortex);
-
-        return true;
     }
 }

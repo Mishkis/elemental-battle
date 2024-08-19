@@ -18,14 +18,12 @@ public class WallOfFireSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
+    protected void onCast(World world, PlayerEntity user) {
         WallOfFireEntity wallOfFire = new WallOfFireEntity(ElementalBattleEntities.WALL_OF_FIRE, world);
 
         wallOfFire.setOwner(user);
         wallOfFire.setUptime(100);
 
         world.spawnEntity(wallOfFire);
-
-        return true;
     }
 }

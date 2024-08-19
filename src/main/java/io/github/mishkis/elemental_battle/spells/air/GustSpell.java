@@ -19,7 +19,7 @@ public class GustSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
+    protected void onCast(World world, PlayerEntity user) {
         GustEntity gust = new GustEntity(ElementalBattleEntities.GUST, world);
 
         gust.setOwner(user);
@@ -66,7 +66,5 @@ public class GustSpell extends Spell {
         }
 
         world.spawnEntity(gust);
-
-        return true;
     }
 }

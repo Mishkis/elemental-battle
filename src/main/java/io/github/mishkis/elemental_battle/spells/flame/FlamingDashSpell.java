@@ -18,14 +18,12 @@ public class FlamingDashSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
+    protected void onCast(World world, PlayerEntity user) {
         FlamingDashEntity flamingDash = new FlamingDashEntity(ElementalBattleEntities.FLAMING_DASH, world);
 
         flamingDash.setOwner(user);
         flamingDash.setPosition(user.getPos());
 
         world.spawnEntity(flamingDash);
-
-        return true;
     }
 }

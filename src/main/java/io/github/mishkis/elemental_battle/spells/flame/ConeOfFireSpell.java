@@ -22,7 +22,7 @@ public class ConeOfFireSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
+    protected void onCast(World world, PlayerEntity user) {
         Vec3d spawnPos = user.getEyePos();
 
         int spawnCount = 8 + random.nextBetween(-1, 1);
@@ -51,7 +51,5 @@ public class ConeOfFireSpell extends Spell {
 
             world.spawnEntity(coneOfFire);
         }
-
-        return true;
     }
 }

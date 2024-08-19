@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -19,8 +20,8 @@ public class IcicleBallSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
-        Vec3d spawnPos = user.getEyePos().add(user.getRotationVector().multiply(3));
+    protected void onCast(World world, PlayerEntity user) {
+        Vec3d spawnPos = user.getEyePos().add(user.getRotationVector().multiply(3)).offset(Direction.DOWN, 0.2);
 
         IcicleBallEntity icicleBall = new IcicleBallEntity(ElementalBattleEntities.ICICLE_BALL, world);
         icicleBall.setPosition(spawnPos);
@@ -29,7 +30,5 @@ public class IcicleBallSpell extends Spell {
         icicleBall.setDamage(5);
 
         world.spawnEntity(icicleBall);
-
-        return true;
     }
 }

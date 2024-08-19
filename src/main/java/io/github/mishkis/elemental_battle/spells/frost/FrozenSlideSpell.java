@@ -18,14 +18,12 @@ public class FrozenSlideSpell extends Spell {
     }
 
     @Override
-    protected boolean onCast(World world, PlayerEntity user) {
+    protected void onCast(World world, PlayerEntity user) {
         FrozenSlideEntity frozenSlide = new FrozenSlideEntity(ElementalBattleEntities.FROZEN_SLIDE, world);
 
         frozenSlide.setOwner(user);
         frozenSlide.setPosition(user.getPos());
 
         world.spawnEntity(frozenSlide);
-
-        return true;
     }
 }
