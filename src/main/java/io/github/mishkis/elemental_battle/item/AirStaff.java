@@ -1,13 +1,10 @@
 package io.github.mishkis.elemental_battle.item;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
 import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
-import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -75,7 +72,7 @@ public class AirStaff extends MagicStaffItem {
 
     @Override
     public TypedActionResult shield(World world, PlayerEntity user, Hand hand) {
-        return null;
+        return TypedActionResult.success(user.getStackInHand(hand));
     }
 
     @Override

@@ -71,7 +71,7 @@ public class IceTargetEntity extends Entity implements GeoEntity {
             }
         }
 
-        // 1.25 is the exact time it takes for ANIMATION to finish. Multiply by 20. Add a little so it can finish.
+        // 1.25 is the exact time it takes for ANIMATION to finish. Multiply by 20, add a little so it can finish.
         if (26 < age && !this.getWorld().isClient) {
             if (freezing && this.getTarget() instanceof LivingEntity livingTarget && livingTarget.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) == null) {
                 FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());

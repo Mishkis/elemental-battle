@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.mixin;
 
 import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
+import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -12,12 +13,19 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity{
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Inject(method = "tick()V", at = @At("HEAD"))
+    public void tick(CallbackInfo ci) {
+        SpellCooldownManager elementalBattleSpellCooldownManager = this.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
+        elementalBattleSpellCooldownManager.tick();
     }
 
     @Inject(method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
