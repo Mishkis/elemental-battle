@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.spells;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public abstract class Spell {
@@ -13,6 +14,8 @@ public abstract class Spell {
     protected abstract Elements getElement();
 
     protected abstract Integer getCooldown();
+
+    public abstract Identifier getIcon();
 
     protected abstract void onCast(World world, PlayerEntity user);
 

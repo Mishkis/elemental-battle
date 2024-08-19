@@ -3,6 +3,7 @@ package io.github.mishkis.elemental_battle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntitiesRenderer;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticlesRenderer;
 import io.github.mishkis.elemental_battle.network.KeybindPayload;
+import io.github.mishkis.elemental_battle.rendering.SpellDisplay;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;

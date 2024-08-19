@@ -1,15 +1,22 @@
 package io.github.mishkis.elemental_battle.spells.frost;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.ShatteringWallEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class ShatteringWallSpell extends Spell {
     @Override
     protected Elements getElement() {
         return Elements.FROST;
+    }
+
+    @Override
+    public Identifier getIcon() {
+        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/frost/shattering_wall.png");
     }
 
     @Override

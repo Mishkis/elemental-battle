@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -14,6 +15,11 @@ public class ConeOfFireSpell extends Spell {
     @Override
     protected Elements getElement() {
         return Elements.FLAME;
+    }
+
+    @Override
+    public Identifier getIcon() {
+        return null;
     }
 
     @Override

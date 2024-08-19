@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.item.ElementalBattleItems;
 import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.rendering.SpellDisplay;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import io.github.mishkis.elemental_battle.network.KeybindPayload;
 import net.fabricmc.api.ModInitializer;
@@ -27,6 +28,8 @@ public class ElementalBattle implements ModInitializer {
         ElementalBattleEntities.initialize();
         ElementalBattleParticles.initialize();
         ElementalBattleStatusEffects.initialize();
+
+        SpellDisplay.initialize();
 
         PayloadTypeRegistry.playC2S().register(KeybindPayload.ID, KeybindPayload.CODEC);
 

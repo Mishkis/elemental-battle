@@ -1,9 +1,11 @@
 package io.github.mishkis.elemental_battle.spells.frost;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IcicleBallEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -12,6 +14,11 @@ public class IcicleBallSpell extends Spell {
     @Override
     protected Elements getElement() {
         return Elements.FROST;
+    }
+
+    @Override
+    public Identifier getIcon() {
+        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/frost/icicle_ball.png");
     }
 
     @Override

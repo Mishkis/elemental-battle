@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -11,6 +12,11 @@ public class GustSpell extends Spell {
     @Override
     protected Elements getElement() {
         return Elements.AIR;
+    }
+
+    @Override
+    public Identifier getIcon() {
+        return null;
     }
 
     @Override
