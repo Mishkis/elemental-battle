@@ -2,12 +2,14 @@ package io.github.mishkis.elemental_battle.entity.air_staff;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
+import io.github.mishkis.elemental_battle.network.S2CSpellCooldownManagerRemove;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import io.github.mishkis.elemental_battle.spells.air.GustSpell;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -91,8 +93,9 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
                 player.setAttached(EMPOWERED_ATTACHMENT, true);
 
-                if (!empowered) {
+                if (!empowered && parentSpell != null) {
                     player.getAttached(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
+                    ServerPlayNetworking.send(player, new S2CSpellCooldownManagerRemove(parentSpell.getId()));
                 }
             }
         }

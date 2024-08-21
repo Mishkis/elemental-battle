@@ -39,6 +39,17 @@ public class SpellCooldownManager {
         cooldownMap.remove(spell);
     }
 
+    // Remove by id of spell, used to communicate removal to client by payload.
+    public void remove(Identifier id) {
+        Iterator<Map.Entry<Spell, Integer>> iterator = cooldownMap.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            if (iterator.next().getKey().getId().equals(id)) {
+                iterator.remove();
+            }
+        }
+    }
+
     public float percentageLeft(Spell spell) {
         if (onCooldown(spell)) {
             return (float) (cooldownMap.get(spell) - tick) / (float) spell.getCooldown();

@@ -1,18 +1,17 @@
 package io.github.mishkis.elemental_battle.network;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 
-public record KeybindPayload(String type) implements CustomPayload {
-    public static final CustomPayload.Id<KeybindPayload> ID = new CustomPayload.Id<>(Identifier.of(ElementalBattle.MOD_ID, "keybind_payload"));
-    public static final PacketCodec<RegistryByteBuf, KeybindPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.STRING, KeybindPayload::type,
-            KeybindPayload::new
+public record C2SKeybindPayload(String type) implements CustomPayload {
+    public static final CustomPayload.Id<C2SKeybindPayload> ID = new CustomPayload.Id<>(Identifier.of(ElementalBattle.MOD_ID, "keybind_payload"));
+    public static final PacketCodec<RegistryByteBuf, C2SKeybindPayload> CODEC = PacketCodec.tuple(
+            PacketCodecs.STRING, C2SKeybindPayload::type,
+            C2SKeybindPayload::new
     );
 
 
