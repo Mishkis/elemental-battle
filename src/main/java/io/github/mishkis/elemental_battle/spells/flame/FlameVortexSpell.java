@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.spells.flame;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlameVortexEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
@@ -17,7 +18,7 @@ public class FlameVortexSpell extends Spell {
 
     @Override
     public Identifier getIcon() {
-        return null;
+        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/flame/flame_vortex.png");
     }
 
     @Override

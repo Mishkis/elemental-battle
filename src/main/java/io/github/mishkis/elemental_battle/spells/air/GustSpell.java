@@ -18,7 +18,7 @@ public class GustSpell extends Spell {
 
     @Override
     public Identifier getIcon() {
-        return null;
+        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/air/gust.png");
     }
 
     @Override
