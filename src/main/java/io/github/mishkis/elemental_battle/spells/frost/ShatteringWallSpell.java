@@ -11,13 +11,13 @@ import net.minecraft.world.World;
 
 public class ShatteringWallSpell extends Spell {
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.FROST;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "shattering_wall");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/frost/shattering_wall.png");
+    protected SpellElement getElement() {
+        return SpellElement.FROST;
     }
 
     @Override

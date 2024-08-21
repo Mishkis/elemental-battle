@@ -11,13 +11,13 @@ import net.minecraft.world.World;
 
 public class FlamingDashSpell extends Spell {
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.FLAME;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "flaming_dash");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/flame/flaming_dash.png");
+    protected SpellElement getElement() {
+        return SpellElement.FLAME;
     }
 
     @Override

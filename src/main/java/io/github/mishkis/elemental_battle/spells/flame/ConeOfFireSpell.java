@@ -15,13 +15,13 @@ public class ConeOfFireSpell extends Spell {
     private Random random = Random.create();
 
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.FLAME;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "cone_of_fire");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/flame/cone_of_fire.png");
+    protected SpellElement getElement() {
+        return SpellElement.FLAME;
     }
 
     @Override

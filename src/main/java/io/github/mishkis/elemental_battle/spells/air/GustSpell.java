@@ -1,5 +1,10 @@
 package io.github.mishkis.elemental_battle.spells.air;
 
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
@@ -12,13 +17,13 @@ import net.minecraft.world.World;
 
 public class GustSpell extends Spell {
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.AIR;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "gust");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/air/gust.png");
+    protected SpellElement getElement() {
+        return SpellElement.AIR;
     }
 
     @Override

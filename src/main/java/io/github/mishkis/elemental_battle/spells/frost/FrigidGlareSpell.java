@@ -6,6 +6,7 @@ import io.github.mishkis.elemental_battle.entity.frost_staff.IceTargetEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Ownable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.Identifier;
@@ -19,13 +20,13 @@ public class FrigidGlareSpell extends Spell {
     private HitResult hitResult;
 
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.FROST;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "frigid_glare");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/frost/frigid_glare.png");
+    protected SpellElement getElement() {
+        return SpellElement.FROST;
     }
 
     @Override
@@ -38,22 +39,24 @@ public class FrigidGlareSpell extends Spell {
         raycast(user);
 
         if (hitResult != null && hitResult.getType() == HitResult.Type.ENTITY) {
-            return true;
+            if (((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity && livingEntity != user) {
+                return true;
+            }
         }
         return false;
     }
 
     @Override
     protected void onCast(World world, PlayerEntity user) {
-        if (((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity) {
-            IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world);
+        LivingEntity livingEntity = (LivingEntity) ((EntityHitResult) hitResult).getEntity();
 
-            iceTarget.setTarget(livingEntity);
-            iceTarget.setPosition(livingEntity.getPos());
-            iceTarget.setFreezing();
+        IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world);
 
-            world.spawnEntity(iceTarget);
-        }
+        iceTarget.setTarget(livingEntity);
+        iceTarget.setPosition(livingEntity.getPos());
+        iceTarget.setFreezing();
+
+        world.spawnEntity(iceTarget);
     }
 
     private void raycast(PlayerEntity user) {

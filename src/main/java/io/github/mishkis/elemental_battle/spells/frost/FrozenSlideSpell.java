@@ -11,13 +11,13 @@ import net.minecraft.world.World;
 
 public class FrozenSlideSpell extends Spell {
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.FROST;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "frozen_slide");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/frost/frozen_slide.png");
+    protected SpellElement getElement() {
+        return SpellElement.FROST;
     }
 
     @Override

@@ -12,13 +12,13 @@ import net.minecraft.world.World;
 
 public class ChillingAirSpell extends Spell {
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.FROST;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "chilling_air");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/frost/chilling_air.png");
+    protected SpellElement getElement() {
+        return SpellElement.FROST;
     }
 
     @Override

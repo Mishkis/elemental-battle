@@ -5,6 +5,7 @@ import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
+import io.github.mishkis.elemental_battle.spells.air.GustSpell;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.entity.Entity;

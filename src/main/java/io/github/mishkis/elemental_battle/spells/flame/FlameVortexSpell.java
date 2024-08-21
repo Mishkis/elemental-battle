@@ -12,13 +12,13 @@ import net.minecraft.world.World;
 
 public class FlameVortexSpell extends Spell {
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.FLAME;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "flame_vortex");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/flame/flame_vortex.png");
+    protected SpellElement getElement() {
+        return SpellElement.FLAME;
     }
 
     @Override

@@ -11,13 +11,13 @@ import net.minecraft.world.World;
 
 public class WallOfFireSpell extends Spell {
     @Override
-    protected SpellElement getElement() {
-        return SpellElement.FLAME;
+    public Identifier getId() {
+        return Identifier.of(ElementalBattle.MOD_ID, "wall_of_fire");
     }
 
     @Override
-    public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/flame/wall_of_fire.png");
+    protected SpellElement getElement() {
+        return SpellElement.FLAME;
     }
 
     @Override

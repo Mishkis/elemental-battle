@@ -9,13 +9,17 @@ import net.minecraft.util.StringIdentifiable;
 import net.minecraft.world.World;
 
 public abstract class Spell {
+    public abstract Identifier getId();
+
     protected abstract SpellElement getElement();
 
     protected abstract Integer getCooldown();
 
     protected abstract void onCast(World world, PlayerEntity user);
 
-    public abstract Identifier getIcon();
+    public Identifier getIcon() {
+        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/" + getElement().toString() + "/" + getId().getPath() + ".png");
+    }
 
     // Override to allow casting only in certain conditions.
     public boolean canCast(World world, PlayerEntity user) {
