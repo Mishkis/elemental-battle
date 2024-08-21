@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 public abstract class MagicStaffItem extends Item implements GeoItem {
     private final String id;
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     @Nullable
     public abstract Spell getUseSpell();
@@ -40,60 +41,43 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
     @Nullable
     public abstract Spell getUltimateSpell();
 
-    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    private TypedActionResult<ItemStack> genericCast(Spell spell, World world, PlayerEntity user, Hand hand) {
+        if (spell != null) {
+            if (world.isClient() && spell.clientCast(world, user)) {
+                return TypedActionResult.success(user.getStackInHand(hand));
+            }
+            else if (spell.cast(world, user)) {
+                return TypedActionResult.success(user.getStackInHand(hand));
+            }
+        }
+
+        return TypedActionResult.fail(user.getStackInHand(hand));
+    }
 
     // Main Attack
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (world.isClient()) {
-            return TypedActionResult.pass(user.getStackInHand(hand));
-        }
-
-        if (getUseSpell() == null || !getUseSpell().cast(world, user)) {
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
-
-        return TypedActionResult.success(user.getStackInHand(hand));
+        return genericCast(getUseSpell(), world, user, hand);
     }
 
     public TypedActionResult shield(World world, PlayerEntity user, Hand hand) {
-        if (getShieldSpell() == null || !getShieldSpell().cast(world, user)) {
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
-
-        return TypedActionResult.success(user.getStackInHand(hand));
+        return genericCast(getShieldSpell(), world, user, hand);
     }
 
     public TypedActionResult dash(World world, PlayerEntity user, Hand hand) {
-        if (getDashSpell() == null || !getDashSpell().cast(world, user)) {
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
-
-        return TypedActionResult.success(user.getStackInHand(hand));
+        return genericCast(getDashSpell(), world, user, hand);
     }
 
     public TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand) {
-        if (getAreaAttackSpell() == null || !getAreaAttackSpell().cast(world, user)) {
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
-
-        return TypedActionResult.success(user.getStackInHand(hand));
+        return genericCast(getAreaAttackSpell(), world, user, hand);
     }
 
     public TypedActionResult special(World world, PlayerEntity user, Hand hand) {
-        if (getSpecialSpell() == null || !getSpecialSpell().cast(world, user)) {
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
-
-        return TypedActionResult.success(user.getStackInHand(hand));
+        return genericCast(getSpecialSpell(), world, user, hand);
     }
 
     public TypedActionResult ultimate(World world, PlayerEntity user, Hand hand) {
-        if (getUltimateSpell() == null || !getUltimateSpell().cast(world, user)) {
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
-
-        return TypedActionResult.success(user.getStackInHand(hand));
+        return genericCast(getUltimateSpell(), world, user, hand);
     }
 
     public MagicStaffItem(String id, Settings settings) {

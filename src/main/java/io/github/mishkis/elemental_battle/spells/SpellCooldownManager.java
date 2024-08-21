@@ -8,7 +8,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SpellCooldownManager {
     private final Map<Spell, Integer> cooldownMap = Maps.<Spell, Integer>newHashMap();
@@ -40,9 +39,9 @@ public class SpellCooldownManager {
         cooldownMap.remove(spell);
     }
 
-    public int ticksLeft(Spell spell) {
+    public float percentageLeft(Spell spell) {
         if (onCooldown(spell)) {
-            return cooldownMap.get(spell) - tick;
+            return (float) (cooldownMap.get(spell) - tick) / (float) spell.getCooldown();
         }
         return 0;
     }

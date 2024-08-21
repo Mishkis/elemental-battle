@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IceTargetEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
@@ -18,8 +19,8 @@ public class FrigidGlareSpell extends Spell {
     private HitResult hitResult;
 
     @Override
-    protected Elements getElement() {
-        return Elements.FROST;
+    protected SpellElement getElement() {
+        return SpellElement.FROST;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class FrigidGlareSpell extends Spell {
     public boolean canCast(World world, PlayerEntity user) {
         raycast(user);
 
-        if (this.hitResult.getType() == HitResult.Type.ENTITY) {
+        if (hitResult != null && hitResult.getType() == HitResult.Type.ENTITY) {
             return true;
         }
         return false;

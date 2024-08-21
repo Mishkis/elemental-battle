@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
 import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -75,7 +76,25 @@ public class SpellDisplay {
         }
 
         if (spell.getIcon() != null) {
+            // Main spell icon.
             drawContext.drawTexture(spell.getIcon(), x, y, 0, 0, 16, 16, 16, 16);
+
+            // Renders overlay if the spell is disabled.
+            RenderSystem.enableBlend();
+
+            if (!spell.canCast(MinecraftClient.getInstance().world, MinecraftClient.getInstance().player)) {
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/disabled.png"), x, y, 0, 0, 16, 16, 16, 16);
+            }
+
+            // Renders cooldown overlay.
+            SpellCooldownManager playerSpellCooldownManager = MinecraftClient.getInstance().player.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
+            if (playerSpellCooldownManager.onCooldown(spell)) {
+                drawContext.enableScissor(x, y + (int) (16 * (1 - playerSpellCooldownManager.percentageLeft(spell))), x + 16, y + 16);
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/on_cooldown.png"), x, y, 0, 0, 16, 16, 16, 16);
+                drawContext.disableScissor();
+            }
+
+            RenderSystem.disableBlend();
         }
     }
 }

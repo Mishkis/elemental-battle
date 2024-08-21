@@ -39,22 +39,22 @@ public class ElementalBattle implements ModInitializer {
                 Hand hand = player.getActiveHand();
                 Item heldItem = player.getStackInHand(hand).getItem();
 
-                if (heldItem.getClass().getSuperclass().equals(MagicStaffItem.class)) {
+                if (heldItem instanceof MagicStaffItem staff) {
                     switch (payload.type()) {
                         case "shield":
-                            ((MagicStaffItem) heldItem).shield(player.getWorld(), player, hand);
+                            staff.shield(player.getWorld(), player, hand);
                             break;
                         case "dash":
-                            ((MagicStaffItem) heldItem).dash(player.getWorld(), player, hand);
+                            staff.dash(player.getWorld(), player, hand);
                             break;
                         case "areaAttack":
-                            ((MagicStaffItem) heldItem).areaAttack(player.getWorld(), player, hand);
+                            staff.areaAttack(player.getWorld(), player, hand);
                             break;
                         case "special":
-                            ((MagicStaffItem) heldItem).special(player.getWorld(), player, hand);
+                            staff.special(player.getWorld(), player, hand);
                             break;
                         case "ultimate":
-                            ((MagicStaffItem) heldItem).ultimate(player.getWorld(), player, hand);
+                            staff.ultimate(player.getWorld(), player, hand);
                             break;
                     }
                 }

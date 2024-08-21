@@ -1,8 +1,10 @@
 package io.github.mishkis.elemental_battle.spells.air;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
@@ -10,8 +12,8 @@ import net.minecraft.world.World;
 
 public class GustSpell extends Spell {
     @Override
-    protected Elements getElement() {
-        return Elements.AIR;
+    protected SpellElement getElement() {
+        return SpellElement.AIR;
     }
 
     @Override

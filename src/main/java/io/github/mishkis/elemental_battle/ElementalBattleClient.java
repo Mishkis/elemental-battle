@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle;
 
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntitiesRenderer;
+import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticlesRenderer;
 import io.github.mishkis.elemental_battle.network.KeybindPayload;
 import io.github.mishkis.elemental_battle.rendering.SpellDisplay;
@@ -51,22 +52,37 @@ public class ElementalBattleClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (shield.wasPressed()) {
+                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
+                    staff.shield(client.world, client.player, client.player.getActiveHand());
+                }
                 ClientPlayNetworking.send(new KeybindPayload("shield"));
             }
 
             while (dash.wasPressed()) {
+                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
+                    staff.dash(client.world, client.player, client.player.getActiveHand());
+                }
                 ClientPlayNetworking.send(new KeybindPayload("dash"));
             }
 
             while (areaAttack.wasPressed()) {
+                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
+                    staff.areaAttack(client.world, client.player, client.player.getActiveHand());
+                }
                 ClientPlayNetworking.send(new KeybindPayload("areaAttack"));
             }
 
             while (special.wasPressed()) {
+                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
+                    staff.special(client.world, client.player, client.player.getActiveHand());
+                }
                 ClientPlayNetworking.send(new KeybindPayload("special"));
             }
 
             while (ultimate.wasPressed()) {
+                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
+                    staff.ultimate(client.world, client.player, client.player.getActiveHand());
+                }
                 ClientPlayNetworking.send(new KeybindPayload("ultimate"));
             }
         });

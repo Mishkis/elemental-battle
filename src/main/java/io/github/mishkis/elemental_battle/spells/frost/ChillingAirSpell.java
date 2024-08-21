@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.frost_staff.ChillingAirEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -11,8 +12,8 @@ import net.minecraft.world.World;
 
 public class ChillingAirSpell extends Spell {
     @Override
-    protected Elements getElement() {
-        return Elements.FROST;
+    protected SpellElement getElement() {
+        return SpellElement.FROST;
     }
 
     @Override
