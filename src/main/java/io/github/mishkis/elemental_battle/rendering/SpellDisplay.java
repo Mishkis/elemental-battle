@@ -2,15 +2,13 @@ package io.github.mishkis.elemental_battle.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
+import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class SpellDisplay {

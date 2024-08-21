@@ -1,6 +1,6 @@
 package io.github.mishkis.elemental_battle.network;
 
-import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
+import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -8,8 +8,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
-
-import javax.swing.text.JTextComponent;
 
 public class ElementalBattleNetworkClient {
     private static KeyBinding shield = KeyBindingHelper.registerKeyBinding(new KeyBinding(

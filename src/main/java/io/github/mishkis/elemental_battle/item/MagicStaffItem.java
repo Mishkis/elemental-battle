@@ -1,6 +1,5 @@
-package io.github.mishkis.elemental_battle.item.helpers;
+package io.github.mishkis.elemental_battle.item;
 
-import io.github.mishkis.elemental_battle.item.helpers.client.MagicStaffItemRenderer;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -80,8 +79,8 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
         return genericCast(getUltimateSpell(), world, user, hand);
     }
 
-    public MagicStaffItem(String id, Settings settings) {
-        super(settings);
+    public MagicStaffItem(String id) {
+        super(new Settings().maxCount(1));
 
         this.id = id;
 

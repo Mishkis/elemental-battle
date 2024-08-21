@@ -1,6 +1,9 @@
 package io.github.mishkis.elemental_battle.item;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.item.element_staffs.AirStaff;
+import io.github.mishkis.elemental_battle.item.element_staffs.FlameStaff;
+import io.github.mishkis.elemental_battle.item.element_staffs.FrostStaff;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;

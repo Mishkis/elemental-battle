@@ -1,7 +1,6 @@
-package io.github.mishkis.elemental_battle.item.helpers.client;
+package io.github.mishkis.elemental_battle.item;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;

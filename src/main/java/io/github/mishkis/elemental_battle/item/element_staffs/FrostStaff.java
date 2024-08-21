@@ -1,6 +1,6 @@
-package io.github.mishkis.elemental_battle.item;
+package io.github.mishkis.elemental_battle.item.element_staffs;
 
-import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
+import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.frost.*;
 import net.minecraft.item.Item;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FrostStaff extends MagicStaffItem {
     public FrostStaff() {
-        super("frost_staff", new Item.Settings());
+        super("frost_staff");
     }
 
     private Spell useSpell = new IcicleBallSpell();

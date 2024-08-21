@@ -1,6 +1,6 @@
 package io.github.mishkis.elemental_battle.network;
 
-import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
+import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;

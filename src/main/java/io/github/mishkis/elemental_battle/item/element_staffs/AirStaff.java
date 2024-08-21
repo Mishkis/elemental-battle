@@ -1,21 +1,13 @@
-package io.github.mishkis.elemental_battle.item;
+package io.github.mishkis.elemental_battle.item.element_staffs;
 
-import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
-import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
-import io.github.mishkis.elemental_battle.item.helpers.MagicStaffItem;
+import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.air.GustSpell;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class AirStaff extends MagicStaffItem {
     public AirStaff() {
-        super("air_staff", new Settings());
+        super("air_staff");
     }
 
     private Spell useSpell = new GustSpell();
