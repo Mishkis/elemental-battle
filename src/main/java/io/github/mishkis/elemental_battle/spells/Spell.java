@@ -21,15 +21,20 @@ public abstract class Spell {
         return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/" + getElement().toString() + "/" + getId().getPath() + ".png");
     }
 
+    // Override to add client cast effects.
+    protected void onClientCast(World world, PlayerEntity user) {
+    }
+
     // Override to allow casting only in certain conditions.
     public boolean canCast(World world, PlayerEntity user) {
         return true;
     }
 
     public boolean clientCast(World world, PlayerEntity user) {
-        // This just syncs the spell cooldown between server and client. Make call onCast() if you need the client for something.
+        // This just syncs the spell cooldown between server and client.
         SpellCooldownManager spellCooldownManager = user.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
         if (!spellCooldownManager.onCooldown(this) && this.canCast(world, user)) {
+            this.onClientCast(world, user);
             spellCooldownManager.put(this, getCooldown());
             return true;
         }

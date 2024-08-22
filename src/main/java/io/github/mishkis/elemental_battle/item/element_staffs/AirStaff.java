@@ -3,6 +3,7 @@ package io.github.mishkis.elemental_battle.item.element_staffs;
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.air.GustSpell;
+import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import org.jetbrains.annotations.Nullable;
 
 public class AirStaff extends MagicStaffItem {
@@ -11,6 +12,7 @@ public class AirStaff extends MagicStaffItem {
     }
 
     private Spell useSpell = new GustSpell();
+    private Spell specialSpell = new SlamDownSpell();
 
     @Override
     public @Nullable Spell getUseSpell() {
@@ -34,7 +36,7 @@ public class AirStaff extends MagicStaffItem {
 
     @Override
     public @Nullable Spell getSpecialSpell() {
-        return null;
+        return specialSpell;
     }
 
     @Override

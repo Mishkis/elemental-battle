@@ -10,7 +10,9 @@ import net.minecraft.util.Hand;
 public class ElementalBattleNetworkMain {
     public static void initialize() {
         PayloadTypeRegistry.playC2S().register(C2SKeybindPayload.ID, C2SKeybindPayload.CODEC);
+
         PayloadTypeRegistry.playS2C().register(S2CSpellCooldownManagerRemove.ID, S2CSpellCooldownManagerRemove.CODEC);
+        PayloadTypeRegistry.playS2C().register(S2CSlamDownAttachmentAdd.ID, S2CSlamDownAttachmentAdd.CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(C2SKeybindPayload.ID, ((payload, context) -> {
             context.server().execute(() -> {

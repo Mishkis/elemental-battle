@@ -2,11 +2,13 @@ package io.github.mishkis.elemental_battle.network;
 
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
+import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.entity.Entity;
 import org.lwjgl.glfw.GLFW;
 
 public class ElementalBattleNetworkClient {
@@ -84,5 +86,14 @@ public class ElementalBattleNetworkClient {
             });
         }));
 
+        ClientPlayNetworking.registerGlobalReceiver(S2CSlamDownAttachmentAdd.ID, ((payload, context) -> {
+            context.client().execute(() -> {
+                Entity entity = context.client().world.getEntityById(payload.entityId());
+
+                if (entity != null) {
+                    SlamDownSpell.addToSlamDownList(entity, context.player());
+                }
+            });
+        }));
     }
 }

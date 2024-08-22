@@ -1,21 +1,20 @@
 package io.github.mishkis.elemental_battle.spells.air;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class GustSpell extends Spell {
+    public static final AttachmentType<Boolean> EMPOWERED_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "gust_empowered_attachment"));
+
     @Override
     public Identifier getId() {
         return Identifier.of(ElementalBattle.MOD_ID, "gust");
@@ -43,7 +42,7 @@ public class GustSpell extends Spell {
 
         gust.setNoGravity(true);
 
-        if (user.getAttached(GustEntity.EMPOWERED_ATTACHMENT) != null) {
+        if (user.getAttached(EMPOWERED_ATTACHMENT) != null) {
             if (user.shouldIgnoreFallDamageFromCurrentExplosion() && !user.isOnGround()) {
                 gust.setEmpowered();
 
@@ -71,11 +70,10 @@ public class GustSpell extends Spell {
                     surroundingGusts.setEmpowered();
 
                     world.spawnEntity(surroundingGusts);
-
                 }
             }
 
-            user.removeAttached(GustEntity.EMPOWERED_ATTACHMENT);
+            user.removeAttached(EMPOWERED_ATTACHMENT);
         }
 
         world.spawnEntity(gust);

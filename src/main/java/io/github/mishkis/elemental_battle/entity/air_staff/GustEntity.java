@@ -1,22 +1,20 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.network.S2CSpellCooldownManagerRemove;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import io.github.mishkis.elemental_battle.spells.air.GustSpell;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -30,8 +28,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     private final RawAnimation IDLE_ANIMATION = RawAnimation.begin().thenLoop("animation.gust.idle");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
-    public static final AttachmentType<Boolean> EMPOWERED_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "gust_empowered_attachment"));
 
     private boolean empowered = false;
     private Spell parentSpell;
@@ -72,14 +68,20 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
         Vec3d knockback_vec = entity.getEyePos().subtract(this.getPos());
         knockback_vec = knockback_vec.normalize().multiply(2 / knockback_vec.length());
 
-        if (empowered && entity != this.getOwner()) {
-            entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), 5);
+        if (entity != this.getOwner()) {
+            if (empowered) {
+                entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), 5);
 
-            if (knockback_vec.y < 1) {
-                knockback_vec = new Vec3d(knockback_vec.x, 1, knockback_vec.z);
+                if (knockback_vec.y < 1) {
+                    knockback_vec = new Vec3d(knockback_vec.x, 1, knockback_vec.z);
+                }
+
+                knockback_vec = knockback_vec.multiply(1.2);
             }
 
-            knockback_vec = knockback_vec.multiply(1.2);
+            if (!this.getWorld().isClient && this.getOwner() instanceof PlayerEntity user) {
+                SlamDownSpell.addToSlamDownList(entity, user);
+            }
         }
 
         entity.setVelocity(knockback_vec);
@@ -91,7 +93,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
                 player.currentExplosionImpactPos = player.getPos();
                 player.setIgnoreFallDamageFromCurrentExplosion(true);
 
-                player.setAttached(EMPOWERED_ATTACHMENT, true);
+                player.setAttached(GustSpell.EMPOWERED_ATTACHMENT, true);
 
                 if (!empowered && parentSpell != null) {
                     player.getAttached(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
