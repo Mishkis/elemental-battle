@@ -12,36 +12,37 @@ import net.minecraft.entity.Entity;
 import org.lwjgl.glfw.GLFW;
 
 public class ElementalBattleNetworkClient {
-    private static KeyBinding shield = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static KeyBinding shield = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.elemental_battle.shield",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_Z,
             "keyGroup.elemental_battle"
     ));
-    private static KeyBinding dash = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static KeyBinding dash = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.elemental_battle.dash",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_LEFT_ALT,
             "keyGroup.elemental_battle"
     ));
-    private static KeyBinding areaAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static KeyBinding areaAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.elemental_battle.area_attack",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_X,
             "keyGroup.elemental_battle"
     ));
-    private static KeyBinding special = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static KeyBinding special = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.elemental_battle.special",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_C,
             "keyGroup.elemental_battle"
     ));
-    private static KeyBinding ultimate = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static KeyBinding ultimate = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.elemental_battle.ultimate",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_G,
             "keyGroup.elemental_battle"
     ));
+
     public static void initialize() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (shield.wasPressed()) {

@@ -3,12 +3,16 @@ package io.github.mishkis.elemental_battle.rendering;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
+import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkClient;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.Identifier;
 
 public class SpellDisplay {
@@ -35,43 +39,58 @@ public class SpellDisplay {
         int x = 3;
         int y = 3;
         Spell spell = null;
+        String key = "";
 
         switch (slot) {
             case "main":
                 spell = staff.getUseSpell();
                 x = 3;
                 y = drawContext.getScaledWindowHeight() - 39;
+                key = KeyBindingHelper.getBoundKeyOf(MinecraftClient.getInstance().options.useKey).getLocalizedText().getString();
                 break;
             case "shield":
                 spell = staff.getShieldSpell();
                 x = 23;
                 y = drawContext.getScaledWindowHeight() - 39;
+                key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.shield).getLocalizedText().getString();
                 break;
             case "dash":
                 spell = staff.getDashSpell();
                 x = 43;
                 y = drawContext.getScaledWindowHeight() - 39;
+                key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.dash).getLocalizedText().getString();
                 break;
             case "areaAttack":
                 spell = staff.getAreaAttackSpell();
                 x = 3;
                 y = drawContext.getScaledWindowHeight() - 19;
+                key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.areaAttack).getLocalizedText().getString();
                 break;
             case "special":
                 spell = staff.getSpecialSpell();
                 x = 23;
                 y = drawContext.getScaledWindowHeight() - 19;
+                key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.special).getLocalizedText().getString();
                 break;
             case "ultimate":
                 spell = staff.getUltimateSpell();
                 x = 43;
                 y = drawContext.getScaledWindowHeight() - 19;
+                key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.ultimate).getLocalizedText().getString();
                 break;
         }
 
         if (spell == null) {
             return;
         }
+
+        // Turns values like "Right Mouse" into "RM". Really, it'd be better to do a dictionary but I don't feel like it rn.
+        String[] splitKey = key.split(" ");
+        key = "";
+        for (int i = 0; i < splitKey.length; i++) {
+            key += splitKey[i].substring(0, 1);
+        }
+
 
         if (spell.getIcon() != null) {
             // Main spell icon.
@@ -91,6 +110,8 @@ public class SpellDisplay {
                 drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/on_cooldown.png"), x, y, 0, 0, 16, 16, 16, 16);
                 drawContext.disableScissor();
             }
+
+            drawContext.drawText(MinecraftClient.getInstance().textRenderer, key, x, y + 8,0xFFFFFFFF, true);
 
             RenderSystem.disableBlend();
         }
