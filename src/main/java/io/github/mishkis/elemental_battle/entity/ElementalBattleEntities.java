@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.entity.air_staff.AirLiftEntity;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.*;
 import io.github.mishkis.elemental_battle.entity.frost_staff.*;
@@ -87,6 +88,12 @@ public class ElementalBattleEntities {
                     "gust",
                     EntityType.Builder.create(GustEntity::new, SpawnGroup.MISC)
                             .dimensions(1F, 1F)
+            );
+    public static final EntityType<AirLiftEntity> AIR_LIFT =
+            register(
+                    "air_lift",
+                    EntityType.Builder.create(AirLiftEntity::new, SpawnGroup.MISC)
+                            .dimensions(6F, 3F)
             );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
