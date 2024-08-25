@@ -4,10 +4,7 @@ import io.github.mishkis.elemental_battle.entity.air_staff.AirLiftRenderer;
 import io.github.mishkis.elemental_battle.entity.air_staff.BlowBackRenderer;
 import io.github.mishkis.elemental_battle.entity.air_staff.DoubleDashRenderer;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustRenderer;
-import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireRenderer;
-import io.github.mishkis.elemental_battle.entity.flame_staff.FlameVortexRenderer;
-import io.github.mishkis.elemental_battle.entity.flame_staff.FlamingDashRenderer;
-import io.github.mishkis.elemental_battle.entity.flame_staff.WallOfFireEntityRenderer;
+import io.github.mishkis.elemental_battle.entity.flame_staff.*;
 import io.github.mishkis.elemental_battle.entity.frost_staff.*;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 
@@ -27,6 +24,7 @@ public class ElementalBattleEntitiesRenderer {
         EntityRendererRegistry.register(ElementalBattleEntities.WALL_OF_FIRE, WallOfFireEntityRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.FLAMING_DASH, FlamingDashRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.FLAME_VORTEX, FlameVortexRenderer::new);
+        EntityRendererRegistry.register(ElementalBattleEntities.FIREY_GRASP, FireyGraspRenderer::new);
 
         // Air Magic
         EntityRendererRegistry.register(ElementalBattleEntities.GUST, GustRenderer::new);

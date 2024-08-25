@@ -80,6 +80,12 @@ public class ElementalBattleEntities {
                     EntityType.Builder.create(FlameVortexEntity::new, SpawnGroup.MISC)
                             .dimensions(6F, 1F)
             );
+    public static final EntityType<FireyGraspEntity> FIREY_GRASP =
+            register(
+                    "firey_grasp",
+                    EntityType.Builder.create(FireyGraspEntity::new, SpawnGroup.MISC)
+                            .dimensions(1F, 1F)
+            );
 
     // Air Magic
     public static final EntityType<GustEntity> GUST =
