@@ -2,10 +2,7 @@ package io.github.mishkis.elemental_battle.item.element_staffs;
 
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.spells.Spell;
-import io.github.mishkis.elemental_battle.spells.air.AirLiftSpell;
-import io.github.mishkis.elemental_battle.spells.air.BlowBackSpell;
-import io.github.mishkis.elemental_battle.spells.air.GustSpell;
-import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
+import io.github.mishkis.elemental_battle.spells.air.*;
 import org.jetbrains.annotations.Nullable;
 
 public class AirStaff extends MagicStaffItem {
@@ -15,6 +12,7 @@ public class AirStaff extends MagicStaffItem {
 
     private final Spell useSpell = new GustSpell();
     private final Spell shieldSpell = new BlowBackSpell();
+    private final Spell dashSpell = new DoubleDashSpell();
     private final Spell areaAttackSpell = new AirLiftSpell();
     private final Spell specialSpell = new SlamDownSpell();
 
@@ -30,7 +28,7 @@ public class AirStaff extends MagicStaffItem {
 
     @Override
     public @Nullable Spell getDashSpell() {
-        return null;
+        return dashSpell;
     }
 
     @Override

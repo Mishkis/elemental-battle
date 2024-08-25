@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.entity.air_staff.AirLiftRenderer;
 import io.github.mishkis.elemental_battle.entity.air_staff.BlowBackRenderer;
+import io.github.mishkis.elemental_battle.entity.air_staff.DoubleDashRenderer;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustRenderer;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireRenderer;
 import io.github.mishkis.elemental_battle.entity.flame_staff.FlameVortexRenderer;
@@ -30,6 +31,7 @@ public class ElementalBattleEntitiesRenderer {
         // Air Magic
         EntityRendererRegistry.register(ElementalBattleEntities.GUST, GustRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.BLOW_BACK, BlowBackRenderer::new);
+        EntityRendererRegistry.register(ElementalBattleEntities.DOUBLE_DASH, DoubleDashRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.AIR_LIFT, AirLiftRenderer::new);
     }
 }

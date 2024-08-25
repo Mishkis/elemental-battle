@@ -56,7 +56,7 @@ public abstract class MagicDashEntity extends MagicEntity {
                 this.setYaw(-owner.getYaw());
 
                 // Trick the game into preventing fall damage by claiming it's an "explosion".
-                owner.currentExplosionImpactPos = owner.getPos();
+                owner.currentExplosionImpactPos = owner.getPos().subtract(0, 500, 0);
                 owner.setIgnoreFallDamageFromCurrentExplosion(true);
             }
             owner.setVelocity(ownerVelocity);
@@ -66,13 +66,16 @@ public abstract class MagicDashEntity extends MagicEntity {
             if (this.getWorld().isClient) {
                 this.playParticle(owner.getPos());
             }
+
+            if (this.getUptime() < age) {
+                onDiscard();
+                this.discard();
+            }
         }
         else {
             this.discard();
         }
-
-        if (this.getUptime() < age) {
-            this.discard();
-        }
     }
+
+    protected void onDiscard() {};
 }

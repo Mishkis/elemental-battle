@@ -1,10 +1,7 @@
 package io.github.mishkis.elemental_battle.entity;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.entity.air_staff.AirLiftEntity;
-import io.github.mishkis.elemental_battle.entity.air_staff.BlowBackEntity;
-import io.github.mishkis.elemental_battle.entity.air_staff.BlowBackRenderer;
-import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
+import io.github.mishkis.elemental_battle.entity.air_staff.*;
 import io.github.mishkis.elemental_battle.entity.flame_staff.*;
 import io.github.mishkis.elemental_battle.entity.frost_staff.*;
 import net.minecraft.entity.Entity;
@@ -95,6 +92,12 @@ public class ElementalBattleEntities {
             register(
                     "blow_back",
                     EntityType.Builder.create(BlowBackEntity::new, SpawnGroup.MISC)
+                            .dimensions(2F, 2.5F)
+            );
+    public static final EntityType<DoubleDashEntity> DOUBLE_DASH =
+            register(
+                    "double_dash",
+                    EntityType.Builder.create(DoubleDashEntity::new, SpawnGroup.MISC)
                             .dimensions(2F, 2.5F)
             );
     public static final EntityType<AirLiftEntity> AIR_LIFT =

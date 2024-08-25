@@ -66,6 +66,10 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     }
     
     private void blowBackEntity(Entity entity) {
+        if (entity instanceof GustEntity gustEntity && gustEntity.getOwner() == this.getOwner()) {
+            return;
+        }
+
         Vec3d knockback_vec = entity.getEyePos().subtract(this.getPos());
         knockback_vec = knockback_vec.normalize().multiply(2 / knockback_vec.length());
 
