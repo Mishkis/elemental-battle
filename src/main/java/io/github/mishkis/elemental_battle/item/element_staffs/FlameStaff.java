@@ -13,10 +13,10 @@ public class FlameStaff extends MagicStaffItem {
         super("flame_staff");
     }
 
-    private Spell useSpell = new ConeOfFireSpell();
-    private Spell shieldSpell = new WallOfFireSpell();
-    private Spell dashSpell = new FlamingDashSpell();
-    private Spell areaAttackSpell = new FlameVortexSpell();
+    private final Spell useSpell = new ConeOfFireSpell();
+    private final Spell shieldSpell = new WallOfFireSpell();
+    private final Spell dashSpell = new FlamingDashSpell();
+    private final Spell areaAttackSpell = new FlameVortexSpell();
 
     @Override
     public @Nullable Spell getUseSpell() {

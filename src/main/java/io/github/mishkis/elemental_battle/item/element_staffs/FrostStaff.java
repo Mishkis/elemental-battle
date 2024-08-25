@@ -11,11 +11,11 @@ public class FrostStaff extends MagicStaffItem {
         super("frost_staff");
     }
 
-    private Spell useSpell = new IcicleBallSpell();
-    private Spell shieldSpell = new ShatteringWallSpell();
-    private Spell dashSpell = new FrozenSlideSpell();
-    private Spell areaAttackSpell = new ChillingAirSpell();
-    private Spell specialSpell = new FrigidGlareSpell();
+    private final Spell useSpell = new IcicleBallSpell();
+    private final Spell shieldSpell = new ShatteringWallSpell();
+    private final Spell dashSpell = new FrozenSlideSpell();
+    private final Spell areaAttackSpell = new ChillingAirSpell();
+    private final Spell specialSpell = new FrigidGlareSpell();
 
     @Override
     public @Nullable Spell getUseSpell() {
