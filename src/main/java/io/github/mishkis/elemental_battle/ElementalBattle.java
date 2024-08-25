@@ -4,7 +4,6 @@ import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.item.ElementalBattleItems;
 import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkMain;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
-import io.github.mishkis.elemental_battle.rendering.SpellDisplay;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
@@ -23,7 +22,5 @@ public class ElementalBattle implements ModInitializer {
         ElementalBattleParticles.initialize();
         ElementalBattleStatusEffects.initialize();
         ElementalBattleNetworkMain.initialize();
-
-        SpellDisplay.initialize();
     }
 }

@@ -1,20 +1,16 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicDashEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -64,16 +60,16 @@ public class FrozenSlideEntity extends MagicDashEntity implements GeoEntity {
 
             World world = this.getWorld();
 
-            if (!world.isClient()) {
+            if (world instanceof ServerWorld serverWorld) {
                 // Play shatter particle.
-                ((ServerWorld) world).spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, owner.getX(), owner.getEyeY(), owner.getZ(), 3, 1, 0.3, 1, 1);
+                serverWorld.spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, owner.getX(), owner.getEyeY(), owner.getZ(), 3, 1, 0.3, 1, 1);
 
                 owner.removeStatusEffect(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT);
 
                 // Summon icicle surrounding orbit.
                 int spawnCount = 8;
                 for (int i = 0; i < spawnCount; i++) {
-                    IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, world);
+                    IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, serverWorld);
 
                     icicle.setOwner(owner);
 

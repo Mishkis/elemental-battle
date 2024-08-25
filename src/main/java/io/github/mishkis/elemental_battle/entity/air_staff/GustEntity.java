@@ -1,7 +1,8 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
-import io.github.mishkis.elemental_battle.network.S2CSpellCooldownManagerRemove;
+import io.github.mishkis.elemental_battle.network.S2C.S2CGustEntityEmpoweredSet;
+import io.github.mishkis.elemental_battle.network.S2C.S2CSpellCooldownManagerRemove;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
@@ -99,6 +100,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
                 player.setIgnoreFallDamageFromCurrentExplosion(true);
 
                 player.setAttached(GustSpell.EMPOWERED_ATTACHMENT, true);
+                ServerPlayNetworking.send(player, new S2CGustEntityEmpoweredSet(true));
 
                 if (!empowered && parentSpell != null) {
                     player.getAttached(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);

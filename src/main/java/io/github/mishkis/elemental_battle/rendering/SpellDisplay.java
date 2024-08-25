@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkClient;
+import io.github.mishkis.elemental_battle.spells.EmpoweredSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -11,10 +12,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec2f;
 import org.joml.Vector2i;
 
 public class SpellDisplay {
@@ -118,6 +116,10 @@ public class SpellDisplay {
             drawContext.drawText(MinecraftClient.getInstance().textRenderer, key, x, y + 8,0xFFFFFFFF, true);
 
             RenderSystem.disableBlend();
+
+            if (spell instanceof EmpoweredSpell empoweredSpell && empoweredSpell.isEmpowered(MinecraftClient.getInstance().player)) {
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/empowered.png"), x - 2, y - 2, 0, 0, 20, 20, 20, 20);
+            }
         }
     }
 }

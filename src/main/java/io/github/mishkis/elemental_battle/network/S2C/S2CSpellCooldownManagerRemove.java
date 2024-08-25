@@ -1,4 +1,4 @@
-package io.github.mishkis.elemental_battle.network;
+package io.github.mishkis.elemental_battle.network.S2C;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import net.minecraft.network.RegistryByteBuf;

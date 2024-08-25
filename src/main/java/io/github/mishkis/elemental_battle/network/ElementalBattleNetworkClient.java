@@ -1,7 +1,12 @@
 package io.github.mishkis.elemental_battle.network;
 
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
+import io.github.mishkis.elemental_battle.network.C2S.C2SKeybindPayload;
+import io.github.mishkis.elemental_battle.network.S2C.S2CGustEntityEmpoweredSet;
+import io.github.mishkis.elemental_battle.network.S2C.S2CSlamDownAttachmentAdd;
+import io.github.mishkis.elemental_battle.network.S2C.S2CSpellCooldownManagerRemove;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
+import io.github.mishkis.elemental_battle.spells.air.GustSpell;
 import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -80,6 +85,13 @@ public class ElementalBattleNetworkClient {
                 ClientPlayNetworking.send(new C2SKeybindPayload("ultimate"));
             }
         });
+
+        ClientPlayNetworking.registerGlobalReceiver(S2CGustEntityEmpoweredSet.ID, ((payload, context) -> {
+            context.client().execute(() -> {
+                context.player().setIgnoreFallDamageFromCurrentExplosion(payload.value());
+                context.player().setAttached(GustSpell.EMPOWERED_ATTACHMENT, payload.value());
+            });
+        }));
 
         ClientPlayNetworking.registerGlobalReceiver(S2CSpellCooldownManagerRemove.ID, ((payload, context) -> {
             context.client().execute(() -> {

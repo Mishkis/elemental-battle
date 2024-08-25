@@ -1,7 +1,7 @@
 package io.github.mishkis.elemental_battle.spells.air;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.network.S2CSlamDownAttachmentAdd;
+import io.github.mishkis.elemental_battle.network.S2C.S2CSlamDownAttachmentAdd;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
