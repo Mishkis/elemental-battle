@@ -109,6 +109,15 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
     }
 
     @Override
+    public void tick() {
+        super.tick();
+
+        if (800 < age && this.getWorld() instanceof ServerWorld serverWorld) {
+            this.explode(serverWorld);
+        }
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "spawn", this::spawnAnimation));
     }

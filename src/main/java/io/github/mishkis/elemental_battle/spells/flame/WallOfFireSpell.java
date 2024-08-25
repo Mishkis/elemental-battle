@@ -30,7 +30,7 @@ public class WallOfFireSpell extends Spell {
         WallOfFireEntity wallOfFire = new WallOfFireEntity(ElementalBattleEntities.WALL_OF_FIRE, world);
 
         wallOfFire.setOwner(user);
-        wallOfFire.setUptime(100);
+        wallOfFire.setUptime(80);
 
         world.spawnEntity(wallOfFire);
     }

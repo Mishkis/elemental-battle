@@ -90,7 +90,12 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
             player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
 
             if (player == this.getOwner()) {
-                player.currentExplosionImpactPos = player.getPos();
+                if (player.currentExplosionImpactPos != null) {
+                    player.currentExplosionImpactPos = new Vec3d(player.getX(), Math.min(player.currentExplosionImpactPos.y, player.getY()), player.getZ());
+                }
+                else {
+                    player.currentExplosionImpactPos = player.getPos();
+                }
                 player.setIgnoreFallDamageFromCurrentExplosion(true);
 
                 player.setAttached(GustSpell.EMPOWERED_ATTACHMENT, true);
@@ -128,6 +133,16 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     protected void onBlockHit() {
         for (Entity entity : this.getWorld().getOtherEntities(null, this.getBoundingBox().expand(3, 3, 3))) {
             blowBackEntity(entity);
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (1200 < age) {
+            onBlockHit();
+            this.discard();
         }
     }
 

@@ -1,14 +1,13 @@
 package io.github.mishkis.elemental_battle.spells;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.StringIdentifiable;
 import net.minecraft.world.World;
 
 public abstract class Spell {
+    private final Identifier ICON_PATH = Identifier.of(ElementalBattle.MOD_ID, "textures/spells/" + getElement().toString() + "/" + getId().getPath() + ".png");
+
     public abstract Identifier getId();
 
     protected abstract SpellElement getElement();
@@ -18,7 +17,7 @@ public abstract class Spell {
     protected abstract void onCast(World world, PlayerEntity user);
 
     public Identifier getIcon() {
-        return Identifier.of(ElementalBattle.MOD_ID, "textures/spells/" + getElement().toString() + "/" + getId().getPath() + ".png");
+        return ICON_PATH;
     }
 
     // Override to add client cast effects.
