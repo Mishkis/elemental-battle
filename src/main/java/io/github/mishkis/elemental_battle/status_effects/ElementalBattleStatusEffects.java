@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 public class ElementalBattleStatusEffects {
     public static final RegistryEntry<StatusEffect> SHIELD_EFFECT = register("shield", new ShieldEffect());
     public static final RegistryEntry<StatusEffect> SUCCESSFUL_PARRY_EFFECT = register("successful_parry", new SuccessfulParryEffect());
+    public static final RegistryEntry<StatusEffect> SPELL_LOCK_EFFECT = register("spell_lock", new SpellLockEffect());
 
     private static RegistryEntry<StatusEffect> register(String id, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(ElementalBattle.MOD_ID, id), statusEffect);

@@ -7,6 +7,7 @@ import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkClient;
 import io.github.mishkis.elemental_battle.spells.EmpoweredSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
@@ -36,6 +37,12 @@ public class SpellDisplay {
                 renderIcon("areaAttack", staff, drawContext);
                 renderIcon("special", staff, drawContext);
                 renderIcon("ultimate", staff, drawContext);
+
+                if (player.hasStatusEffect(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT)) {
+                    RenderSystem.enableBlend();
+                    drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/locked_spell_display.png"), position.x, position.y, 0, 0, 62, 42, 62, 42);
+                    RenderSystem.disableBlend();
+                }
             }
         }));
     }

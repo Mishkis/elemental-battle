@@ -90,6 +90,7 @@ public abstract class MagicShieldEntity extends MagicEntity {
     // Override to add custom functionality to tick.
     public void shieldEffect(PlayerEntity owner) {
         owner.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 10, 0), this);
+        owner.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT, 10, 0), this);
         owner.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 0), this);
     }
 

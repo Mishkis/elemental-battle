@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.item;
 
 import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -41,6 +42,10 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
     public abstract Spell getUltimateSpell();
 
     private TypedActionResult<ItemStack> genericCast(Spell spell, World world, PlayerEntity user, Hand hand) {
+        if (user.getStatusEffect(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT) != null) {
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
+
         if (spell != null) {
             if (world.isClient() && spell.clientCast(world, user)) {
                 return TypedActionResult.success(user.getStackInHand(hand));

@@ -2,11 +2,13 @@ package io.github.mishkis.elemental_battle.entity.frost_staff;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -83,6 +85,8 @@ public class FrozenSolidEntity extends Entity implements GeoEntity {
             if (ownerStartHealth == 0) {
                 ownerStartHealth = target.getHealth();
             }
+            target.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT, 2, 0), this);
+
             target.setVelocity(new Vec3d(0, target.isOnGround() ? 0 : target.getVelocity().y - 0.1, 0));
 
             if (target instanceof HostileEntity hostileTarget) {
