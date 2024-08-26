@@ -3,11 +3,13 @@ package io.github.mishkis.elemental_battle.entity.frost_staff;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.rendering.SpellDisplay;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -72,15 +74,19 @@ public class IceTargetEntity extends Entity implements GeoEntity {
         }
 
         // 1.25 is the exact time it takes for ANIMATION to finish. Multiply by 20, add a little so it can finish.
-        if (26 < age && !this.getWorld().isClient) {
-            if (freezing && this.getTarget() instanceof LivingEntity livingTarget && livingTarget.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) == null) {
-                FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
+        if (26 < age) {
+            if (!this.getWorld().isClient) {
+                if (freezing && this.getTarget() instanceof LivingEntity livingTarget && livingTarget.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) == null) {
+                    FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
 
-                frozenSolid.setTarget(livingTarget);
-                frozenSolid.setPosition(livingTarget.getPos());
+                    frozenSolid.setTarget(livingTarget);
+                    frozenSolid.setPosition(livingTarget.getPos());
 
-                this.getWorld().spawnEntity(frozenSolid);
+                    this.getWorld().spawnEntity(frozenSolid);
+                }
             }
+
+            target.removeAttached(SpellDisplay.SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT);
 
             this.discard();
         }
@@ -129,6 +135,7 @@ public class IceTargetEntity extends Entity implements GeoEntity {
         Entity target = this.getWorld().getEntityById(packet.getEntityData());
         if (target != null) {
             this.setTarget(target);
+            target.setAttached(SpellDisplay.SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT, true);
         }
     }
 }

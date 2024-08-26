@@ -2,12 +2,15 @@ package io.github.mishkis.elemental_battle.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkClient;
 import io.github.mishkis.elemental_battle.spells.EmpoweredSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
@@ -17,6 +20,8 @@ import net.minecraft.util.Identifier;
 import org.joml.Vector2i;
 
 public class SpellDisplay {
+    public static final AttachmentType<Boolean> SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "spell_display_shield_warning_attachment"));
+
     private static Vector2i position = new Vector2i(0, 0);
 
     public static void initialize() {
@@ -42,6 +47,10 @@ public class SpellDisplay {
                     RenderSystem.enableBlend();
                     drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/locked_spell_display.png"), position.x, position.y, 0, 0, 62, 42, 62, 42);
                     RenderSystem.disableBlend();
+                }
+
+                if (player.getAttached(SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT) != null && !player.hasStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT)) {
+                    drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/shield_alert.png"), drawContext.getScaledWindowWidth()/2 - 17, drawContext.getScaledWindowHeight()/2 - 11, 1000, 0, 0, 34, 18, 34, 18);
                 }
             }
         }));
