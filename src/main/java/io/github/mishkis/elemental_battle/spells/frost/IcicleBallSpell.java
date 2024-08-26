@@ -24,7 +24,7 @@ public class IcicleBallSpell extends Spell {
 
     @Override
     protected Integer getCooldown() {
-        return 40;
+        return 10;
     }
 
     @Override

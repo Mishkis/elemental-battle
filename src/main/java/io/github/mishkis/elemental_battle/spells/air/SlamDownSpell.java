@@ -79,6 +79,7 @@ public class SlamDownSpell extends Spell {
                 }
 
                 if (entity instanceof ServerPlayerEntity player) {
+                    player.currentExplosionImpactPos = player.getPos();
                     player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
                 }
             }

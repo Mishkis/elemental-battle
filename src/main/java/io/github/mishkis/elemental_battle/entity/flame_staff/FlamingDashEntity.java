@@ -58,7 +58,7 @@ public class FlamingDashEntity extends MagicDashEntity implements GeoEntity {
         if (this.getWorld() instanceof ServerWorld serverWorld) {
             for (Entity entity : serverWorld.getOtherEntities(this.getOwner(), this.getBoundingBox(), EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR)) {
                 if (entity instanceof LivingEntity livingEntity) {
-                    livingEntity.damage(this.getDamageSources().indirectMagic(this.getOwner(), livingEntity), 5);
+                    livingEntity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 5);
                     livingEntity.setOnFireForTicks(60);
                 }
             }

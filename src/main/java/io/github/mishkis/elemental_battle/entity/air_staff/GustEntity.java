@@ -75,7 +75,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
         if (entity != this.getOwner()) {
             if (empowered) {
-                entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), 5);
+                entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 5);
 
                 if (knockback_vec.y < 1) {
                     knockback_vec = new Vec3d(knockback_vec.x, 1, knockback_vec.z);
@@ -123,7 +123,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
         Entity entity = entityHitResult.getEntity();
         if (entity != this.getOwner()) {
-            entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), 5);
+            entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 5);
         }
 
         onBlockHit();

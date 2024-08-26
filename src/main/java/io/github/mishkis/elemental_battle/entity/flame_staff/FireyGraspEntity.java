@@ -7,6 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -30,8 +32,8 @@ public class FireyGraspEntity extends MagicProjectileEntity implements GeoEntity
 
     @Override
     protected void playTravelParticle(double x, double y, double z) {
-        if (this.getWorld() instanceof ClientWorld world) {
-            world.addParticle(ElementalBattleParticles.FLAME_PARTICLE_SMOKE, x + random.nextBetween(-5, 5) * 0.1, y + random.nextBetween(5, 15) * 0.1, z + random.nextBetween(-5, 5) * 0.1, 0, 0, 0);
+        if (!this.getWorld().isClient) {
+            this.getWorld().addParticle(ElementalBattleParticles.FLAME_PARTICLE_SMOKE, x + random.nextBetween(-5, 5) * 0.1, y + random.nextBetween(5, 15) * 0.1, z + random.nextBetween(-5, 5) * 0.1, 0, 0, 0);
         }
     }
 
@@ -49,6 +51,10 @@ public class FireyGraspEntity extends MagicProjectileEntity implements GeoEntity
         if (hitEntity != null && this.isAlive()) {
             hitEntity.setPosition(this.getPos());
             hitEntity.setVelocity(Vec3d.ZERO);
+
+            if (hitEntity instanceof ServerPlayerEntity player) {
+                player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
+            }
         }
     }
 

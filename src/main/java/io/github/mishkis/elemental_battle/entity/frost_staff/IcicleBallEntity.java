@@ -76,7 +76,7 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
        Entity entity = entityHitResult.getEntity();
 
         if (entity instanceof LivingEntity) {
-            entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), this.getDamage() * 2);
+            entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage() * 2);
 
             ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), this);
         }

@@ -24,7 +24,7 @@ public class FlameVortexEntity extends MagicAreaAttackEntity implements GeoEntit
 
     @Override
     protected void onEntityCollision(LivingEntity entity) {
-        entity.damage(this.getDamageSources().indirectMagic(this.getOwner(), entity), 5);
+        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 5);
         entity.setOnFireForTicks(60);
 
         entity.setVelocity(this.getOwner().getPos().subtract(entity.getPos()).normalize());

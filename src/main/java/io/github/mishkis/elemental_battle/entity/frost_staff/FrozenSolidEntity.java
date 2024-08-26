@@ -1,9 +1,11 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +16,7 @@ import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -80,12 +83,21 @@ public class FrozenSolidEntity extends Entity implements GeoEntity {
             if (ownerStartHealth == 0) {
                 ownerStartHealth = target.getHealth();
             }
-            target.setVelocity(Vec3d.ZERO);
-
-            this.setPosition(target.getPos());
+            target.setVelocity(new Vec3d(0, target.isOnGround() ? 0 : target.getVelocity().y - 0.1, 0));
 
             if (target instanceof HostileEntity hostileTarget) {
                 hostileTarget.setAiDisabled(true);
+
+                // No ai disables all movement calculation, so this just reimplements it.
+                hostileTarget.move(MovementType.SELF, hostileTarget.getVelocity());
+                hostileTarget.fallDistance = 0;
+            }
+
+            if (target.isOnGround() || this.isOnGround()) {
+                this.setPosition(target.getPos());
+            }
+            else {
+                this.move(MovementType.SELF, target.getVelocity());
             }
 
             if (this.getWorld() instanceof ServerWorld serverWorld && (uptime < age || target.getHealth() < ownerStartHealth)) {

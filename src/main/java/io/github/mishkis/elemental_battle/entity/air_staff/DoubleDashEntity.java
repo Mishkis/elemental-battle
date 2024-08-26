@@ -19,7 +19,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class DoubleDashEntity extends MagicDashEntity implements GeoEntity {
-    private final RawAnimation ANIMATION = RawAnimation.begin().thenPlay("entity.double_dash.spawn").thenLoop("entity.double_dash.idle");
+    private final RawAnimation ANIMATION = RawAnimation.begin().thenPlay("animation.double_dash.spawn").thenLoop("animation.double_dash.idle");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private Spell parentSpell;
