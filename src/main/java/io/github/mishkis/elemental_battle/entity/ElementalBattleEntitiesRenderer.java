@@ -24,7 +24,7 @@ public class ElementalBattleEntitiesRenderer {
         EntityRendererRegistry.register(ElementalBattleEntities.WALL_OF_FIRE, WallOfFireEntityRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.FLAMING_DASH, FlamingDashRenderer::new);
         EntityRendererRegistry.register(ElementalBattleEntities.FLAME_VORTEX, FlameVortexRenderer::new);
-        EntityRendererRegistry.register(ElementalBattleEntities.FIREY_GRASP, FireyGraspRenderer::new);
+        EntityRendererRegistry.register(ElementalBattleEntities.FIREBALL, FireballRenderer::new);
 
         // Air Magic
         EntityRendererRegistry.register(ElementalBattleEntities.GUST, GustRenderer::new);

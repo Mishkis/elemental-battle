@@ -15,12 +15,16 @@
   "entity.elemental_battle.wall_of_fire": "Wall of Fire",
   "entity.elemental_battle.flaming_dash": "Flaming Dash",
   "entity.elemental_battle.flame_vortex": "Flame Vortex",
+  "entity.elemental_battle.fireball": "Fireball",
 
   "entity.elemental_battle.gust": "Gust",
+  "entity.elemental_battle.blow_back": "Blow Back",
+  "entity.elemental_battle.double_dash": "Double Dash",
   "entity.elemental_battle.air_lift": "Air Lift",
 
   "effect.elemental_battle.shield": "Shield",
   "effect.elemental_battle.successful_parry": "Successful Parry",
+  "effect.elemental_battle.spell_lock": "Spell Lock",
 
   "itemGroup.elemental_battle": "Elemental Battle",
 

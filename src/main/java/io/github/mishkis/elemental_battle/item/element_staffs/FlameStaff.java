@@ -14,7 +14,7 @@ public class FlameStaff extends MagicStaffItem {
     private final Spell shieldSpell = new WallOfFireSpell();
     private final Spell dashSpell = new FlamingDashSpell();
     private final Spell areaAttackSpell = new FlameVortexSpell();
-    private final Spell specialSpell = new FireyGraspSpell();
+    private final Spell specialSpell = new FireballSpell();
 
     @Override
     public @Nullable Spell getUseSpell() {

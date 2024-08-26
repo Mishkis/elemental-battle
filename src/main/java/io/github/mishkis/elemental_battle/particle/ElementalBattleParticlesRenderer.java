@@ -12,7 +12,7 @@ public class ElementalBattleParticlesRenderer {
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_FULL, GustParticle.SmallGustFactory::new);
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_PARTIAL, GustParticle.SmallGustFactory::new);
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_SMOKE, EmotionParticle.HeartFactory::new);
-        // SuspenPArticle.Eggcrack
+        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FIREBALL, GustParticle.Factory::new);
 
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.GUST_PARTICLE, GustParticle.SmallGustFactory::new);
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.GUST_EXPLOSION_PARTICLE, GustParticle.Factory::new);

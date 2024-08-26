@@ -2,7 +2,7 @@ package io.github.mishkis.elemental_battle.spells.flame;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
-import io.github.mishkis.elemental_battle.entity.flame_staff.FireyGraspEntity;
+import io.github.mishkis.elemental_battle.entity.flame_staff.FireballEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,10 +10,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public class FireyGraspSpell extends Spell {
+public class FireballSpell extends Spell {
     @Override
     public Identifier getId() {
-        return Identifier.of(ElementalBattle.MOD_ID, "firey_grasp");
+        return Identifier.of(ElementalBattle.MOD_ID, "fireball");
     }
 
     @Override
@@ -23,19 +23,18 @@ public class FireyGraspSpell extends Spell {
 
     @Override
     protected Integer getCooldown() {
-        return 300;
+        return 100;
     }
 
     @Override
     protected void onCast(World world, PlayerEntity user) {
-        FireyGraspEntity fireyGrasp = new FireyGraspEntity(ElementalBattleEntities.FIREY_GRASP, world);
+        FireballEntity fireball = new FireballEntity(ElementalBattleEntities.FIREBALL, world);
 
-        fireyGrasp.setOwner(user);
-        fireyGrasp.setPosition(user.getPos().offset(Direction.UP, 1));
+        fireball.setOwner(user);
 
-        fireyGrasp.setNoGravity(true);
-        fireyGrasp.setVelocity(user.getRotationVector(0, user.getYaw()).multiply(0.3));
+        fireball.setVelocity(user.getRotationVector().multiply(2));
+        fireball.setPosition(user.getPos().offset(Direction.UP, 1.3).add(fireball.getVelocity()));
 
-        world.spawnEntity(fireyGrasp);
+        world.spawnEntity(fireball);
     }
 }
