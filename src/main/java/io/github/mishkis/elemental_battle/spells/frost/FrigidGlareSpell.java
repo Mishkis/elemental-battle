@@ -2,9 +2,12 @@ package io.github.mishkis.elemental_battle.spells.frost;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
+import io.github.mishkis.elemental_battle.entity.MagicDashEntity;
+import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IceTargetEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Ownable;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,7 +42,7 @@ public class FrigidGlareSpell extends Spell {
         raycast(user);
 
         if (hitResult != null && hitResult.getType() == HitResult.Type.ENTITY) {
-            if (((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity && livingEntity != user) {
+            if ((((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity && livingEntity != user) || (((EntityHitResult) hitResult).getEntity() instanceof MagicDashEntity)) {
                 return true;
             }
         }
@@ -48,12 +51,23 @@ public class FrigidGlareSpell extends Spell {
 
     @Override
     protected void onCast(World world, PlayerEntity user) {
-        LivingEntity livingEntity = (LivingEntity) ((EntityHitResult) hitResult).getEntity();
+        Entity entity = ((EntityHitResult) hitResult).getEntity();
+        LivingEntity target;
+
+        if (entity instanceof LivingEntity livingEntity) {
+            target = livingEntity;
+        }
+        else if (entity instanceof MagicDashEntity magicDash) {
+            target = magicDash.getOwner();
+        }
+        else {
+            return;
+        }
 
         IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world);
 
-        iceTarget.setTarget(livingEntity);
-        iceTarget.setPosition(livingEntity.getPos());
+        iceTarget.setTarget(target);
+        iceTarget.setPosition(target.getPos());
         iceTarget.setFreezing();
 
         world.spawnEntity(iceTarget);

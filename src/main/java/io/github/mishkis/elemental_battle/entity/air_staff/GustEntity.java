@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.network.S2C.S2CGustEntityEmpoweredSet;
 import io.github.mishkis.elemental_battle.network.S2C.S2CSpellCooldownManagerRemove;
@@ -71,7 +72,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
         }
 
         Vec3d knockback_vec = entity.getEyePos().subtract(this.getPos());
-        knockback_vec = knockback_vec.normalize().multiply(2 / knockback_vec.length());
+        knockback_vec = knockback_vec.normalize().multiply(1.5 / knockback_vec.length());
 
         if (entity != this.getOwner()) {
             if (empowered) {
@@ -103,12 +104,14 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
                 }
                 player.setIgnoreFallDamageFromCurrentExplosion(true);
 
-                player.setAttached(GustSpell.EMPOWERED_ATTACHMENT, true);
-                ServerPlayNetworking.send(player, new S2CGustEntityEmpoweredSet(true));
+                if (player.getVelocity().y >= 1 || !player.isOnGround()) {
+                    player.setAttached(GustSpell.EMPOWERED_ATTACHMENT, true);
+                    ServerPlayNetworking.send(player, new S2CGustEntityEmpoweredSet(true));
 
-                if (!empowered && parentSpell != null) {
-                    player.getAttached(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
-                    ServerPlayNetworking.send(player, new S2CSpellCooldownManagerRemove(parentSpell.getId()));
+                    if (!empowered && parentSpell != null) {
+                        player.getAttached(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
+                        ServerPlayNetworking.send(player, new S2CSpellCooldownManagerRemove(parentSpell.getId()));
+                    }
                 }
             }
         }

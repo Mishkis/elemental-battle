@@ -26,7 +26,7 @@ public class DoubleDashSpell extends Spell {
 
     @Override
     protected Integer getCooldown() {
-        return 200;
+        return 300;
     }
 
     @Override

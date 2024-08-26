@@ -5,6 +5,7 @@ import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
 import io.github.mishkis.elemental_battle.spells.EmpoweredSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
@@ -28,12 +29,12 @@ public class GustSpell extends Spell implements EmpoweredSpell {
 
     @Override
     protected Integer getCooldown() {
-        return 50;
+        return 100;
     }
 
     @Override
     public boolean isEmpowered(PlayerEntity user) {
-        return user.getAttached(EMPOWERED_ATTACHMENT) != null && user.shouldIgnoreFallDamageFromCurrentExplosion() && !user.isOnGround();
+        return !user.isOnGround() && user.getAttached(EMPOWERED_ATTACHMENT) != null && user.shouldIgnoreFallDamageFromCurrentExplosion();
     }
 
     @Override

@@ -30,7 +30,7 @@ public class DoubleDashEntity extends MagicDashEntity implements GeoEntity {
 
     @Override
     public float getBlocksTraveled() {
-        return 10;
+        return 8;
     }
 
     @Override

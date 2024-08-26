@@ -22,7 +22,7 @@ public class BlowBackSpell extends Spell {
 
     @Override
     protected Integer getCooldown() {
-        return 300;
+        return 350;
     }
 
     @Override

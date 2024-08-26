@@ -71,7 +71,7 @@ public class SlamDownSpell extends Spell {
         user.getAttached(SLAM_DOWN_ATTACHMENT).forEach(entity -> {
             if (!entity.isOnGround() && !entity.isRemoved()) {
                 entity.setVelocity(entity.getVelocity().x, Math.min(-5, entity.getVelocity().y * 2), entity.getVelocity().z);
-                entity.fallDistance += 10;
+                entity.fallDistance = 8;
 
                 if (world instanceof ServerWorld serverWorld) {
                     serverWorld.spawnParticles(ElementalBattleParticles.GUST_EXPLOSION_PARTICLE, entity.getX(), entity.getY() + 2, entity.getZ(), 3, 1, 0.2, 1, 1);
