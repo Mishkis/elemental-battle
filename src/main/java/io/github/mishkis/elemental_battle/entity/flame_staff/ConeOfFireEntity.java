@@ -27,7 +27,7 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
     @Override
     protected void playTravelParticle(double x, double y, double z) {
         World world = this.getWorld();
-        if (!world.isClient()) {
+        if (!world.isClient() && age > 1) {
             SimpleParticleType particle;
             if (age < 5) {
                 particle = ElementalBattleParticles.FLAME_PARTICLE_FULL;
@@ -37,7 +37,7 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
                 particle = ElementalBattleParticles.FLAME_PARTICLE_SMOKE;
             }
 
-            ((ServerWorld) world).spawnParticles(particle, x, y, z, 1, 0.3, 0.3, 0.3, 1);
+            ((ServerWorld) world).spawnParticles(particle, x, y, z, 1, 0.1, 0.1, 0.1, 1);
         }
     }
 

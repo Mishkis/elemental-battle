@@ -9,9 +9,10 @@ public class ElementalBattleParticlesRenderer {
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.SMALL_FROST_SHATTER_PARTICLE, GustParticle.SmallGustFactory::new);
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FROST_PARTICLE, SnowflakeParticle.Factory::new);
 
-        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_FULL, ExplosionLargeParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_PARTIAL, SonicBoomParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_SMOKE, GustParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_FULL, GustParticle.SmallGustFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_PARTIAL, GustParticle.SmallGustFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.FLAME_PARTICLE_SMOKE, EmotionParticle.HeartFactory::new);
+        // SuspenPArticle.Eggcrack
 
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.GUST_PARTICLE, GustParticle.SmallGustFactory::new);
         ParticleFactoryRegistry.getInstance().register(ElementalBattleParticles.GUST_EXPLOSION_PARTICLE, GustParticle.Factory::new);

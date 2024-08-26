@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -15,6 +16,11 @@ import software.bernie.geckolib.util.RenderUtil;
 public class FrozenSlideRenderer extends GeoEntityRenderer<FrozenSlideEntity> {
     public FrozenSlideRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(Identifier.of(ElementalBattle.MOD_ID, "frozen_slide")));
+    }
+
+    @Override
+    public @Nullable RenderLayer getRenderType(FrozenSlideEntity animatable, Identifier texture, @Nullable VertexConsumerProvider bufferSource, float partialTick) {
+        return RenderLayer.getEntityTranslucent(texture);
     }
 
     @Override
