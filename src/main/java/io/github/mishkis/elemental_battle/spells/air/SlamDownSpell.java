@@ -39,7 +39,9 @@ public class SlamDownSpell extends Spell {
     }
 
     public static void addToSlamDownList(Entity entity, PlayerEntity user) {
-        if (entity instanceof LivingEntity livingEntity && !livingEntity.isRemoved() && livingEntity != user && !user.getAttachedOrCreate(SLAM_DOWN_ATTACHMENT).contains(livingEntity)) {
+        if (entity instanceof LivingEntity livingEntity && !livingEntity.isRemoved() && livingEntity != user) {
+            // Ensure only one copy of the entity exists in the list, and also refresh entity in case it is dead.
+            user.getAttachedOrCreate(SlamDownSpell.SLAM_DOWN_ATTACHMENT).remove(livingEntity);
             user.getAttached(SlamDownSpell.SLAM_DOWN_ATTACHMENT).add(livingEntity);
 
             if (user instanceof ServerPlayerEntity serverPlayerEntity) {

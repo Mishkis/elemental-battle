@@ -97,7 +97,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
             if (player == this.getOwner()) {
                 if (player.currentExplosionImpactPos != null) {
-                    player.currentExplosionImpactPos = new Vec3d(player.getX(), Math.min(player.currentExplosionImpactPos.y, player.getY()), player.getZ());
+                    player.currentExplosionImpactPos = new Vec3d(player.getX(), -500, player.getZ());
                 }
                 else {
                     player.currentExplosionImpactPos = player.getPos();

@@ -9,6 +9,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -33,25 +34,23 @@ public class BlowBackEntity extends MagicShieldEntity implements GeoEntity {
 
     @Override
     public void onDamaged(DamageSource damageSource) {
-        Entity entity = damageSource.getSource();
+        Entity entity = damageSource.getAttacker();
 
         if (entity == null) {
             return;
         }
 
-        Vec3d knockback_vec = entity.getEyePos().subtract(this.getPos());
-        knockback_vec = knockback_vec.normalize().multiply(2);
+        Vec3d knockback_vec = entity.getEyePos().subtract(this.getPos()).multiply(1, 0, 1);
+        knockback_vec = knockback_vec.normalize().multiply(2).add(0, 1, 0);
 
         entity.setVelocity(knockback_vec);
 
         if (!this.getWorld().isClient) {
+            ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.GUST_EXPLOSION_PARTICLE, entity.getX(), entity.getY() + 0.5, entity.getZ(), 2, 0.5, 0.5, 0.5, 1);
             SlamDownSpell.addToSlamDownList(entity, this.getOwner());
         }
 
-        if (entity instanceof ProjectileEntity projectile) {
-            projectile.setOwner(this.getOwner());
-        }
-        else if (entity instanceof ServerPlayerEntity serverPlayer) {
+        if (entity instanceof ServerPlayerEntity serverPlayer) {
             serverPlayer.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(serverPlayer));
         }
     }

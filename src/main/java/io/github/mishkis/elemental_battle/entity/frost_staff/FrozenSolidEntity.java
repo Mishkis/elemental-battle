@@ -9,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -86,6 +87,7 @@ public class FrozenSolidEntity extends Entity implements GeoEntity {
                 ownerStartHealth = target.getHealth();
             }
             target.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT, 2, 0), this);
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, 4), this);
 
             target.setVelocity(new Vec3d(0, target.isOnGround() ? 0 : target.getVelocity().y - 0.1, 0));
 

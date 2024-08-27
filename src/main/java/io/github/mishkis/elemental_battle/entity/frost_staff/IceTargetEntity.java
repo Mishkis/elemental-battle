@@ -73,6 +73,10 @@ public class IceTargetEntity extends Entity implements GeoEntity {
             }
         }
 
+        // Do this before time out to ensure that it is in fact called.
+        if (25 < age && this.getWorld().isClient) {
+            target.removeAttached(SpellDisplay.SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT);
+        }
         // 1.25 is the exact time it takes for ANIMATION to finish. Multiply by 20, add a little so it can finish.
         if (26 < age) {
             if (!this.getWorld().isClient) {
@@ -85,8 +89,6 @@ public class IceTargetEntity extends Entity implements GeoEntity {
                     this.getWorld().spawnEntity(frozenSolid);
                 }
             }
-
-            target.removeAttached(SpellDisplay.SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT);
 
             this.discard();
         }
