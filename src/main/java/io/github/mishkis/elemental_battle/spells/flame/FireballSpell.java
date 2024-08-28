@@ -23,7 +23,7 @@ public class FireballSpell extends Spell {
 
     @Override
     protected Integer getCooldown() {
-        return 100;
+        return 300;
     }
 
     @Override

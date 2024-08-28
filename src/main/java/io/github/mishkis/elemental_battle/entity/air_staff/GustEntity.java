@@ -1,6 +1,5 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.network.S2C.S2CGustEntityEmpoweredSet;
 import io.github.mishkis.elemental_battle.network.S2C.S2CSpellCooldownManagerRemove;
@@ -96,12 +95,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
             player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
 
             if (player == this.getOwner()) {
-                if (player.currentExplosionImpactPos != null) {
-                    player.currentExplosionImpactPos = new Vec3d(player.getX(), -500, player.getZ());
-                }
-                else {
-                    player.currentExplosionImpactPos = player.getPos();
-                }
+                player.currentExplosionImpactPos = new Vec3d(player.getX(), -500, player.getZ());
                 player.setIgnoreFallDamageFromCurrentExplosion(true);
 
                 if (player.getVelocity().y >= 1 || !player.isOnGround()) {
@@ -109,7 +103,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
                     ServerPlayNetworking.send(player, new S2CGustEntityEmpoweredSet(true));
 
                     if (!empowered && parentSpell != null) {
-                        player.getAttached(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
+                        player.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
                         ServerPlayNetworking.send(player, new S2CSpellCooldownManagerRemove(parentSpell.getId()));
                     }
                 }
@@ -157,8 +151,8 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "idle", (animationState) -> {
-            return animationState.setAndContinue(IDLE_ANIMATION); }));
+        controllers.add(new AnimationController<>(this, "idle", (animationState) ->
+            animationState.setAndContinue(IDLE_ANIMATION) ));
     }
 
     @Override

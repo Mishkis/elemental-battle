@@ -9,6 +9,7 @@ import net.minecraft.entity.ProjectileDeflection;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
@@ -54,6 +55,12 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
     public boolean deflect(ProjectileDeflection deflection, @Nullable Entity deflector, @Nullable Entity owner, boolean fromAttack) {
         if (!isHit) {
             isHit = true;
+            if (deflector instanceof ProjectileEntity projectile) {
+                this.setOwner(projectile.getOwner());
+            }
+            else if(deflector != null) {
+                this.setOwner(deflector);
+            }
             return super.deflect(deflection, deflector, owner, fromAttack);
         }
         return false;
@@ -75,10 +82,14 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
 
        Entity entity = entityHitResult.getEntity();
 
-        if (entity instanceof LivingEntity) {
-            entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage() * 2);
+       if (entity == this.getOwner()) {
+           return;
+       }
 
-            ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), this);
+        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage() * 2);
+
+        if (entity instanceof LivingEntity livingEntity) {
+            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), this);
         }
     }
 

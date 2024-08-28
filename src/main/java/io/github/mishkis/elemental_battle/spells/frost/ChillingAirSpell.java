@@ -23,7 +23,7 @@ public class ChillingAirSpell extends Spell {
 
     @Override
     protected Integer getCooldown() {
-        return 200;
+        return 250;
     }
 
     @Override

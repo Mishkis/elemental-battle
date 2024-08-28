@@ -4,12 +4,10 @@ import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -50,10 +48,9 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
 
         Entity entity = entityHitResult.getEntity();
 
-        if (!this.getWorld().isClient && entity instanceof LivingEntity && entity != getOwner()) {
+        if (!this.getWorld().isClient && entity != getOwner()) {
             entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
-
-            ((LivingEntity) entity).setOnFireForTicks(40);
+            entity.setOnFireForTicks(40);
 
             this.discard();
         }

@@ -3,13 +3,11 @@ package io.github.mishkis.elemental_battle.spells.frost;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicDashEntity;
-import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IceTargetEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Ownable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.Identifier;
@@ -34,7 +32,7 @@ public class FrigidGlareSpell extends Spell {
 
     @Override
     protected Integer getCooldown() {
-        return 200;
+        return 250;
     }
 
     @Override
@@ -42,9 +40,7 @@ public class FrigidGlareSpell extends Spell {
         raycast(user);
 
         if (hitResult != null && hitResult.getType() == HitResult.Type.ENTITY) {
-            if ((((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity && livingEntity != user) || (((EntityHitResult) hitResult).getEntity() instanceof MagicDashEntity)) {
-                return true;
-            }
+            return (((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity && livingEntity != user) || (((EntityHitResult) hitResult).getEntity() instanceof MagicDashEntity);
         }
         return false;
     }
@@ -74,9 +70,9 @@ public class FrigidGlareSpell extends Spell {
     }
 
     private void raycast(PlayerEntity user) {
-        Double distance = 1000d;
+        int distance = 1000;
         Vec3d start = user.getEyePos();
         Vec3d end = user.getEyePos().add(user.getRotationVector().multiply(distance));
-        this.hitResult = ProjectileUtil.raycast(user, start, end, new Box(start.x, start.y, start.z, end.x, end.y, end.z), entity -> {return true;}, distance);
+        this.hitResult = ProjectileUtil.raycast(user, start, end, new Box(start.x, start.y, start.z, end.x, end.y, end.z), entity -> true, distance);
     }
 }

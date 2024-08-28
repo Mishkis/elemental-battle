@@ -68,7 +68,7 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
                     slowingDown = false;
                     this.setNoGravity(true);
                     startAge = age;
-                };
+                }
             }
             else {
                 double delta = age - startAge;
@@ -103,10 +103,13 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
 
         Entity entity = entityHitResult.getEntity();
 
-        if (!this.getWorld().isClient && entity instanceof LivingEntity && entity != getOwner()) {
-            entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
+        if (entity == this.getOwner()) {
+            return;
+        }
 
-            ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 2), this);
+        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
+        if (!this.getWorld().isClient && entity instanceof LivingEntity livingEntity) {
+            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 2), this);
 
             this.discard();
         }
