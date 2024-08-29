@@ -18,7 +18,7 @@ public class FrozenSlideSpell extends Spell implements EmpoweredSpell {
     }
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.FROST;
     }
 

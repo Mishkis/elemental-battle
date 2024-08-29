@@ -18,7 +18,7 @@ public class IcicleBallSpell extends Spell {
     }
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.FROST;
     }
 

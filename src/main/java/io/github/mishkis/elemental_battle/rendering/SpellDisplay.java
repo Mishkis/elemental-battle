@@ -2,7 +2,6 @@ package io.github.mishkis.elemental_battle.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.mishkis.elemental_battle.ElementalBattle;
-import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkClient;
 import io.github.mishkis.elemental_battle.spells.EmpoweredSpell;
@@ -64,37 +63,37 @@ public class SpellDisplay {
 
         switch (slot) {
             case "main":
-                spell = staff.getUseSpell();
+                spell = staff.getUseSpell(MinecraftClient.getInstance().player);
                 x += 3;
                 y += 3;
                 key = KeyBindingHelper.getBoundKeyOf(MinecraftClient.getInstance().options.useKey).getLocalizedText().getString();
                 break;
             case "shield":
-                spell = staff.getShieldSpell();
+                spell = staff.getShieldSpell(MinecraftClient.getInstance().player);
                 x += 23;
                 y += 3;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.shield).getLocalizedText().getString();
                 break;
             case "dash":
-                spell = staff.getDashSpell();
+                spell = staff.getDashSpell(MinecraftClient.getInstance().player);
                 x += 43;
                 y += 3;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.dash).getLocalizedText().getString();
                 break;
             case "areaAttack":
-                spell = staff.getAreaAttackSpell();
+                spell = staff.getAreaAttackSpell(MinecraftClient.getInstance().player);
                 x += 3;
                 y += 23;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.areaAttack).getLocalizedText().getString();
                 break;
             case "special":
-                spell = staff.getSpecialSpell();
+                spell = staff.getSpecialSpell(MinecraftClient.getInstance().player);
                 x += 23;
                 y += 23;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.special).getLocalizedText().getString();
                 break;
             case "ultimate":
-                spell = staff.getUltimateSpell();
+                spell = staff.getUltimateSpell(MinecraftClient.getInstance().player);
                 x += 43;
                 y += 23;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.ultimate).getLocalizedText().getString();

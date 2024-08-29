@@ -16,7 +16,7 @@ public class BlowBackSpell extends Spell {
     }
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.AIR;
     }
 

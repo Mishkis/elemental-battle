@@ -1,16 +1,20 @@
 package io.github.mishkis.elemental_battle.spells;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import net.fabricmc.loader.impl.util.StringUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
+
 public abstract class Spell {
     private final Identifier ICON_PATH = Identifier.of(ElementalBattle.MOD_ID, "textures/spells/" + getElement().toString() + "/" + getId().getPath() + ".png");
+    private final String SPELL_NAME = buildName();
 
     public abstract Identifier getId();
 
-    protected abstract SpellElement getElement();
+    public abstract SpellElement getElement();
 
     protected abstract Integer getCooldown();
 
@@ -18,6 +22,20 @@ public abstract class Spell {
 
     public Identifier getIcon() {
         return ICON_PATH;
+    }
+
+    public String getSpellName() {
+        return SPELL_NAME;
+    }
+
+    private String buildName() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        Arrays.stream(this.getId().getPath().split("_")).forEach((string) ->
+                stringBuilder.append(StringUtil.capitalize(string)).append(" ")
+        );
+
+        return stringBuilder.toString();
     }
 
     // Override to add client cast effects.

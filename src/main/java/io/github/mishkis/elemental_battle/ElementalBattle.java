@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle;
 
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.item.ElementalBattleItems;
+import io.github.mishkis.elemental_battle.item.armor.ElementalBattleArmorMaterials;
 import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkMain;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
@@ -18,9 +19,12 @@ public class ElementalBattle implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Starting Elemental Battle.");
         ElementalBattleItems.initialize();
+        ElementalBattleArmorMaterials.initialize();
+
         ElementalBattleEntities.initialize();
         ElementalBattleParticles.initialize();
         ElementalBattleStatusEffects.initialize();
+
         ElementalBattleNetworkMain.initialize();
     }
 }

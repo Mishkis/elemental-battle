@@ -17,7 +17,7 @@ public class FlameVortexSpell extends Spell {
     }
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.FLAME;
     }
 

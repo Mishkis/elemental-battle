@@ -20,7 +20,7 @@ public class DoubleDashSpell extends Spell {
     }
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.AIR;
     }
 

@@ -16,7 +16,7 @@ public class AirLiftSpell extends Spell {
     }
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.AIR;
     }
 

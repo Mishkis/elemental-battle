@@ -17,7 +17,7 @@ public class ChillingAirSpell extends Spell {
     }
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.FROST;
     }
 

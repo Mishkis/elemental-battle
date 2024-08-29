@@ -1,6 +1,8 @@
 package io.github.mishkis.elemental_battle.item;
 
+import io.github.mishkis.elemental_battle.item.armor.MagicArmorItem;
 import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.spells.SpellElement;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -23,23 +25,56 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
     private final String id;
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    @Nullable
-    public abstract Spell getUseSpell();
+    protected abstract SpellElement getElement();
 
     @Nullable
-    public abstract Spell getShieldSpell();
+    protected abstract Spell useSpell();
 
     @Nullable
-    public abstract Spell getDashSpell();
+    protected abstract Spell ultimateSpell();
 
     @Nullable
-    public abstract Spell getAreaAttackSpell();
+    private Spell compareArmor(PlayerEntity user, Integer slot) {
+        if (user.getInventory().getArmorStack(slot).getItem() instanceof MagicArmorItem magicArmorItem && magicArmorItem.getSpell().getElement() == this.getElement()) {
+            return magicArmorItem.getSpell();
+        }
+
+        return null;
+    }
 
     @Nullable
-    public abstract Spell getSpecialSpell();
+    public Spell getUseSpell(PlayerEntity user) {
+        return useSpell();
+    }
 
     @Nullable
-    public abstract Spell getUltimateSpell();
+    public Spell getShieldSpell(PlayerEntity user) {
+        // Chestplate
+        return compareArmor(user, 2);
+    }
+
+    @Nullable
+    public Spell getDashSpell(PlayerEntity user) {
+        // Boots
+        return compareArmor(user, 0);
+    }
+
+    @Nullable
+    public Spell getAreaAttackSpell(PlayerEntity user) {
+        // Leggings
+        return compareArmor(user, 1);
+    }
+
+    @Nullable
+    public Spell getSpecialSpell(PlayerEntity user) {
+        // Helmet
+        return compareArmor(user, 3);
+    }
+
+    @Nullable
+    public Spell getUltimateSpell(PlayerEntity user) {
+        return ultimateSpell();
+    }
 
     private TypedActionResult<ItemStack> genericCast(Spell spell, World world, PlayerEntity user, Hand hand) {
         if (user.getStatusEffect(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT) != null) {
@@ -61,27 +96,27 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
     // Main Attack
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getUseSpell(), world, user, hand);
+        return genericCast(getUseSpell(user), world, user, hand);
     }
 
-    public TypedActionResult shield(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getShieldSpell(), world, user, hand);
+    public TypedActionResult<ItemStack> shield(World world, PlayerEntity user, Hand hand) {
+        return genericCast(getShieldSpell(user), world, user, hand);
     }
 
-    public TypedActionResult dash(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getDashSpell(), world, user, hand);
+    public TypedActionResult<ItemStack> dash(World world, PlayerEntity user, Hand hand) {
+        return genericCast(getDashSpell(user), world, user, hand);
     }
 
-    public TypedActionResult areaAttack(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getAreaAttackSpell(), world, user, hand);
+    public TypedActionResult<ItemStack> areaAttack(World world, PlayerEntity user, Hand hand) {
+        return genericCast(getAreaAttackSpell(user), world, user, hand);
     }
 
-    public TypedActionResult special(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getSpecialSpell(), world, user, hand);
+    public TypedActionResult<ItemStack> special(World world, PlayerEntity user, Hand hand) {
+        return genericCast(getSpecialSpell(user), world, user, hand);
     }
 
-    public TypedActionResult ultimate(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getUltimateSpell(), world, user, hand);
+    public TypedActionResult<ItemStack> ultimate(World world, PlayerEntity user, Hand hand) {
+        return genericCast(getUltimateSpell(user), world, user, hand);
     }
 
     public MagicStaffItem(String id) {

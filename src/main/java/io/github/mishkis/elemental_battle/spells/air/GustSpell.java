@@ -5,7 +5,6 @@ import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.air_staff.GustEntity;
 import io.github.mishkis.elemental_battle.spells.EmpoweredSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
-import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
@@ -23,7 +22,7 @@ public class GustSpell extends Spell implements EmpoweredSpell {
     }
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.AIR;
     }
 

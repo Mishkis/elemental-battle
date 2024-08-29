@@ -3,6 +3,24 @@
   "item.elemental_battle.flame_staff": "Flame Staff",
   "item.elemental_battle.air_staff": "Air Staff",
 
+  "item.elemental_battle.frozen_cloth": "Frozen Cloth",
+  "item.elemental_battle.cryomancers_boots": "Cryomancer's Boots",
+  "item.elemental_battle.cryomancers_leggings": "Cryomancer's Leggings",
+  "item.elemental_battle.cryomancers_robes": "Cryomancer's Robes",
+  "item.elemental_battle.cryomancers_hood": "Cryomancer's Hood",
+
+  "item.elemental_battle.burning_cloth": "Burning Cloth",
+  "item.elemental_battle.pyromancers_boots": "Pyromancer's Boots",
+  "item.elemental_battle.pyromancers_leggings": "Pyromancer's Leggings",
+  "item.elemental_battle.pyromancers_robes": "Pyromancer's Robes",
+  "item.elemental_battle.pyromancers_hat": "Pyromancer's Hat",
+
+  "item.elemental_battle.billowing_cloth": "Billowing Cloth",
+  "item.elemental_battle.aeromancers_boots": "Aeromancer's Boots",
+  "item.elemental_battle.aeromancers_leggings": "Aeromancer's Leggings",
+  "item.elemental_battle.aeromancers_robes": "Aeromancer's Robes",
+  "item.elemental_battle.aeromancers_circlet": "Aeromancer's Circlet",
+
   "entity.elemental_battle.ice_target": "Ice Target",
   "entity.elemental_battle.icicle_ball": "Icicle Ball",
   "entity.elemental_battle.icicle": "Icicle",
