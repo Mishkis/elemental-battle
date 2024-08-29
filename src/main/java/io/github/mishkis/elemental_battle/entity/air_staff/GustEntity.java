@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
+import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.network.S2C.S2CGustEntityEmpoweredSet;
 import io.github.mishkis.elemental_battle.network.S2C.S2CSpellCooldownManagerRemove;
@@ -16,7 +17,6 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -48,15 +48,13 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
         this.parentSpell = parentSpell;
     }
 
-    public GustEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
+    public GustEntity(EntityType<? extends MagicEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Override
     protected void playTravelParticle(double x, double y, double z) {
-        if (this.getWorld().isClient) {
-            this.getWorld().addParticle(ElementalBattleParticles.GUST_PARTICLE, x + random.nextBetween(-5, 5) * 0.1, y + random.nextBetween(-5, 5) * 0.1, z + random.nextBetween(-5, 5) * 0.1, 0, 0, 0);
-        }
+        this.getWorld().addParticle(ElementalBattleParticles.GUST_PARTICLE, x + random.nextBetween(-5, 5) * 0.1, y + random.nextBetween(-5, 5) * 0.1, z + random.nextBetween(-5, 5) * 0.1, 0, 0, 0);
     }
 
     @Override
@@ -115,21 +113,12 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-
-        Entity entity = entityHitResult.getEntity();
+    protected void onEntityHit(Entity entity) {
         if (entity != this.getOwner()) {
             entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 5);
         }
 
         onBlockHit();
-
-        if (!this.getWorld().isClient()) {
-            playDiscardParticle(this.getX(), this.getY(), this.getZ());
-        }
-
-        this.discard();
     }
 
     @Override
@@ -137,6 +126,8 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
         for (Entity entity : this.getWorld().getOtherEntities(null, this.getBoundingBox().expand(3, 3, 3))) {
             blowBackEntity(entity);
         }
+
+        super.onBlockHit();
     }
 
     @Override

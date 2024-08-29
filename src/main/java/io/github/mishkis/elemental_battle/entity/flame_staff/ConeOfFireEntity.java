@@ -1,13 +1,11 @@
 package io.github.mishkis.elemental_battle.entity.flame_staff;
 
+import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -18,14 +16,14 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
     private final RawAnimation SPAWN_ANIMATION = RawAnimation.begin().thenPlay("animation.cone_of_fire.idle");
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    public ConeOfFireEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
+    public ConeOfFireEntity(EntityType<? extends MagicEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Override
     protected void playTravelParticle(double x, double y, double z) {
         World world = this.getWorld();
-        if (!world.isClient() && age > 1) {
+        if (age > 2) {
             SimpleParticleType particle;
             if (age < 5) {
                 particle = ElementalBattleParticles.FLAME_PARTICLE_FULL;
@@ -35,7 +33,7 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
                 particle = ElementalBattleParticles.FLAME_PARTICLE_SMOKE;
             }
 
-            ((ServerWorld) world).spawnParticles(particle, x, y, z, 1, 0.1, 0.1, 0.1, 1);
+            this.getWorld().addParticle(particle, x + random.nextBetween(-10, 10) * 0.01, y + random.nextBetween(-10, 10) * 0.01, z + random.nextBetween(-10, 10) * 0.01,  0, 0, 0);
         }
     }
 
@@ -43,16 +41,12 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
     protected void playDiscardParticle(double x, double y, double z) {}
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-
-        Entity entity = entityHitResult.getEntity();
-
-        if (!this.getWorld().isClient && entity != getOwner()) {
+    protected void onEntityHit(Entity entity) {
+        if (entity != getOwner() && !(entity instanceof ConeOfFireEntity coneOfFire && coneOfFire.getOwner() == this.getOwner())) {
             entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
             entity.setOnFireForTicks(40);
 
-            this.discard();
+            super.onEntityHit(entity);
         }
     }
 

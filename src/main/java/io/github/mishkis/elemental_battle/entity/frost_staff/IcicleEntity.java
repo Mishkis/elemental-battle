@@ -1,5 +1,6 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
+import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.Entity;
@@ -32,7 +33,7 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
     private boolean slowingDown;
     private double startAge;
 
-    public IcicleEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
+    public IcicleEntity(EntityType<? extends MagicEntity> entityType, World world) {
         super(entityType, world);
     }
 
@@ -87,9 +88,7 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
 
     @Override
     protected void playTravelParticle(double x, double y, double z) {
-        if (this.getWorld().isClient()) {
-            this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, x, y, z, 0, 0, 0);
-        }
+        this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, x, y, z, 0, 0, 0);
     }
 
     @Override
@@ -98,11 +97,7 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-
-        Entity entity = entityHitResult.getEntity();
-
+    protected void onEntityHit(Entity entity) {
         if (entity == this.getOwner()) {
             return;
         }
@@ -110,9 +105,9 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
         entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
         if (!this.getWorld().isClient && entity instanceof LivingEntity livingEntity) {
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 2), this);
-
-            this.discard();
         }
+
+        super.onEntityHit(entity);
     }
 
     @Override

@@ -1,28 +1,27 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
+import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ProjectileDeflection;
+import net.minecraft.entity.*;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.projectile.AbstractFireballEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntity {
+public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity {
     private final RawAnimation SPAWN_ANIMATION = RawAnimation.begin().thenPlay("animation.icicle_ball.spawn").thenLoop("animation.icicle_ball.idle");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private float damage;
@@ -31,10 +30,22 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
 
     public IcicleBallEntity(EntityType<? extends IcicleBallEntity> entityType, World world) {
         super(entityType, world);
+
+        this.setNoGravity(true);
     }
 
     public float getDamage() {
         return this.damage;
+    }
+
+    @Override
+    protected void playTravelParticle(double x, double y, double z) {
+        this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, x, y + 0.5, z, 0.0, 0.0, 0.0);
+    }
+
+    @Override
+    protected void playDiscardParticle(double x, double y, double z) {
+        ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 1);
     }
 
     public void setDamage(float damage) {
@@ -42,27 +53,40 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
     }
 
     @Override
-    protected boolean isBurning() {
-        return false;
-    }
+    protected Box calculateBoundingBox() {
+        EntityDimensions dimensions = this.getDimensions(this.getPose());
 
-    @Override
-    protected ParticleEffect getParticleType() {
-        return ElementalBattleParticles.FROST_PARTICLE;
-    }
-
-    @Override
-    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity deflector, @Nullable Entity owner, boolean fromAttack) {
         if (!isHit) {
-            isHit = true;
-            if (deflector instanceof ProjectileEntity projectile) {
-                this.setOwner(projectile.getOwner());
-            }
-            else if(deflector != null) {
-                this.setOwner(deflector);
-            }
-            return super.deflect(deflection, deflector, owner, fromAttack);
+            dimensions = dimensions.scaled(4);
+
+            return dimensions.getBoxAt(this.getPos().offset(Direction.DOWN, 0.6));
         }
+
+        return dimensions.getBoxAt(this.getPos());
+    }
+
+    @Override
+    public boolean canHit() {
+        return !isHit;
+    }
+
+    @Override
+    public boolean damage(DamageSource source, float amount) {
+        if (!this.isHit && source.getSource() instanceof Entity entity) {
+            this.isHit = true;
+
+            if (entity instanceof Ownable ownable && ownable.getOwner() instanceof PlayerEntity player) {
+                this.setOwner(player);
+                entity = player;
+            }
+            else if(entity instanceof PlayerEntity player) {
+                this.setOwner(player);
+                entity = player;
+            }
+
+            this.setVelocity(entity.getRotationVector().multiply(2));
+        }
+
         return false;
     }
 
@@ -77,11 +101,7 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-
-       Entity entity = entityHitResult.getEntity();
-
+    protected void onEntityHit(Entity entity) {
        if (entity == this.getOwner()) {
            return;
        }
@@ -94,7 +114,7 @@ public class IcicleBallEntity extends AbstractFireballEntity implements GeoEntit
     }
 
     private void explode(ServerWorld world) {
-        world.spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 1);
+        this.playDiscardParticle(getX(), getY(), getZ());
 
         int spawnCount = 8 + random.nextBetween(-1, 1);
 

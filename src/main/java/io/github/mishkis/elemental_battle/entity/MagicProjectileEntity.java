@@ -1,29 +1,26 @@
 package io.github.mishkis.elemental_battle.entity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.ProjectileDeflection;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.registry.tag.EntityTypeTags;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public abstract class MagicProjectileEntity extends ProjectileEntity {
+public abstract class MagicProjectileEntity extends MagicEntity {
     private int uptime = 20 * 20;
     private double gravity = 0.05;
     private float damage;
 
-    // Called on both client and server sides, make sure to check.
     protected abstract void playTravelParticle(double x, double y, double z);
 
     protected abstract void playDiscardParticle(double x, double y, double z);
 
-    public MagicProjectileEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
+    public MagicProjectileEntity(EntityType<? extends MagicEntity> entityType, World world) {
         super(entityType, world);
     }
 
@@ -41,10 +38,6 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
 
     public int getUptime() {
         return uptime;
-    }
-
-    public void setGravity(double gravity) {
-        this.gravity = gravity;
     }
 
     @Override
@@ -82,7 +75,7 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
         }
 
         // Check collision
-        HitResult hitResult = ProjectileUtil.getCollision(this, this::canHit);
+        HitResult hitResult = ProjectileUtil.getCollision(this, (entity) -> true);
         if (hitResult.getType() != HitResult.Type.MISS) {
             this.onCollision(hitResult);
         }
@@ -96,24 +89,37 @@ public abstract class MagicProjectileEntity extends ProjectileEntity {
 
         this.setPosition(x, y, z);
 
-        this.playTravelParticle(x, y, z);
+        if (this.getWorld().isClient) {
+            this.playTravelParticle(x, y, z);
+        }
     }
 
-    @Override
-    protected void onBlockHit(BlockHitResult blockHitResult) {
-        super.onBlockHit(blockHitResult);
-        onBlockHit();
+    protected void onCollision(HitResult hitResult) {
+        switch (hitResult.getType()) {
+            case ENTITY -> {
+                EntityHitResult entityHitResult = (EntityHitResult)hitResult;
+                Entity entity = entityHitResult.getEntity();
+                if (entity.getType().isIn(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entity instanceof ProjectileEntity projectileEntity) {
+                    projectileEntity.deflect(ProjectileDeflection.REDIRECTED, this.getOwner(), this.getOwner(), true);
+                }
 
+                this.onEntityHit(entity);
+            }
+            case BLOCK -> this.onBlockHit();
+        }
+    }
+
+    protected void onEntityHit(Entity entity) {
         if (!this.getWorld().isClient) {
             this.playDiscardParticle(this.getX(), this.getY(), this.getZ());
             this.discard();
         }
     }
 
-    // Override to add more functionality on block hit.
-    protected void onBlockHit() {}
-
-    @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
+    protected void onBlockHit() {
+        if (!this.getWorld().isClient) {
+            this.playDiscardParticle(this.getX(), this.getY(), this.getZ());
+            this.discard();
+        }
     }
 }
