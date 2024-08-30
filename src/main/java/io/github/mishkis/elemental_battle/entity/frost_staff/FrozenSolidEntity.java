@@ -112,7 +112,7 @@ public class FrozenSolidEntity extends MagicEntity implements GeoEntity {
                     hostileTarget.setAiDisabled(false);
                 }
 
-                target.damage(this.getDamageSources().freeze(), 3);
+                target.damage(this.getDamageSources().freeze(), this.getDamage());
 
                 playShatterParticle(serverWorld, this.getX(), this.getY(), this.getZ());
                 this.discard();

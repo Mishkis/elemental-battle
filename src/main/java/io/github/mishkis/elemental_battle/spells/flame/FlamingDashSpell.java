@@ -26,13 +26,12 @@ public class FlamingDashSpell extends Spell {
     }
 
     @Override
+    public int getUptime() {
+        return 20;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
-        FlamingDashEntity flamingDash = new FlamingDashEntity(ElementalBattleEntities.FLAMING_DASH, world);
-
-        flamingDash.setOwner(user);
-        flamingDash.setUptime(20);
-        flamingDash.setPosition(user.getPos());
-
-        world.spawnEntity(flamingDash);
+        world.spawnEntity(genericEntity(user, new FlamingDashEntity(ElementalBattleEntities.FLAMING_DASH, world)));
     }
 }

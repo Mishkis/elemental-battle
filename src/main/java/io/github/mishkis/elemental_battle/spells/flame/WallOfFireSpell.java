@@ -26,12 +26,12 @@ public class WallOfFireSpell extends Spell {
     }
 
     @Override
+    public int getUptime() {
+        return 80;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
-        WallOfFireEntity wallOfFire = new WallOfFireEntity(ElementalBattleEntities.WALL_OF_FIRE, world);
-
-        wallOfFire.setOwner(user);
-        wallOfFire.setUptime(80);
-
-        world.spawnEntity(wallOfFire);
+        world.spawnEntity(genericEntity(user, new WallOfFireEntity(ElementalBattleEntities.WALL_OF_FIRE, world)));
     }
 }

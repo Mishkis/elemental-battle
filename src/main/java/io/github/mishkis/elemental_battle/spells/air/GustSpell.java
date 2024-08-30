@@ -44,14 +44,20 @@ public class GustSpell extends Spell implements EmpoweredSpell {
     }
 
     @Override
+    public float getDamage() {
+        return 5;
+    }
+
+    @Override
+    public int getUptime() {
+        return 400;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
-        GustEntity gust = new GustEntity(ElementalBattleEntities.GUST, world);
+        GustEntity gust = (GustEntity) genericEntity(user, new GustEntity(ElementalBattleEntities.GUST, world));
 
-        gust.setOwner(user);
         gust.setParentSpell(this);
-
-        gust.setDamage(5f);
-        gust.setUptime(400);
 
         gust.setVelocity(user.getRotationVector());
         gust.setPosition(user.getEyePos().add(user.getRotationVector()));
@@ -66,13 +72,9 @@ public class GustSpell extends Spell implements EmpoweredSpell {
             // Summons an additional 2 gust entities.
             for(int i = 0; i < 2; i++) {
                 // All of this code is reused, might be worthwhile to simplify it so no repeating, but can't be bothered rn
-                GustEntity surroundingGusts = new GustEntity(ElementalBattleEntities.GUST, world);
+                GustEntity surroundingGusts = (GustEntity) genericEntity(user, new GustEntity(ElementalBattleEntities.GUST, world));
 
-                surroundingGusts.setOwner(user);
                 surroundingGusts.setParentSpell(this);
-
-                surroundingGusts.setDamage(5f);
-                surroundingGusts.setUptime(400);
 
                 // Taken from cone of fire, maybe make a helper class.
                 Vec3d offset = new Vec3d(0.4, 0, 0).rotateZ((float) (Math.PI * i));

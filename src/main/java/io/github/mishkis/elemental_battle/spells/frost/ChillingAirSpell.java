@@ -7,7 +7,6 @@ import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public class ChillingAirSpell extends Spell {
@@ -27,13 +26,17 @@ public class ChillingAirSpell extends Spell {
     }
 
     @Override
+    public float getDamage() {
+        return 3;
+    }
+
+    @Override
+    public int getUptime() {
+        return 20;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
-        ChillingAirEntity chillingAir = new ChillingAirEntity(ElementalBattleEntities.CHILLING_AIR, world);
-
-        chillingAir.setOwner(user);
-        chillingAir.setUptime(20);
-        chillingAir.setPosition(user.getPos().offset(Direction.UP, 1));
-
-        world.spawnEntity(chillingAir);
+        world.spawnEntity(genericEntity(user, new ChillingAirEntity(ElementalBattleEntities.CHILLING_AIR, world)));
     }
 }

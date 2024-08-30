@@ -36,6 +36,16 @@ public class FrigidGlareSpell extends Spell {
     }
 
     @Override
+    public float getDamage() {
+        return 3;
+    }
+
+    @Override
+    public int getUptime() {
+        return 25;
+    }
+
+    @Override
     public boolean canCast(World world, PlayerEntity user) {
         raycast(user);
 
@@ -63,6 +73,7 @@ public class FrigidGlareSpell extends Spell {
         IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world);
 
         iceTarget.setTarget(target);
+        iceTarget.setDamage(this.getDamage());
         iceTarget.setPosition(target.getPos());
         iceTarget.setFreezing();
 

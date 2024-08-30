@@ -27,6 +27,7 @@ public class ChillingAirEntity extends MagicAreaAttackEntity implements GeoEntit
             FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
 
             frozenSolid.setTarget(entity);
+            frozenSolid.setDamage(this.getDamage());
             frozenSolid.setPosition(entity.getPos());
 
             this.getWorld().spawnEntity(frozenSolid);

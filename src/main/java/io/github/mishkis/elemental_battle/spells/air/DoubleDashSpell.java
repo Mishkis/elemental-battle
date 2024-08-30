@@ -30,13 +30,15 @@ public class DoubleDashSpell extends Spell {
     }
 
     @Override
-    protected void onCast(World world, PlayerEntity user) {
-        DoubleDashEntity doubleDash = new DoubleDashEntity(ElementalBattleEntities.DOUBLE_DASH, world);
+    public int getUptime() {
+        return 10;
+    }
 
-        doubleDash.setOwner(user);
-        doubleDash.setUptime(10);
+    @Override
+    protected void onCast(World world, PlayerEntity user) {
+        DoubleDashEntity doubleDash = (DoubleDashEntity) genericEntity(user, new DoubleDashEntity(ElementalBattleEntities.DOUBLE_DASH, world));
+
         doubleDash.setParentSpell(this);
-        doubleDash.setPosition(user.getPos());
 
         world.spawnEntity(doubleDash);
     }

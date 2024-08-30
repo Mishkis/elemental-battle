@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.spells;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import net.fabricmc.loader.impl.util.StringUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
@@ -28,6 +29,14 @@ public abstract class Spell {
         return SPELL_NAME;
     }
 
+    public float getDamage() {
+        return 0;
+    }
+
+    public int getUptime() {
+        return 0;
+    }
+
     private String buildName() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -36,6 +45,14 @@ public abstract class Spell {
         );
 
         return stringBuilder.toString();
+    }
+
+    protected MagicEntity genericEntity(PlayerEntity owner, MagicEntity entity) {
+        entity.setDamage(getDamage());
+        entity.setUptime(getUptime());
+        entity.setOwner(owner);
+
+        return entity;
     }
 
     // Override to add client cast effects.

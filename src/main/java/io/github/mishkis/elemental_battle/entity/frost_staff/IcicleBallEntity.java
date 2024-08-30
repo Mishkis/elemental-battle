@@ -22,7 +22,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity {
     private final RawAnimation SPAWN_ANIMATION = RawAnimation.begin().thenPlay("animation.icicle_ball.spawn").thenLoop("animation.icicle_ball.idle");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private float damage;
 
     private boolean isHit = false;
 
@@ -42,18 +41,14 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
         ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 1);
     }
 
-    public void setDamage(float damage) {
-        this.damage = damage;
-    }
-
     @Override
     protected Box calculateBoundingBox() {
         EntityDimensions dimensions = this.getDimensions(this.getPose());
 
         if (!isHit) {
-            dimensions = dimensions.scaled(4);
+            dimensions = dimensions.scaled(3);
 
-            return dimensions.getBoxAt(this.getPos().offset(Direction.DOWN, 0.6));
+            return dimensions.getBoxAt(this.getPos().offset(Direction.DOWN, 0.45));
         }
 
         return dimensions.getBoxAt(this.getPos());
@@ -99,7 +94,7 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
            return;
        }
 
-        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), damage * 2);
+        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage() * 2);
 
         if (entity instanceof LivingEntity livingEntity) {
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), this);
@@ -122,7 +117,7 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
             Vec3d velocity = new Vec3d(0.2, 0.3, 0);
             icicle.setVelocity(velocity.rotateY((float) (startRotation + (Math.PI * 2 * i)/spawnCount)));
 
-            icicle.setDamage(this.damage);
+            icicle.setDamage(this.getDamage());
             icicle.setUptime(200);
 
             icicle.setOwner(this.getOwner());

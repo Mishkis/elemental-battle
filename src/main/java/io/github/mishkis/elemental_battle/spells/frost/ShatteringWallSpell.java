@@ -26,13 +26,17 @@ public class ShatteringWallSpell extends Spell {
     }
 
     @Override
+    public float getDamage() {
+        return 5;
+    }
+
+    @Override
+    public int getUptime() {
+        return 60;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
-        ShatteringWallEntity shatteringWall = new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world);
-
-        shatteringWall.setOwner(user);
-        shatteringWall.setDamage(5f);
-        shatteringWall.setUptime(60);
-
-        world.spawnEntity(shatteringWall);
+        world.spawnEntity(genericEntity(user, new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world)));
     }
 }

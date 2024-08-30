@@ -28,15 +28,18 @@ public class FrozenSlideSpell extends Spell implements EmpoweredSpell {
     }
 
     @Override
+    public float getDamage() {
+        return 5;
+    }
+
+    @Override
+    public int getUptime() {
+        return 20;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
-        FrozenSlideEntity frozenSlide = new FrozenSlideEntity(ElementalBattleEntities.FROZEN_SLIDE, world);
-
-        frozenSlide.setOwner(user);
-        frozenSlide.setDamage(5f);
-        frozenSlide.setUptime(20);
-        frozenSlide.setPosition(user.getPos());
-
-        world.spawnEntity(frozenSlide);
+        world.spawnEntity(genericEntity(user, new FrozenSlideEntity(ElementalBattleEntities.FROZEN_SLIDE, world)));
     }
 
     @Override

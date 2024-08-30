@@ -70,7 +70,7 @@ public class SlamDownSpell extends Spell {
 
     @Override
     protected void onCast(World world, PlayerEntity user) {
-        user.getAttached(SLAM_DOWN_ATTACHMENT).forEach(entity -> {
+        user.getAttachedOrCreate(SLAM_DOWN_ATTACHMENT).forEach(entity -> {
             if (!entity.isOnGround() && !entity.isRemoved()) {
                 entity.setVelocity(entity.getVelocity().x, Math.min(-5, entity.getVelocity().y * 2), entity.getVelocity().z);
                 entity.fallDistance = 8;

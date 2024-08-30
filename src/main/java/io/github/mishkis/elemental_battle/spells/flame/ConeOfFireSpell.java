@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.spells.flame;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
+import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
@@ -30,6 +31,16 @@ public class ConeOfFireSpell extends Spell {
     }
 
     @Override
+    public float getDamage() {
+        return 5;
+    }
+
+    @Override
+    public int getUptime() {
+        return 15;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
         Vec3d spawnPos = user.getEyePos();
 
@@ -37,12 +48,8 @@ public class ConeOfFireSpell extends Spell {
 
         float randomSpread = random.nextBetween(-1, 1) * 0.1F;
         for (int i = 0; i < spawnCount; i++) {
-            ConeOfFireEntity coneOfFire = new ConeOfFireEntity(ElementalBattleEntities.CONE_OF_FIRE, world);
+            MagicEntity coneOfFire = genericEntity(user, new ConeOfFireEntity(ElementalBattleEntities.CONE_OF_FIRE, world));
             coneOfFire.setPosition(spawnPos);
-
-            coneOfFire.setOwner(user);
-            coneOfFire.setDamage(5f);
-            coneOfFire.setUptime(15);
 
             coneOfFire.setNoGravity(true);
 

@@ -26,12 +26,12 @@ public class BlowBackSpell extends Spell {
     }
 
     @Override
+    public int getUptime() {
+        return 80;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
-        BlowBackEntity blowBack = new BlowBackEntity(ElementalBattleEntities.BLOW_BACK, world);
-
-        blowBack.setOwner(user);
-        blowBack.setUptime(80);
-
-        world.spawnEntity(blowBack);
+        world.spawnEntity(genericEntity(user, new BlowBackEntity(ElementalBattleEntities.BLOW_BACK, world)));
     }
 }

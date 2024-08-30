@@ -26,13 +26,12 @@ public class AirLiftSpell extends Spell {
     }
 
     @Override
+    public int getUptime() {
+        return 20;
+    }
+
+    @Override
     protected void onCast(World world, PlayerEntity user) {
-        AirLiftEntity airLift = new AirLiftEntity(ElementalBattleEntities.AIR_LIFT, world);
-
-        airLift.setOwner(user);
-        airLift.setUptime(20);
-        airLift.setPosition(user.getPos());
-
-        world.spawnEntity(airLift);
+        world.spawnEntity(genericEntity(user, new AirLiftEntity(ElementalBattleEntities.AIR_LIFT, world)));
     }
 }
