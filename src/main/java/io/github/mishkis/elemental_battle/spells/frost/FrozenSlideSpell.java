@@ -32,6 +32,8 @@ public class FrozenSlideSpell extends Spell implements EmpoweredSpell {
         FrozenSlideEntity frozenSlide = new FrozenSlideEntity(ElementalBattleEntities.FROZEN_SLIDE, world);
 
         frozenSlide.setOwner(user);
+        frozenSlide.setDamage(5f);
+        frozenSlide.setUptime(20);
         frozenSlide.setPosition(user.getPos());
 
         world.spawnEntity(frozenSlide);

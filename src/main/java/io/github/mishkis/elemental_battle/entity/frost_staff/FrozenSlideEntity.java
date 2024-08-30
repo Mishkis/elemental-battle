@@ -37,11 +37,6 @@ public class FrozenSlideEntity extends MagicDashEntity implements GeoEntity {
     }
 
     @Override
-    public float getUptime() {
-        return 20;
-    }
-
-    @Override
     public boolean isGrounded() {
         return true;
     }
@@ -53,76 +48,76 @@ public class FrozenSlideEntity extends MagicDashEntity implements GeoEntity {
 
     @Override
     public void tick() {
-        PlayerEntity owner = this.getOwner();
+        super.tick();
 
-        if (!empowered && owner != null && owner.getStatusEffect(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT) != null) {
-            this.setEmpowered(true);
+        if (this.getOwner() instanceof PlayerEntity owner) {
+            if (!empowered && owner.getStatusEffect(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT) != null) {
+                this.setEmpowered(true);
 
-            World world = this.getWorld();
+                World world = this.getWorld();
 
-            if (world instanceof ServerWorld serverWorld) {
-                // Play shatter particle.
-                serverWorld.spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, owner.getX(), owner.getEyeY(), owner.getZ(), 3, 1, 0.3, 1, 1);
+                if (world instanceof ServerWorld serverWorld) {
+                    // Play shatter particle.
+                    serverWorld.spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, owner.getX(), owner.getEyeY(), owner.getZ(), 3, 1, 0.3, 1, 1);
 
-                owner.removeStatusEffect(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT);
+                    owner.removeStatusEffect(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT);
 
-                // Summon icicle surrounding orbit.
-                int spawnCount = 8;
-                for (int i = 0; i < spawnCount; i++) {
-                    IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, serverWorld);
+                    // Summon icicle surrounding orbit.
+                    int spawnCount = 8;
+                    for (int i = 0; i < spawnCount; i++) {
+                        IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, serverWorld);
 
-                    icicle.setOwner(owner);
+                        icicle.setOwner(owner);
 
-                    int rotationSpeed = 3;
-                    float yOffset = 0.8F;
-                    float spawnDistance = 1.5F;
+                        int rotationSpeed = 3;
+                        float yOffset = 0.8F;
+                        float spawnDistance = 1.5F;
 
-                    if (i >= spawnCount / 2) {
-                        rotationSpeed *= 2;
-                        spawnDistance *= 2;
+                        if (i >= spawnCount / 2) {
+                            rotationSpeed *= 2;
+                            spawnDistance *= 2;
+                        }
+
+                        Vec3d spawnNormal = owner.getRotationVector().multiply(1, 0, 1).normalize();
+                        if (spawnNormal == Vec3d.ZERO) {
+                            spawnNormal = new Vec3d(1, 0, 0);
+                        }
+                        spawnNormal = spawnNormal.rotateY((float) (4 * i * Math.PI / spawnCount)).multiply(spawnDistance);
+
+                        Vec3d spawnPos = owner.getPos().add(spawnNormal).offset(Direction.UP, yOffset);
+                        icicle.setPosition(spawnPos);
+
+                        icicle.setOrbit(owner, rotationSpeed, yOffset);
+                        icicle.setNoGravity(true);
+
+                        icicle.setUptime(5 * 20);
+
+                        icicle.setVelocity(0.01, 0, 0); // for visual rotation on first tick spawned
+
+                        icicle.setDamage(this.getDamage());
+
+                        world.spawnEntity(icicle);
                     }
-
-                    Vec3d spawnNormal = owner.getRotationVector().multiply(1, 0, 1).normalize();
-                    if (spawnNormal == Vec3d.ZERO) {
-                        spawnNormal = new Vec3d(1, 0, 0);
-                    }
-                    spawnNormal = spawnNormal.rotateY((float) (4 * i * Math.PI / spawnCount)).multiply(spawnDistance);
-
-                    Vec3d spawnPos = owner.getPos().add(spawnNormal).offset(Direction.UP, yOffset);
-                    icicle.setPosition(spawnPos);
-
-                    icicle.setOrbit(owner, rotationSpeed, yOffset);
-                    icicle.setNoGravity(true);
-
-                    icicle.setUptime(5 * 20);
-
-                    icicle.setVelocity(0.01, 0, 0); // for visual rotation on first tick spawned
-
-                    icicle.setDamage(5);
-
-                    world.spawnEntity(icicle);
                 }
             }
-        }
 
-        if (!this.getWorld().isClient() && owner != null) {
-            owner.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 0), this);
+            if (!this.getWorld().isClient()) {
+                owner.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 0), this);
+            }
         }
-
-        super.tick();
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", this::animation));
+        controllers.add(new AnimationController<>(this, "spawn", (animationState) -> {
+            if (empowered) {
+                return animationState.setAndContinue(EMPOWERED_ANIMATION);
+            }
+
+            return animationState.setAndContinue(SPAWN_ANIMATION);
+        }));
     }
 
-    private <E extends FrozenSlideEntity> PlayState animation(final AnimationState<E> event) {
-        if (empowered) {
-            return event.setAndContinue(EMPOWERED_ANIMATION);
-        }
-        return event.setAndContinue(SPAWN_ANIMATION);
-    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {

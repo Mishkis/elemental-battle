@@ -34,6 +34,7 @@ public class DoubleDashSpell extends Spell {
         DoubleDashEntity doubleDash = new DoubleDashEntity(ElementalBattleEntities.DOUBLE_DASH, world);
 
         doubleDash.setOwner(user);
+        doubleDash.setUptime(10);
         doubleDash.setParentSpell(this);
         doubleDash.setPosition(user.getPos());
 

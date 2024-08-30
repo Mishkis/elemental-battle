@@ -1,14 +1,11 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -18,7 +15,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -42,9 +38,11 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
     }
 
     @Override
-    public void onTimeOut(PlayerEntity owner) {
-        if (owner.getStatusEffect(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT) == null) {
-            owner.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2));
+    public void onTimeOut() {
+        super.onTimeOut();
+
+        if (this.getOwner() != null && this.getOwner().getStatusEffect(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT) == null) {
+            this.getOwner().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2));
         }
     }
 
@@ -52,15 +50,11 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
     public void onDamaged(DamageSource source) {
         World world = this.getWorld();
 
-        if (!world.isClient()) {
-            PlayerEntity owner = this.getOwner();
-            if (owner != null) {
-                Vec3d particlePos = owner.getEyePos().add(owner.getRotationVector().multiply(0.5));
-                ((ServerWorld) world).spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, particlePos.getX(), particlePos.getY(), particlePos.getZ(), 1, 0, 0, 0, 1);
+        if (!world.isClient() && this.getOwner() instanceof PlayerEntity owner) {
+            Vec3d particlePos = owner.getEyePos().add(owner.getRotationVector().multiply(0.5));
+            ((ServerWorld) world).spawnParticles(ElementalBattleParticles.FROST_SHATTER_PARTICLE, particlePos.getX(), particlePos.getY(), particlePos.getZ(), 1, 0, 0, 0, 1);
 
-                owner.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT, 100, 0), this);
-
-            }
+            owner.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SUCCESSFUL_PARRY_EFFECT, 100, 0), this);
 
             IcicleEntity icicle = new IcicleEntity(ElementalBattleEntities.ICICLE, world);
 
@@ -87,7 +81,8 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
             }
 
             icicle.setOwner(this.getOwner());
-            icicle.setDamage(5);
+            icicle.setDamage(this.getDamage());
+            icicle.setUptime(200);
             icicle.setPosition(this.getPos().offset(Direction.UP, 1));
 
             icicle.setVelocity(random.nextBetween(-10, 10) * 0.1, 0.3, random.nextBetween(-10, 10) * 0.1);
@@ -98,11 +93,7 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", this::spawnAnimation));
-    }
-
-    private <E extends ShatteringWallEntity> PlayState spawnAnimation(final AnimationState<E> event) {
-        return event.setAndContinue(SPAWN_ANIMATION);
+        controllers.add(new AnimationController<>(this, "spawn", (animationState) -> animationState.setAndContinue(SPAWN_ANIMATION)));
     }
 
     @Override

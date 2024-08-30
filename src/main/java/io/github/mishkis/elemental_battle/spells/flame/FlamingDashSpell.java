@@ -30,6 +30,7 @@ public class FlamingDashSpell extends Spell {
         FlamingDashEntity flamingDash = new FlamingDashEntity(ElementalBattleEntities.FLAMING_DASH, world);
 
         flamingDash.setOwner(user);
+        flamingDash.setUptime(20);
         flamingDash.setPosition(user.getPos());
 
         world.spawnEntity(flamingDash);

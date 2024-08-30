@@ -12,10 +12,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public abstract class MagicProjectileEntity extends MagicEntity {
-    private int uptime = 20 * 20;
-    private double gravity = 0.05;
-    private float damage;
-
     protected abstract void playTravelParticle(double x, double y, double z);
 
     protected abstract void playDiscardParticle(double x, double y, double z);
@@ -24,25 +20,9 @@ public abstract class MagicProjectileEntity extends MagicEntity {
         super(entityType, world);
     }
 
-    public void setDamage(float damage) {
-        this.damage = damage;
-    }
-
-    public float getDamage() {
-        return this.damage;
-    }
-
-    public void setUptime(int uptime) {
-        this.uptime = uptime;
-    }
-
-    public int getUptime() {
-        return uptime;
-    }
-
     @Override
     public double getGravity() {
-        return this.gravity;
+        return 0.05;
     }
 
     @Override
@@ -69,13 +49,9 @@ public abstract class MagicProjectileEntity extends MagicEntity {
         }
 
         float newPitch = (float) ((90 * velocity.y) / (baseAngle + Math.abs(velocity.y)));
-        if (this.getUptime() < age && !this.getWorld().isClient) {
-            this.playDiscardParticle(x, y, z);
-            this.discard();
-        }
 
         // Check collision
-        HitResult hitResult = ProjectileUtil.getCollision(this, (entity) -> true);
+        HitResult hitResult = ProjectileUtil.getCollision(this, Entity::canHit);
         if (hitResult.getType() != HitResult.Type.MISS) {
             this.onCollision(hitResult);
         }
@@ -120,6 +96,13 @@ public abstract class MagicProjectileEntity extends MagicEntity {
         if (!this.getWorld().isClient) {
             this.playDiscardParticle(this.getX(), this.getY(), this.getZ());
             this.discard();
+        }
+    }
+
+    @Override
+    protected void onTimeOut() {
+        if (!this.getWorld().isClient) {
+            playDiscardParticle(this.getX(), this.getY(), this.getZ());
         }
     }
 }

@@ -30,6 +30,7 @@ public class AirLiftSpell extends Spell {
         AirLiftEntity airLift = new AirLiftEntity(ElementalBattleEntities.AIR_LIFT, world);
 
         airLift.setOwner(user);
+        airLift.setUptime(20);
         airLift.setPosition(user.getPos());
 
         world.spawnEntity(airLift);

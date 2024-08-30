@@ -37,6 +37,13 @@ public class IceTargetEntity extends MagicEntity implements GeoEntity {
         super(type, world);
     }
 
+    // This has a constant uptime.
+    // 1.25 is the exact time it takes for ANIMATION to finish. Multiply by 20, add a little so it can finish.
+    @Override
+    public Integer getUptime() {
+        return 26;
+    }
+
     public void setTarget(Entity target) {
         if (target != null) {
             this.target = target;
@@ -64,33 +71,36 @@ public class IceTargetEntity extends MagicEntity implements GeoEntity {
 
     @Override
     public void tick() {
+        super.tick();
+
         Entity target = this.getTarget();
-        if (target != null) {
+        if (target != null && !target.isRemoved()) {
             this.setPosition(target.getPos());
             if (this.getWorld().isClient()) {
                 this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, this.getX() + random.nextBetween(-1, 1), this.getY() + 1, this.getZ() + random.nextBetween(-1, 1), 0, random.nextBetween(1, 3) * 0.1, 0);
             }
 
             // Do this before time out to ensure that it is in fact called.
-            if (25 < age && this.getWorld().isClient) {
+            if (getUptime() - 1 < age && this.getWorld().isClient) {
                 target.removeAttached(SpellDisplay.SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT);
             }
         }
-
-        // 1.25 is the exact time it takes for ANIMATION to finish. Multiply by 20, add a little so it can finish.
-        if (26 < age) {
-            if (!this.getWorld().isClient) {
-                if (freezing && this.getTarget() instanceof LivingEntity livingTarget && livingTarget.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) == null) {
-                    FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
-
-                    frozenSolid.setTarget(livingTarget);
-                    frozenSolid.setPosition(livingTarget.getPos());
-
-                    this.getWorld().spawnEntity(frozenSolid);
-                }
-            }
-
+        else {
             this.discard();
+        }
+    }
+
+    @Override
+    protected void onTimeOut() {
+        if (!this.getWorld().isClient) {
+            if (freezing && this.getTarget() instanceof LivingEntity livingTarget && livingTarget.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) == null) {
+                FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
+
+                frozenSolid.setTarget(livingTarget);
+                frozenSolid.setPosition(livingTarget.getPos());
+
+                this.getWorld().spawnEntity(frozenSolid);
+            }
         }
     }
 

@@ -36,6 +36,7 @@ public class IcicleBallSpell extends Spell {
 
         icicleBall.setOwner(user);
         icicleBall.setDamage(5);
+        icicleBall.setUptime(400);
 
         world.spawnEntity(icicleBall);
     }

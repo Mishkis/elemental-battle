@@ -30,6 +30,7 @@ public class ShatteringWallSpell extends Spell {
         ShatteringWallEntity shatteringWall = new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world);
 
         shatteringWall.setOwner(user);
+        shatteringWall.setDamage(5f);
         shatteringWall.setUptime(60);
 
         world.spawnEntity(shatteringWall);

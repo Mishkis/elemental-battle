@@ -15,13 +15,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.UUID;
-
 public abstract class MagicShieldEntity extends MagicEntity {
-    private PlayerEntity owner;
-    private UUID ownerUuid;
-    private float uptime;
-
     // This is used in the shield effect mixin to call the ondamaged effect of the shield.
     public static final AttachmentType<MagicShieldEntity> SHIELD_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "shield_attachment"));
 
@@ -30,7 +24,9 @@ public abstract class MagicShieldEntity extends MagicEntity {
         super.setOwner(owner);
 
         // Tell owner that a shield is attached.
-        this.getOwner().setAttached(SHIELD_ATTACHMENT, this);
+        if (this.getOwner() != null) {
+            this.getOwner().setAttached(SHIELD_ATTACHMENT, this);
+        }
     }
 
     public MagicShieldEntity(EntityType<?> type, World world) {
@@ -40,33 +36,20 @@ public abstract class MagicShieldEntity extends MagicEntity {
     @Environment(EnvType.CLIENT)
     public abstract void playParticle(Vec3d pos);
 
-    public void setUptime(float uptime) {
-        this.uptime = uptime;
-    }
-
     @Override
     public void tick() {
         super.tick();
 
-        PlayerEntity owner = this.getOwner();
-        if (owner != null) {
+        if (this.getOwner() instanceof PlayerEntity owner) {
             if (!this.getWorld().isClient()) {
                 shieldEffect(owner);
 
-                if (uptime < age) {
-                    onTimeOut(owner);
-                    owner.removeAttached(SHIELD_ATTACHMENT);
-                    this.discard();
-                }
             }
 
             this.setPosition(owner.getPos());
             if (this.getWorld().isClient) {
                 this.playParticle(owner.getPos());
             }
-        }
-        else {
-            this.discard();
         }
     }
 
@@ -94,6 +77,10 @@ public abstract class MagicShieldEntity extends MagicEntity {
         owner.setStatusEffect(new StatusEffectInstance(ElementalBattleStatusEffects.SHIELD_EFFECT, 10, 0), this);
     }
 
-    // Override to add custom functionality on time out.
-    public void onTimeOut(PlayerEntity owner) {}
+    @Override
+    protected void onTimeOut() {
+        if (this.getOwner() != null) {
+            this.getOwner().removeAttached(SHIELD_ATTACHMENT);
+        }
+    }
 }

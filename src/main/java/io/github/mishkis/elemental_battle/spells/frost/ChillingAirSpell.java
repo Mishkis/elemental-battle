@@ -31,6 +31,7 @@ public class ChillingAirSpell extends Spell {
         ChillingAirEntity chillingAir = new ChillingAirEntity(ElementalBattleEntities.CHILLING_AIR, world);
 
         chillingAir.setOwner(user);
+        chillingAir.setUptime(20);
         chillingAir.setPosition(user.getPos().offset(Direction.UP, 1));
 
         world.spawnEntity(chillingAir);

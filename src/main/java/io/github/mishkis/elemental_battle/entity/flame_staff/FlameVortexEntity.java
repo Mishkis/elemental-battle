@@ -18,26 +18,19 @@ public class FlameVortexEntity extends MagicAreaAttackEntity implements GeoEntit
     }
 
     @Override
-    protected int getUptime() {
-        return 20;
-    }
-
-    @Override
     protected void onEntityCollision(LivingEntity entity) {
-        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 5);
+        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
         entity.setOnFireForTicks(60);
 
-        entity.setVelocity(this.getOwner().getPos().subtract(entity.getPos()).normalize());
+        if (this.getOwner() != null) {
+            entity.setVelocity(this.getOwner().getPos().subtract(entity.getPos()).normalize());
+        }
     }
 
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", this::animation));
-    }
-
-    public <E extends FlameVortexEntity> PlayState animation(AnimationState<E> animationState) {
-        return animationState.setAndContinue(ANIMATION);
+        controllers.add(new AnimationController<>(this, "spawn", (animationState) -> animationState.setAndContinue(ANIMATION)));
     }
 
     @Override

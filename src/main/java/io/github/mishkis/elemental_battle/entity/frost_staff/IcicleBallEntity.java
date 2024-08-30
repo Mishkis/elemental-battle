@@ -8,7 +8,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
@@ -18,7 +17,6 @@ import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
-import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity {
@@ -32,10 +30,6 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
         super(entityType, world);
 
         this.setNoGravity(true);
-    }
-
-    public float getDamage() {
-        return this.damage;
     }
 
     @Override
@@ -81,7 +75,6 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
             }
             else if(entity instanceof PlayerEntity player) {
                 this.setOwner(player);
-                entity = player;
             }
 
             this.setVelocity(entity.getRotationVector().multiply(2));
@@ -106,7 +99,7 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
            return;
        }
 
-        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage() * 2);
+        entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), damage * 2);
 
         if (entity instanceof LivingEntity livingEntity) {
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), this);
@@ -129,7 +122,8 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
             Vec3d velocity = new Vec3d(0.2, 0.3, 0);
             icicle.setVelocity(velocity.rotateY((float) (startRotation + (Math.PI * 2 * i)/spawnCount)));
 
-            icicle.setDamage(this.getDamage());
+            icicle.setDamage(this.damage);
+            icicle.setUptime(200);
 
             icicle.setOwner(this.getOwner());
 
@@ -142,19 +136,18 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
     @Override
     public void tick() {
         super.tick();
+    }
 
-        if (800 < age && this.getWorld() instanceof ServerWorld serverWorld) {
+    @Override
+    protected void onTimeOut() {
+        if(this.getWorld() instanceof ServerWorld serverWorld) {
             this.explode(serverWorld);
         }
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", this::spawnAnimation));
-    }
-
-    private <E extends IcicleBallEntity> PlayState spawnAnimation(final AnimationState<E> event) {
-        return event.setAndContinue(SPAWN_ANIMATION);
+        controllers.add(new AnimationController<>(this, "spawn", (animationState) -> animationState.setAndContinue(SPAWN_ANIMATION)));
     }
 
     @Override

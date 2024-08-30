@@ -1,16 +1,13 @@
 package io.github.mishkis.elemental_battle.entity.flame_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -41,11 +38,7 @@ public class WallOfFireEntity extends MagicShieldEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "idle", this::animation));
-    }
-
-    public <E extends WallOfFireEntity> PlayState animation(AnimationState<E> animationState) {
-        return animationState.setAndContinue(ANIMATION);
+        controllers.add(new AnimationController<>(this, "idle", (animationState) -> animationState.setAndContinue(ANIMATION)));
     }
 
     @Override

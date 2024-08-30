@@ -22,12 +22,11 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
 
     @Override
     protected void playTravelParticle(double x, double y, double z) {
-        World world = this.getWorld();
         if (age > 2) {
             SimpleParticleType particle;
-            if (age < 5) {
+            if (age < this.getUptime()/3) {
                 particle = ElementalBattleParticles.FLAME_PARTICLE_FULL;
-            } else if (age < 10) {
+            } else if (age < 2 * this.getUptime()/3) {
                 particle = ElementalBattleParticles.FLAME_PARTICLE_PARTIAL;
             } else {
                 particle = ElementalBattleParticles.FLAME_PARTICLE_SMOKE;
@@ -52,11 +51,7 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", this::spawnAnimation));
-    }
-
-    private <E extends ConeOfFireEntity> PlayState spawnAnimation(final AnimationState<E> event) {
-        return event.setAndContinue(SPAWN_ANIMATION);
+        controllers.add(new AnimationController<>(this, "spawn", (animationState) -> animationState.setAndContinue(SPAWN_ANIMATION)));
     }
 
     @Override

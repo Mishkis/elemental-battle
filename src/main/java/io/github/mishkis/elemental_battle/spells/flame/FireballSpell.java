@@ -32,6 +32,9 @@ public class FireballSpell extends Spell {
 
         fireball.setOwner(user);
 
+        fireball.setDamage(10f);
+        fireball.setUptime(400);
+
         fireball.setVelocity(user.getRotationVector().multiply(2));
         fireball.setPosition(user.getPos().offset(Direction.UP, 1.3).add(fireball.getVelocity()));
 

@@ -30,13 +30,8 @@ public class FireballEntity extends MagicProjectileEntity implements GeoEntity {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        if (200 < age) {
-            explode();
-            this.discard();
-        }
+    protected void onTimeOut() {
+        explode();
     }
 
     @Override
@@ -54,7 +49,7 @@ public class FireballEntity extends MagicProjectileEntity implements GeoEntity {
 
     private void explode() {
         this.getWorld().getOtherEntities(this.getOwner(), this.getBoundingBox().expand(3, 3, 3)).forEach((entity -> {
-            entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 10 / entity.distanceTo(this));
+            entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage() / entity.distanceTo(this));
             entity.setOnFireForTicks(40);
         }));
     }

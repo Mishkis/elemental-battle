@@ -33,11 +33,15 @@ public class FrozenSolidEntity extends MagicEntity implements GeoEntity {
     private LivingEntity target;
     private UUID targetUuid;
 
-    private int uptime = 100;
     private float ownerStartHealth = 0;
 
     public FrozenSolidEntity(EntityType<?> type, World world) {
         super(type, world);
+    }
+
+    @Override
+    public Integer getUptime() {
+        return 100;
     }
 
     public void setTarget (LivingEntity target) {
@@ -103,7 +107,7 @@ public class FrozenSolidEntity extends MagicEntity implements GeoEntity {
                 this.move(MovementType.SELF, target.getVelocity());
             }
 
-            if (this.getWorld() instanceof ServerWorld serverWorld && (uptime < age || target.getHealth() < ownerStartHealth)) {
+            if (this.getWorld() instanceof ServerWorld serverWorld && target.getHealth() < ownerStartHealth) {
                 if (target instanceof HostileEntity hostileTarget) {
                     hostileTarget.setAiDisabled(false);
                 }
@@ -113,6 +117,20 @@ public class FrozenSolidEntity extends MagicEntity implements GeoEntity {
                 playShatterParticle(serverWorld, this.getX(), this.getY(), this.getZ());
                 this.discard();
             }
+        }
+    }
+
+    @Override
+    protected void onTimeOut() {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            if (target instanceof HostileEntity hostileTarget) {
+                hostileTarget.setAiDisabled(false);
+            }
+
+            target.damage(this.getDamageSources().freeze(), 3);
+
+            playShatterParticle(serverWorld, this.getX(), this.getY(), this.getZ());
+            this.discard();
         }
     }
 
@@ -146,11 +164,7 @@ public class FrozenSolidEntity extends MagicEntity implements GeoEntity {
     }
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", this::animation));
-    }
-
-    private <E extends FrozenSolidEntity> PlayState animation(AnimationState animationState) {
-        return animationState.setAndContinue(ANIMATION);
+        controllers.add(new AnimationController<>(this, "spawn", (animatonState) -> animatonState.setAndContinue(ANIMATION)));
     }
 
     @Override

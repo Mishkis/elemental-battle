@@ -27,11 +27,6 @@ public class FlamingDashEntity extends MagicDashEntity implements GeoEntity {
     }
 
     @Override
-    public float getUptime() {
-        return 20;
-    }
-
-    @Override
     public boolean isGrounded() {
         return false;
     }
@@ -47,7 +42,7 @@ public class FlamingDashEntity extends MagicDashEntity implements GeoEntity {
 
         if (this.getWorld() instanceof ServerWorld serverWorld) {
             for (Entity entity : serverWorld.getOtherEntities(this.getOwner(), this.getBoundingBox(), EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR)) {
-                entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 5);
+                entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
                 entity.setOnFireForTicks(60);
             }
         }
@@ -60,11 +55,7 @@ public class FlamingDashEntity extends MagicDashEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "idle", this::animation));
-    }
-
-    private <E extends FlamingDashEntity> PlayState animation(final AnimationState<E> animationState) {
-        return animationState.setAndContinue(ANIMATION);
+        controllers.add(new AnimationController<>(this, "idle", (animationState) -> animationState.setAndContinue(ANIMATION)));
     }
 
     @Override

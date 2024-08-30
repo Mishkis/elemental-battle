@@ -1,6 +1,5 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicAreaAttackEntity;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
@@ -23,11 +22,6 @@ public class ChillingAirEntity extends MagicAreaAttackEntity implements GeoEntit
     }
 
     @Override
-    protected int getUptime() {
-        return 20;
-    }
-
-    @Override
     protected void onEntityCollision(LivingEntity entity) {
         if (entity.getStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT) == null) {
             FrozenSolidEntity frozenSolid = new FrozenSolidEntity(ElementalBattleEntities.FROZEN_SOLID, this.getWorld());
@@ -44,11 +38,7 @@ public class ChillingAirEntity extends MagicAreaAttackEntity implements GeoEntit
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", this::animation));
-    }
-
-    public <E extends ChillingAirEntity> PlayState animation(AnimationState<E> animationState) {
-        return animationState.setAndContinue(ANIMATION);
+        controllers.add(new AnimationController<>(this, "spawn", (animationState) -> (animationState.setAndContinue(ANIMATION))));
     }
 
     @Override

@@ -1,15 +1,12 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.MagicAreaAttackEntity;
 import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -21,11 +18,6 @@ public class AirLiftEntity extends MagicAreaAttackEntity implements GeoEntity {
 
     public AirLiftEntity(EntityType<?> type, World world) {
         super(type, world);
-    }
-
-    @Override
-    protected int getUptime() {
-        return 20;
     }
 
     @Override
@@ -43,11 +35,7 @@ public class AirLiftEntity extends MagicAreaAttackEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", this::animation));
-    }
-
-    public <E extends AirLiftEntity> PlayState animation(AnimationState animationState) {
-        return animationState.setAndContinue(ANIMATION);
+        controllers.add(new AnimationController<>(this, "spawn", (animationState) -> animationState.setAndContinue(ANIMATION)));
     }
 
     @Override

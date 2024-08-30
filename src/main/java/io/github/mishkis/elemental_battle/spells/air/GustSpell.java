@@ -50,6 +50,9 @@ public class GustSpell extends Spell implements EmpoweredSpell {
         gust.setOwner(user);
         gust.setParentSpell(this);
 
+        gust.setDamage(5f);
+        gust.setUptime(400);
+
         gust.setVelocity(user.getRotationVector());
         gust.setPosition(user.getEyePos().add(user.getRotationVector()));
 
@@ -67,6 +70,9 @@ public class GustSpell extends Spell implements EmpoweredSpell {
 
                 surroundingGusts.setOwner(user);
                 surroundingGusts.setParentSpell(this);
+
+                surroundingGusts.setDamage(5f);
+                surroundingGusts.setUptime(400);
 
                 // Taken from cone of fire, maybe make a helper class.
                 Vec3d offset = new Vec3d(0.4, 0, 0).rotateZ((float) (Math.PI * i));

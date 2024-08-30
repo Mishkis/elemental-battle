@@ -12,7 +12,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class ConeOfFireSpell extends Spell {
-    private Random random = Random.create();
+    private final Random random = Random.create();
 
     @Override
     public Identifier getId() {
@@ -41,7 +41,7 @@ public class ConeOfFireSpell extends Spell {
             coneOfFire.setPosition(spawnPos);
 
             coneOfFire.setOwner(user);
-            coneOfFire.setDamage(5);
+            coneOfFire.setDamage(5f);
             coneOfFire.setUptime(15);
 
             coneOfFire.setNoGravity(true);

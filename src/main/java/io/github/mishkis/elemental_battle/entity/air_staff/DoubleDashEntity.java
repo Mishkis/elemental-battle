@@ -34,11 +34,6 @@ public class DoubleDashEntity extends MagicDashEntity implements GeoEntity {
     }
 
     @Override
-    public float getUptime() {
-        return 10;
-    }
-
-    @Override
     public boolean isGrounded() {
         return false;
     }
@@ -48,12 +43,12 @@ public class DoubleDashEntity extends MagicDashEntity implements GeoEntity {
     }
 
     @Override
-    protected void onDiscard() {
+    protected void onTimeOut() {
         if (this.getOwner() instanceof ServerPlayerEntity player) {
             if (player.getAttached(DoubleDashSpell.HAS_DOUBLE_DASHED_ATTACHMENT) == null) {
                 player.setAttached(DoubleDashSpell.HAS_DOUBLE_DASHED_ATTACHMENT, true);
 
-                player.getAttached(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
+                player.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).remove(parentSpell);
                 ServerPlayNetworking.send(player, new S2CSpellCooldownManagerRemove(parentSpell.getId()));
             }
             else {
@@ -69,9 +64,7 @@ public class DoubleDashEntity extends MagicDashEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "idle", (animationState) ->
-                animationState.setAndContinue(ANIMATION)
-        ));
+        controllers.add(new AnimationController<>(this, "idle", (animationState) -> animationState.setAndContinue(ANIMATION)));
     }
 
     @Override

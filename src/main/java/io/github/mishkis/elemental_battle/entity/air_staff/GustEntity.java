@@ -33,11 +33,6 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     private boolean empowered = false;
     private Spell parentSpell;
 
-    @Override
-    public float getDamage() {
-        return 5;
-    }
-
     public void setEmpowered() {
         this.setVelocity(this.getVelocity().multiply(2));
 
@@ -73,7 +68,7 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
 
         if (entity != this.getOwner()) {
             if (empowered) {
-                entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), 5);
+                entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
 
                 if (knockback_vec.y < 1) {
                     knockback_vec = new Vec3d(knockback_vec.x, 1, knockback_vec.z);
@@ -131,19 +126,13 @@ public class GustEntity extends MagicProjectileEntity implements GeoEntity {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        if (1200 < age) {
-            onBlockHit();
-            this.discard();
-        }
+    protected void onTimeOut() {
+        onBlockHit();
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "idle", (animationState) ->
-            animationState.setAndContinue(IDLE_ANIMATION) ));
+        controllers.add(new AnimationController<>(this, "idle", (animationState) -> animationState.setAndContinue(IDLE_ANIMATION)));
     }
 
     @Override

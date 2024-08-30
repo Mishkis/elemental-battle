@@ -31,6 +31,8 @@ public class FlameVortexSpell extends Spell {
         FlameVortexEntity flameVortex = new FlameVortexEntity(ElementalBattleEntities.FLAME_VORTEX, world);
 
         flameVortex.setOwner(user);
+        flameVortex.setDamage(5f);
+        flameVortex.setUptime(20);
         flameVortex.setPosition(user.getPos().offset(Direction.UP, 1));
 
         world.spawnEntity(flameVortex);
