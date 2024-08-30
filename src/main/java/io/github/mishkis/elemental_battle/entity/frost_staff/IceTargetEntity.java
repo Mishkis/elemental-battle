@@ -1,15 +1,13 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
+import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.rendering.SpellDisplay;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -24,10 +22,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-public class IceTargetEntity extends Entity implements GeoEntity {
+public class IceTargetEntity extends MagicEntity implements GeoEntity {
     private final RawAnimation ANIMATION = RawAnimation.begin().thenPlay("animation.ice_target.spawn").thenPlay("animation.ice_target.despawn");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    // This is honestly not a very good way to sync target between server and client since it sacrifices remembering original owner.
     private Entity target;
     private UUID targetUuid;
 
@@ -71,12 +70,13 @@ public class IceTargetEntity extends Entity implements GeoEntity {
             if (this.getWorld().isClient()) {
                 this.getWorld().addParticle(ElementalBattleParticles.FROST_PARTICLE, this.getX() + random.nextBetween(-1, 1), this.getY() + 1, this.getZ() + random.nextBetween(-1, 1), 0, random.nextBetween(1, 3) * 0.1, 0);
             }
+
+            // Do this before time out to ensure that it is in fact called.
+            if (25 < age && this.getWorld().isClient) {
+                target.removeAttached(SpellDisplay.SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT);
+            }
         }
 
-        // Do this before time out to ensure that it is in fact called.
-        if (25 < age && this.getWorld().isClient) {
-            target.removeAttached(SpellDisplay.SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT);
-        }
         // 1.25 is the exact time it takes for ANIMATION to finish. Multiply by 20, add a little so it can finish.
         if (26 < age) {
             if (!this.getWorld().isClient) {
@@ -107,9 +107,6 @@ public class IceTargetEntity extends Entity implements GeoEntity {
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
-
-    @Override
-    protected void initDataTracker(DataTracker.Builder builder) {}
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {

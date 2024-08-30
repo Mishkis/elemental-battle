@@ -1,17 +1,14 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
-import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -19,7 +16,6 @@ import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -29,10 +25,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-public class FrozenSolidEntity extends Entity implements GeoEntity {
+public class FrozenSolidEntity extends MagicEntity implements GeoEntity {
     private final RawAnimation ANIMATION = RawAnimation.begin().thenPlay("animation.frozen_solid.spawn");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    // This is honestly not a very good way to sync target between server and client since it sacrifices remembering original owner.
     private LivingEntity target;
     private UUID targetUuid;
 
@@ -118,9 +115,6 @@ public class FrozenSolidEntity extends Entity implements GeoEntity {
             }
         }
     }
-
-    @Override
-    protected void initDataTracker(DataTracker.Builder builder) {}
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {

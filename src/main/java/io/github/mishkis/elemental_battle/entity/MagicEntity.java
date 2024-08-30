@@ -74,9 +74,8 @@ public abstract class MagicEntity extends Entity implements Ownable {
     public void onSpawnPacket(EntitySpawnS2CPacket packet) {
         super.onSpawnPacket(packet);
 
-        PlayerEntity owner = (PlayerEntity) this.getWorld().getEntityById(packet.getEntityData());
-        if (owner != null) {
-            this.setOwner(owner);
+        if (this.getWorld().getEntityById(packet.getEntityData()) instanceof PlayerEntity player) {
+            this.setOwner(player);
         }
     }
 }

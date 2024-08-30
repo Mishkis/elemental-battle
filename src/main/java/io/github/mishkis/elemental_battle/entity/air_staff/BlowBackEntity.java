@@ -6,7 +6,6 @@ import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
