@@ -75,10 +75,9 @@ public class FrigidGlareSpell extends Spell {
             return;
         }
 
-        IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world);
+        IceTargetEntity iceTarget = (IceTargetEntity) genericEntity(user, new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world));
 
         iceTarget.setTarget(target);
-        iceTarget.setDamage(this.getDamage());
         iceTarget.setPosition(target.getPos());
         iceTarget.setFreezing();
 

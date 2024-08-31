@@ -8,21 +8,17 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.server.network.EntityTrackerEntry;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class MagicEntity extends Entity implements Ownable {
     private static final TrackedData<Integer> UPTIME = DataTracker.registerData(MagicEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Float> DAMAGE = DataTracker.registerData(MagicEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Optional<UUID>> OWNER_UUID = DataTracker.registerData(MagicEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
     private PlayerEntity owner;
-    private UUID ownerUuid;
 
     public MagicEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -47,12 +43,17 @@ public abstract class MagicEntity extends Entity implements Ownable {
     public void setOwner(PlayerEntity owner) {
         if (owner != null) {
             this.owner = owner;
-            this.ownerUuid = owner.getUuid();
+
+            dataTracker.set(OWNER_UUID, Optional.of(owner.getUuid()));
         }
     }
 
     @Override
     public void tick() {
+        if (this.getOwner() instanceof PlayerEntity player && player.isRemoved()) {
+            this.discard();
+        }
+
         super.tick();
 
         if (this.getUptime() < age) {
@@ -69,8 +70,8 @@ public abstract class MagicEntity extends Entity implements Ownable {
     @Override
     public PlayerEntity getOwner() {
         if (this.owner == null) {
-            if (this.ownerUuid != null && this.getWorld() instanceof ServerWorld world) {
-                this.owner = world.getPlayerByUuid(ownerUuid);
+            if (dataTracker.get(OWNER_UUID).isPresent()) {
+                this.owner = this.getWorld().getPlayerByUuid(dataTracker.get(OWNER_UUID).get());
 
                 if (this.owner == null) {
                     this.discard();
@@ -89,33 +90,12 @@ public abstract class MagicEntity extends Entity implements Ownable {
     protected void initDataTracker(DataTracker.Builder builder) {
         builder.add(UPTIME, 0);
         builder.add(DAMAGE, 0f);
+        builder.add(OWNER_UUID, Optional.empty());
     }
 
     @Override
-    protected void writeCustomDataToNbt(NbtCompound nbt) {
-        if (this.ownerUuid != null) {
-            nbt.putUuid("Owner", this.ownerUuid);
-        }
-    }
+    protected void writeCustomDataToNbt(NbtCompound nbt) {}
 
     @Override
-    protected void readCustomDataFromNbt(NbtCompound nbt) {
-        if (nbt.containsUuid("Owner")) {
-            this.ownerUuid = nbt.getUuid("Owner");
-        }
-    }
-
-    @Override
-    public Packet<ClientPlayPacketListener> createSpawnPacket(EntityTrackerEntry entityTrackerEntry) {
-        return new EntitySpawnS2CPacket(this, entityTrackerEntry, owner == null ? 0 : owner.getId());
-    }
-
-    @Override
-    public void onSpawnPacket(EntitySpawnS2CPacket packet) {
-        super.onSpawnPacket(packet);
-
-        if (this.getWorld().getEntityById(packet.getEntityData()) instanceof PlayerEntity player) {
-            this.setOwner(player);
-        }
-    }
+    protected void readCustomDataFromNbt(NbtCompound nbt) {}
 }

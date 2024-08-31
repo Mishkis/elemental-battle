@@ -74,6 +74,7 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
                 // Spawn a target on the entity
                 IceTargetEntity iceTarget = new IceTargetEntity(ElementalBattleEntities.ICE_TARGET, world);
 
+                iceTarget.setOwner(this.getOwner());
                 iceTarget.setTarget(target);
                 iceTarget.setPosition(target.getPos());
 
