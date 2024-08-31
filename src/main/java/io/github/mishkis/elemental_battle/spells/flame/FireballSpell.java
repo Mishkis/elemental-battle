@@ -23,8 +23,13 @@ public class FireballSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 300;
+    }
+
+    @Override
+    public String getDescription() {
+        return "A common, yet powerful spell which launches forth a sphere of pure fire exploding on impact.";
     }
 
     @Override

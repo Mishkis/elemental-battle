@@ -21,8 +21,18 @@ public class FlamingDashSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 100;
+    }
+
+    @Override
+    public String getDescription() {
+        return "The flames take to you and launch you forward while burning those surrounding you.";
+    }
+
+    @Override
+    public float getDamage() {
+        return 5;
     }
 
     @Override

@@ -1,13 +1,16 @@
 package io.github.mishkis.elemental_battle.item;
 
 import io.github.mishkis.elemental_battle.item.armor.MagicArmorItem;
+import io.github.mishkis.elemental_battle.rendering.TooltipSpellData;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -19,11 +22,25 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public abstract class MagicStaffItem extends Item implements GeoItem {
     private final String id;
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+
+    public MagicStaffItem(String id) {
+        super(new Settings().maxCount(1).rarity(Rarity.EPIC));
+
+        this.id = id;
+
+        SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    @Override
+    public Optional<TooltipData> getTooltipData(ItemStack stack) {
+        return Optional.of(new TooltipSpellData(useSpell()));
+    }
 
     protected abstract SpellElement getElement();
 
@@ -117,14 +134,6 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
 
     public TypedActionResult<ItemStack> ultimate(World world, PlayerEntity user, Hand hand) {
         return genericCast(getUltimateSpell(user), world, user, hand);
-    }
-
-    public MagicStaffItem(String id) {
-        super(new Settings().maxCount(1));
-
-        this.id = id;
-
-        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     @Override

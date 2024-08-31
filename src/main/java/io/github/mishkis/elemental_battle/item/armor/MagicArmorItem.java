@@ -1,20 +1,19 @@
 package io.github.mishkis.elemental_battle.item.armor;
 
+import io.github.mishkis.elemental_battle.rendering.TooltipSpellData;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
+import java.util.Optional;
 
 
 public abstract class MagicArmorItem extends ArmorItem implements GeoItem {
@@ -32,8 +31,8 @@ public abstract class MagicArmorItem extends ArmorItem implements GeoItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.translatable("Unlocks: " + spell.getSpellName() + "Spell.").formatted(Formatting.BOLD).formatted(getSpell().getElement().getColor()));
+    public Optional<TooltipData> getTooltipData(ItemStack stack) {
+        return Optional.of(new TooltipSpellData(getSpell()));
     }
 
     @Override

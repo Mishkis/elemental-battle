@@ -110,10 +110,10 @@ public class SpellDisplay {
                 }
             }
 
-            // Main spell icon.
+            // Main spellComponent icon.
             drawContext.drawTexture(spell.getIcon(), x, y, 0, 0, 16, 16, 16, 16);
 
-            // Renders overlay if the spell is disabled.
+            // Renders overlay if the spellComponent is disabled.
             RenderSystem.enableBlend();
 
             if (!spell.canCast(MinecraftClient.getInstance().world, MinecraftClient.getInstance().player)) {

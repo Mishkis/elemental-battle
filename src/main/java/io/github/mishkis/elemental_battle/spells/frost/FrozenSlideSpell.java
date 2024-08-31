@@ -23,8 +23,13 @@ public class FrozenSlideSpell extends Spell implements EmpoweredSpell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 100;
+    }
+
+    @Override
+    public String getDescription() {
+        return "The floor beneath you is transformed to ice while you are surrounded by a protective barrier, allowing you to travel forward. If used after a successful parry, the spell is empowered.";
     }
 
     @Override

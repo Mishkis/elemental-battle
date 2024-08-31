@@ -21,8 +21,13 @@ public class ShatteringWallSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 200;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Pure ice surrounds you, encasing and fully protecting you. If any foe strikes this barrier, they are hit by a shattered off icicle; this parry too creates enough energy for you to not freeze at the conclusion of the spell.";
     }
 
     @Override

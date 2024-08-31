@@ -21,8 +21,13 @@ public class AirLiftSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 200;
+    }
+
+    @Override
+    public String getDescription() {
+        return "A powerful spell which harnesses the strengths of the air to send any of your surrounding foes into the sky.";
     }
 
     @Override

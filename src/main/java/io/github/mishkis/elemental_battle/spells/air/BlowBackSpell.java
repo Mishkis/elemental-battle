@@ -21,8 +21,13 @@ public class BlowBackSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 350;
+    }
+
+    @Override
+    public String getDescription() {
+        return "The winds encircle you, dancing away any attacks that would hit you and propelling their attackers away.";
     }
 
     @Override

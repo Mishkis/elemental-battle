@@ -17,7 +17,9 @@ public abstract class Spell {
 
     public abstract SpellElement getElement();
 
-    protected abstract Integer getCooldown();
+    public abstract int getCooldown();
+
+    public abstract String getDescription();
 
     protected abstract void onCast(World world, PlayerEntity user);
 
@@ -65,7 +67,7 @@ public abstract class Spell {
     }
 
     public boolean clientCast(World world, PlayerEntity user) {
-        // This just syncs the spell cooldown between server and client.
+        // This just syncs the spellComponent cooldown between server and client.
         SpellCooldownManager spellCooldownManager = user.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
         if (!spellCooldownManager.onCooldown(this) && this.canCast(world, user)) {
             this.onClientCast(world, user);

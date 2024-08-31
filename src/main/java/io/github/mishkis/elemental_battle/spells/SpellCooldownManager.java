@@ -6,11 +6,12 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.util.Identifier;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
 public class SpellCooldownManager {
-    private final Map<Spell, Integer> cooldownMap = Maps.<Spell, Integer>newHashMap();
+    private final Map<Spell, Integer> cooldownMap = Maps.newHashMap();
     private int tick = 0;
 
     public static final AttachmentType<SpellCooldownManager> SPELL_COOLDOWN_MANAGER_ATTACHMENT = AttachmentRegistry.createDefaulted(Identifier.of(ElementalBattle.MOD_ID, "spell_cooldown_manager_attachment"), SpellCooldownManager::new);
@@ -39,7 +40,7 @@ public class SpellCooldownManager {
         cooldownMap.remove(spell);
     }
 
-    // Remove by id of spell, used to communicate removal to client by payload.
+    // Remove by id of spellComponent, used to communicate removal to client by payload.
     public void remove(Identifier id) {
         Iterator<Map.Entry<Spell, Integer>> iterator = cooldownMap.entrySet().iterator();
 

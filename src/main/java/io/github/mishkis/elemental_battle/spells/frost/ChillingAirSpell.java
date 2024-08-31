@@ -21,8 +21,13 @@ public class ChillingAirSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 250;
+    }
+
+    @Override
+    public String getDescription() {
+        return "The air around you becomes freezing, and encases any nearby in solid ice.";
     }
 
     @Override

@@ -21,8 +21,13 @@ public class WallOfFireSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 300;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Scalding flames dance around you, protecting you from attackers.";
     }
 
     @Override

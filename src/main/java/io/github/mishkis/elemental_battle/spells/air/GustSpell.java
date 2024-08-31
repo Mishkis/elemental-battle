@@ -27,8 +27,13 @@ public class GustSpell extends Spell implements EmpoweredSpell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 100;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Sends forth a powerful gust which knocks any foes hit away. Too, it can launch you into the sky to rain fire from above.";
     }
 
     @Override

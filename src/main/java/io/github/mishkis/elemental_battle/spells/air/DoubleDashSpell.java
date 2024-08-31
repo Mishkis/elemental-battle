@@ -25,8 +25,13 @@ public class DoubleDashSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 300;
+    }
+
+    @Override
+    public String getDescription() {
+        return "The clouds favour you, allowing you to propel yourself forward twice.";
     }
 
     @Override

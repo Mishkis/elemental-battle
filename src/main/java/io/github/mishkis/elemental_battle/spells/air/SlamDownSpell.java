@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SlamDownSpell extends Spell {
-    public static final AttachmentType<List<LivingEntity>> SLAM_DOWN_ATTACHMENT = AttachmentRegistry.createDefaulted(Identifier.of(ElementalBattle.MOD_ID, "slam_down_attachment"), ArrayList<LivingEntity>::new);
+    public static final AttachmentType<List<LivingEntity>> SLAM_DOWN_ATTACHMENT = AttachmentRegistry.createDefaulted(Identifier.of(ElementalBattle.MOD_ID, "slam_down_attachment"), ArrayList::new);
 
     @Override
     public Identifier getId() {
@@ -34,8 +34,19 @@ public class SlamDownSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public float getDamage() {
+        // It does about this much from testing.
+        return 2.5f;
+    }
+
+    @Override
+    public int getCooldown() {
         return 200;
+    }
+
+    @Override
+    public String getDescription() {
+        return "The clouds frown upon your foes, slamming them back onto the ground.";
     }
 
     public static void addToSlamDownList(Entity entity, PlayerEntity user) {

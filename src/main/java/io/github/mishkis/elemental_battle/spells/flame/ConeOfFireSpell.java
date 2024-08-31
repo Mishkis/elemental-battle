@@ -26,8 +26,13 @@ public class ConeOfFireSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 1;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Fire envelops your staff, spewing forth infernal flames to burn your foes.";
     }
 
     @Override

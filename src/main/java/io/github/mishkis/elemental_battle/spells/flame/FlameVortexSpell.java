@@ -21,8 +21,13 @@ public class FlameVortexSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 200;
+    }
+
+    @Override
+    public String getDescription() {
+        return "A vortex of pure fire is created surrounding you, drawing any in it's radius inwards.";
     }
 
     @Override

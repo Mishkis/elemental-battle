@@ -31,8 +31,13 @@ public class FrigidGlareSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 250;
+    }
+
+    @Override
+    public String getDescription() {
+        return "A powerful spell which transfers the cold of your eyes into the body of your enemy, freezing them.";
     }
 
     @Override

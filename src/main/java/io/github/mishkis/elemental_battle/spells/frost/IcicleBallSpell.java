@@ -23,8 +23,13 @@ public class IcicleBallSpell extends Spell {
     }
 
     @Override
-    protected Integer getCooldown() {
+    public int getCooldown() {
         return 10;
+    }
+
+    @Override
+    public String getDescription() {
+        return "A spell which summons a ball of icicles which shatter upon impact, chilling the foe.";
     }
 
     @Override
