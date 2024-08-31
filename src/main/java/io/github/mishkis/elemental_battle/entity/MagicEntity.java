@@ -8,6 +8,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.ServerConfigHandler;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,14 +89,31 @@ public abstract class MagicEntity extends Entity implements Ownable {
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
-        builder.add(UPTIME, 0);
         builder.add(DAMAGE, 0f);
+        builder.add(UPTIME, 0);
         builder.add(OWNER_UUID, Optional.empty());
     }
 
     @Override
-    protected void writeCustomDataToNbt(NbtCompound nbt) {}
+    protected void writeCustomDataToNbt(NbtCompound nbt) {
+        if (dataTracker.get(OWNER_UUID).isPresent()) {
+            nbt.putUuid("Owner", dataTracker.get(OWNER_UUID).get());
+        }
+
+        nbt.putFloat("Damage", dataTracker.get(DAMAGE));
+        nbt.putInt("Uptime", dataTracker.get(UPTIME));
+    }
 
     @Override
-    protected void readCustomDataFromNbt(NbtCompound nbt) {}
+    protected void readCustomDataFromNbt(NbtCompound nbt) {
+        if (nbt.containsUuid("Owner")) {
+            this.setOwner(this.getWorld().getPlayerByUuid(nbt.getUuid("Owner")));
+        }
+        else {
+            this.setOwner(this.getWorld().getPlayerByUuid(ServerConfigHandler.getPlayerUuidByName(this.getServer(), nbt.getString("Owner"))));
+        }
+
+        this.setDamage(nbt.getFloat("Damage"));
+        this.setUptime(nbt.getInt("Uptime"));
+    }
 }

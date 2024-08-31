@@ -3,9 +3,8 @@ package io.github.mishkis.elemental_battle.entity.frost_staff;
 import io.github.mishkis.elemental_battle.entity.TargetableMagicEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
+import net.minecraft.entity.*;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
@@ -40,7 +39,7 @@ public class FrozenSolidEntity extends TargetableMagicEntity implements GeoEntit
     public void tick() {
         super.tick();
 
-        if (this.getTarget() instanceof LivingEntity target) {
+        if (this.getTarget() instanceof LivingEntity target && !target.isRemoved()) {
             if (ownerStartHealth == 0) {
                 ownerStartHealth = target.getHealth();
             }
@@ -64,14 +63,8 @@ public class FrozenSolidEntity extends TargetableMagicEntity implements GeoEntit
                 this.move(MovementType.SELF, target.getVelocity());
             }
 
-            if (this.getWorld() instanceof ServerWorld serverWorld && target.getHealth() < ownerStartHealth) {
-                if (target instanceof HostileEntity hostileTarget) {
-                    hostileTarget.setAiDisabled(false);
-                }
-
-                target.damage(this.getDamageSources().freeze(), this.getDamage());
-
-                playShatterParticle(serverWorld, this.getX(), this.getY(), this.getZ());
+            if (!this.getWorld().isClient && target.getHealth() < ownerStartHealth) {
+                onTimeOut();
                 this.discard();
             }
 
@@ -95,8 +88,26 @@ public class FrozenSolidEntity extends TargetableMagicEntity implements GeoEntit
             this.getTarget().damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
 
             playShatterParticle(serverWorld, this.getX(), this.getY(), this.getZ());
-            this.discard();
         }
+    }
+
+    @Override
+    public boolean damage(DamageSource source, float amount) {
+        Entity entity = source.getSource();
+        if (entity instanceof Ownable ownable) {
+            entity = ownable.getOwner();
+        }
+
+        if (entity == this.getTarget()) {
+            return false;
+        }
+
+        return this.getTarget().damage(source, amount);
+    }
+
+    @Override
+    public boolean canHit() {
+        return true;
     }
 
     @Override

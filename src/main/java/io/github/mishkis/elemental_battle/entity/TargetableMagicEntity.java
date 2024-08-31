@@ -5,6 +5,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.server.ServerConfigHandler;
 import net.minecraft.world.World;
 
 public abstract class TargetableMagicEntity extends MagicEntity {
@@ -43,5 +46,24 @@ public abstract class TargetableMagicEntity extends MagicEntity {
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(TARGET_ID, 0);
+    }
+
+    @Override
+    protected void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+
+        nbt.putInt("Target", dataTracker.get(TARGET_ID));
+    }
+
+    @Override
+    protected void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+
+        if (nbt.contains("Target", NbtElement.INT_TYPE)) {
+            this.setTarget(this.getWorld().getEntityById(nbt.getInt("Target")));
+        }
+        else {
+            this.setTarget(this.getWorld().getPlayerByUuid(ServerConfigHandler.getPlayerUuidByName(this.getServer(), nbt.getString("Target"))));
+        }
     }
 }
