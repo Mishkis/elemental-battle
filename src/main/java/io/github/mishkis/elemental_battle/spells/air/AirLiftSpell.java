@@ -32,7 +32,7 @@ public class AirLiftSpell extends Spell {
 
     @Override
     public int getUptime() {
-        return 20;
+        return 40;
     }
 
     @Override

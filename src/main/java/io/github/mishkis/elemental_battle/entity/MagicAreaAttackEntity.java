@@ -16,12 +16,16 @@ public abstract class MagicAreaAttackEntity extends MagicEntity {
         super(type, world);
     }
 
+    protected double getOffset() {
+        return 0.8;
+    }
+
     @Override
     public void tick() {
         super.tick();
 
         if (this.getOwner() != null) {
-            this.setPosition(this.getOwner().getPos().offset(Direction.UP, 0.8));
+            this.setPosition(this.getOwner().getPos().offset(Direction.UP, getOffset()));
 
             if (this.getWorld() instanceof ServerWorld serverWorld) {
                 for (Entity entity : serverWorld.getOtherEntities(this.getOwner(), this.getBoundingBox(), entity ->

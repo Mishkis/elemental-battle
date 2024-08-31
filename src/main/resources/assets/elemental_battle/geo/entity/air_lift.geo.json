@@ -4,18 +4,32 @@
 		{
 			"description": {
 				"identifier": "geometry.air_lift",
-				"texture_width": 256,
-				"texture_height": 256,
+				"texture_width": 16,
+				"texture_height": 16,
 				"visible_bounds_width": 2,
 				"visible_bounds_height": 1.5,
 				"visible_bounds_offset": [0, 0.25, 0]
 			},
 			"bones": [
 				{
-					"name": "AirLift",
-					"pivot": [0, 0, 0],
+					"name": "Blast1",
+					"pivot": [0, 1, 0],
 					"cubes": [
-						{"origin": [-24, 0, -24], "size": [48, 2, 48], "uv": [0, 0]}
+						{"origin": [-1, 0, -1], "size": [2, 2, 2], "uv": [6, 2]}
+					]
+				},
+				{
+					"name": "Blast2",
+					"pivot": [0, 1, 0],
+					"cubes": [
+						{"origin": [-1, 0, -1], "size": [2, 2, 2], "uv": [0, 4]}
+					]
+				},
+				{
+					"name": "Blast3",
+					"pivot": [0.9367, 0.34411, 0.06467],
+					"cubes": [
+						{"origin": [-0.0633, -0.65589, -0.93533], "size": [2, 2, 2], "uv": [0, 0]}
 					]
 				}
 			]

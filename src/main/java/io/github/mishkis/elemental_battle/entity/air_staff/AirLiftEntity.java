@@ -21,8 +21,15 @@ public class AirLiftEntity extends MagicAreaAttackEntity implements GeoEntity {
     }
 
     @Override
+    protected double getOffset() {
+        return 0;
+    }
+
+    @Override
     protected void onEntityCollision(LivingEntity entity) {
         entity.setVelocity(entity.getVelocity().x, Math.max(entity.getVelocity().y * 2, 1.5), entity.getVelocity().z);
+
+        entity.setVelocity(entity.getVelocity().add(entity.getPos().subtract(this.getPos()).multiply(1, 0, 1).normalize().multiply(2)));
 
         if (entity instanceof ServerPlayerEntity serverPlayer) {
             serverPlayer.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(serverPlayer));
