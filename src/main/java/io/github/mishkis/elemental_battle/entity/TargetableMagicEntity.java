@@ -10,6 +10,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.ServerConfigHandler;
 import net.minecraft.world.World;
 
+import java.util.UUID;
+
 public abstract class TargetableMagicEntity extends MagicEntity {
     private static final TrackedData<Integer> TARGET_ID = DataTracker.registerData(TargetableMagicEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private Entity target;
@@ -63,7 +65,10 @@ public abstract class TargetableMagicEntity extends MagicEntity {
             this.setTarget(this.getWorld().getEntityById(nbt.getInt("Target")));
         }
         else {
-            this.setTarget(this.getWorld().getPlayerByUuid(ServerConfigHandler.getPlayerUuidByName(this.getServer(), nbt.getString("Target"))));
+            UUID playerUUID = ServerConfigHandler.getPlayerUuidByName(this.getServer(), nbt.getString("Target"));
+            if (playerUUID != null) {
+                this.setTarget(this.getWorld().getPlayerByUuid(playerUUID));
+            }
         }
     }
 }

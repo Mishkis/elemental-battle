@@ -110,7 +110,10 @@ public abstract class MagicEntity extends Entity implements Ownable {
             this.setOwner(this.getWorld().getPlayerByUuid(nbt.getUuid("Owner")));
         }
         else {
-            this.setOwner(this.getWorld().getPlayerByUuid(ServerConfigHandler.getPlayerUuidByName(this.getServer(), nbt.getString("Owner"))));
+            UUID playerUUID = ServerConfigHandler.getPlayerUuidByName(this.getServer(), nbt.getString("Owner"));
+            if (playerUUID != null) {
+                this.setOwner(this.getWorld().getPlayerByUuid(playerUUID));
+            }
         }
 
         this.setDamage(nbt.getFloat("Damage"));
