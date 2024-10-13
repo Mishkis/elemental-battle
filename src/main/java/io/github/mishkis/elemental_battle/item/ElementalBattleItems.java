@@ -54,8 +54,8 @@ public class ElementalBattleItems {
     public static final Item AEROMANCERS_ROBES = register(new AeromancersRobesItem(new BlowBackSpell(), ArmorItem.Type.CHESTPLATE), "aeromancers_robes");
     public static final Item AEROMANCERS_CIRCLET = register(new AeromancersRobesItem(new SlamDownSpell(), ArmorItem.Type.HELMET), "aeromancers_circlet");
 
-    public static final RegistryKey<ItemGroup> TESTING_MOD_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(ElementalBattle.MOD_ID, "item_group"));
-    public static final ItemGroup TESTING_MOD_ITEM_GROUP = FabricItemGroup.builder()
+    public static final RegistryKey<ItemGroup> ELEMENTAL_BATTLE_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(ElementalBattle.MOD_ID, "item_group"));
+    public static final ItemGroup ELEMENTAL_BATTLE_ITEM_GROUP = FabricItemGroup.builder()
             .icon(() -> new ItemStack(FROST_STAFF))
             .displayName(Text.translatable("itemGroup.elemental_battle"))
             .build();
@@ -67,9 +67,9 @@ public class ElementalBattleItems {
     }
 
     public static void initialize() {
-        Registry.register(Registries.ITEM_GROUP, TESTING_MOD_ITEM_GROUP_KEY, TESTING_MOD_ITEM_GROUP);
+        Registry.register(Registries.ITEM_GROUP, ELEMENTAL_BATTLE_ITEM_GROUP_KEY, ELEMENTAL_BATTLE_ITEM_GROUP);
 
-        ItemGroupEvents.modifyEntriesEvent(TESTING_MOD_ITEM_GROUP_KEY).register(itemGroup -> {
+        ItemGroupEvents.modifyEntriesEvent(ELEMENTAL_BATTLE_ITEM_GROUP_KEY).register(itemGroup -> {
             itemGroup.add(FROST_STAFF);
             itemGroup.add(FLAME_STAFF);
             itemGroup.add(AIR_STAFF);
