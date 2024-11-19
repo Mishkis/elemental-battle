@@ -95,6 +95,7 @@ public class FrozenSlideEntity extends MagicDashEntity implements GeoEntity {
                         icicle.setVelocity(0.01, 0, 0); // for visual rotation on first tick spawned
 
                         icicle.setDamage(this.getDamage());
+                        icicle.setElement(this.getElement());
 
                         world.spawnEntity(icicle);
                     }

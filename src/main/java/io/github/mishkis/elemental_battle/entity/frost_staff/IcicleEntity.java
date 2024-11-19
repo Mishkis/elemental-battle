@@ -3,6 +3,7 @@ package io.github.mishkis.elemental_battle.entity.frost_staff;
 import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -102,6 +103,7 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
 
         entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
         if (!this.getWorld().isClient && entity instanceof LivingEntity livingEntity) {
+            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 2), this);
         }
 

@@ -1,6 +1,7 @@
 package io.github.mishkis.elemental_battle.entity.air_staff;
 
 import io.github.mishkis.elemental_battle.entity.MagicAreaAttackEntity;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -36,6 +37,7 @@ public class AirLiftEntity extends MagicAreaAttackEntity implements GeoEntity {
         }
 
         if (!this.getWorld().isClient) {
+            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 2, this.getOwner());
             SlamDownSpell.addToSlamDownList(entity, this.getOwner());
         }
     }

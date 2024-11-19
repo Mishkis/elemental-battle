@@ -5,6 +5,7 @@ import io.github.mishkis.elemental_battle.network.S2C.S2CSlamDownAttachmentAdd;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -98,6 +99,7 @@ public class SlamDownSpell extends Spell {
             }
         });
 
+        user.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, user);
         user.removeAttached(SLAM_DOWN_ATTACHMENT);
     }
 }

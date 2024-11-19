@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.entity.flame_staff;
 
 import io.github.mishkis.elemental_battle.entity.MagicDashEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.predicate.entity.EntityPredicates;
@@ -41,9 +42,11 @@ public class FlamingDashEntity extends MagicDashEntity implements GeoEntity {
         super.tick();
 
         if (this.getWorld() instanceof ServerWorld serverWorld) {
-            for (Entity entity : serverWorld.getOtherEntities(this.getOwner(), this.getBoundingBox(), EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR)) {
+            for (Entity entity : serverWorld.getOtherEntities(this.getOwner(), this.getBoundingBox(), EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.and(entity -> entity != this))) {
                 entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
                 entity.setOnFireForTicks(60);
+
+                this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
             }
         }
     }

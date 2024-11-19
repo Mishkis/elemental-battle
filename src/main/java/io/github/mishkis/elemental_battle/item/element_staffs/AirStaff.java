@@ -25,6 +25,6 @@ public class AirStaff extends MagicStaffItem {
 
     @Override
     public @Nullable Spell ultimateSpell() {
-        return null;
+        return new GustSpell();
     }
 }

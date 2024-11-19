@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.entity.air_staff;
 
 import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -46,6 +47,7 @@ public class BlowBackEntity extends MagicShieldEntity implements GeoEntity {
 
         if (!this.getWorld().isClient) {
             ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.GUST_EXPLOSION_PARTICLE, entity.getX(), entity.getY() + 0.5, entity.getZ(), 2, 0.5, 0.5, 0.5, 1);
+            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
             SlamDownSpell.addToSlamDownList(entity, this.getOwner());
         }
 

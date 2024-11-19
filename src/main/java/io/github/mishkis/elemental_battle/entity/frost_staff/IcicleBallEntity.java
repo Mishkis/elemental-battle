@@ -105,7 +105,6 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
 
         if (!this.getWorld().isClient) {
             this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 10, this.getOwner());
-            ElementalBattle.LOGGER.info(String.valueOf(this.getOwner().getAttached(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(this.getElement())));
         }
     }
 
@@ -129,6 +128,7 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
             icicle.setUptime(200);
 
             icicle.setOwner(this.getOwner());
+            icicle.setElement(this.getElement());
 
             world.spawnEntity(icicle);
         }

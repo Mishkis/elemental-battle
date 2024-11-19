@@ -71,6 +71,7 @@ public class IceTargetEntity extends TargetableMagicEntity implements GeoEntity 
                 frozenSolid.setTarget(livingTarget);
                 frozenSolid.setDamage(this.getDamage());
                 frozenSolid.setPosition(livingTarget.getPos());
+                frozenSolid.setElement(this.getElement());
 
                 this.getWorld().spawnEntity(frozenSolid);
             }

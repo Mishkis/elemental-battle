@@ -3,6 +3,7 @@ package io.github.mishkis.elemental_battle.entity.flame_staff;
 import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.world.ServerWorld;
@@ -51,6 +52,10 @@ public class FireballEntity extends MagicProjectileEntity implements GeoEntity {
         this.getWorld().getOtherEntities(this.getOwner(), this.getBoundingBox().expand(3, 3, 3)).forEach((entity -> {
             entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage() / entity.distanceTo(this));
             entity.setOnFireForTicks(40);
+
+            if (!this.getWorld().isClient) {
+                this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 10, this.getOwner());
+            }
         }));
     }
 

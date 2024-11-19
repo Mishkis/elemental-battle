@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.entity.frost_staff;
 
 import io.github.mishkis.elemental_battle.entity.TargetableMagicEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -81,6 +82,8 @@ public class FrozenSolidEntity extends TargetableMagicEntity implements GeoEntit
     @Override
     protected void onTimeOut() {
         if (this.getWorld() instanceof ServerWorld serverWorld) {
+            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+
             if (this.getTarget() instanceof HostileEntity hostileTarget) {
                 hostileTarget.setAiDisabled(false);
             }

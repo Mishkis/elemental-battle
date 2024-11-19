@@ -3,6 +3,7 @@ package io.github.mishkis.elemental_battle.entity.flame_staff;
 import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.particle.SimpleParticleType;
@@ -44,6 +45,10 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
         if (entity != getOwner() && !(entity instanceof ConeOfFireEntity coneOfFire && coneOfFire.getOwner() == this.getOwner())) {
             entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
             entity.setOnFireForTicks(40);
+
+            if (!this.getWorld().isClient) {
+                this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 1, this.getOwner());
+            }
 
             super.onEntityHit(entity);
         }

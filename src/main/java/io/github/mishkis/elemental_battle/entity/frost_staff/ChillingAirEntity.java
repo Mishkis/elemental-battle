@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.entity.frost_staff;
 
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicAreaAttackEntity;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -30,6 +31,9 @@ public class ChillingAirEntity extends MagicAreaAttackEntity implements GeoEntit
             frozenSolid.setTarget(entity);
             frozenSolid.setDamage(this.getDamage());
             frozenSolid.setPosition(entity.getPos());
+            frozenSolid.setElement(this.getElement());
+
+            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
 
             this.getWorld().spawnEntity(frozenSolid);
         }

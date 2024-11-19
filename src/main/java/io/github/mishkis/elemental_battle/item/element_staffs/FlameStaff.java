@@ -25,6 +25,6 @@ public class FlameStaff extends MagicStaffItem {
 
     @Override
     public @Nullable Spell ultimateSpell() {
-        return null;
+        return new ConeOfFireSpell();
     }
 }

@@ -79,6 +79,7 @@ public class FrigidGlareSpell extends Spell {
 
         iceTarget.setTarget(target);
         iceTarget.setPosition(target.getPos());
+        iceTarget.setElement(this.getElement());
         iceTarget.setFreezing();
 
         world.spawnEntity(iceTarget);
