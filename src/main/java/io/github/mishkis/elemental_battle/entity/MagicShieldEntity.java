@@ -43,7 +43,6 @@ public abstract class MagicShieldEntity extends MagicEntity {
         if (this.getOwner() instanceof PlayerEntity owner) {
             if (!this.getWorld().isClient()) {
                 shieldEffect(owner);
-
             }
 
             this.setPosition(owner.getPos());

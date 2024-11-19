@@ -22,6 +22,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -42,7 +43,7 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
         return Optional.of(new TooltipSpellData(useSpell()));
     }
 
-    protected abstract SpellElement getElement();
+    public abstract SpellElement getElement();
 
     @Nullable
     protected abstract Spell useSpell();
@@ -90,6 +91,11 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
 
     @Nullable
     public Spell getUltimateSpell(PlayerEntity user) {
+        for (ItemStack armor : user.getAllArmorItems()) {
+            if (!(armor.getItem() instanceof MagicArmorItem magicArmorItem && magicArmorItem.getSpell().getElement() == this.getElement())) {
+                return null;
+            }
+        }
         return ultimateSpell();
     }
 

@@ -14,7 +14,7 @@ public class FlameStaff extends MagicStaffItem {
     private final Spell useSpell = new ConeOfFireSpell();
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.FLAME;
     }
 

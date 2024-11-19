@@ -5,7 +5,9 @@ import io.github.mishkis.elemental_battle.network.C2S.C2SKeybindPayload;
 import io.github.mishkis.elemental_battle.network.S2C.S2CGustEntityEmpoweredSet;
 import io.github.mishkis.elemental_battle.network.S2C.S2CSlamDownAttachmentAdd;
 import io.github.mishkis.elemental_battle.network.S2C.S2CSpellCooldownManagerRemove;
+import io.github.mishkis.elemental_battle.network.S2C.S2CSpellUltimateManagerAdd;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import io.github.mishkis.elemental_battle.spells.air.GustSpell;
 import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -100,6 +102,12 @@ public class ElementalBattleNetworkClient {
                 if (entity != null) {
                     SlamDownSpell.addToSlamDownList(entity, context.player());
                 }
+            });
+        }));
+
+        ClientPlayNetworking.registerGlobalReceiver(S2CSpellUltimateManagerAdd.ID, ((payload, context) -> {
+            context.client().execute(() -> {
+                context.player().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(payload.element(), payload.percent(), context.player());
             });
         }));
     }

@@ -7,6 +7,7 @@ import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkClient;
 import io.github.mishkis.elemental_battle.spells.EmpoweredSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
@@ -21,19 +22,21 @@ import org.joml.Vector2i;
 public class SpellDisplay {
     public static final AttachmentType<Boolean> SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT = AttachmentRegistry.create(Identifier.of(ElementalBattle.MOD_ID, "spell_display_shield_warning_attachment"));
 
-    private static Vector2i position = new Vector2i(0, 0);
+    private static final Vector2i position = new Vector2i(0, 0);
 
     public static void initialize() {
         HudRenderCallback.EVENT.register(((drawContext, tickCounter) -> {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
             if (player.getMainHandStack().getItem() instanceof MagicStaffItem staff) {
-                position.x = 0;
-                position.y = drawContext.getScaledWindowHeight() - 42;
+                position.x = drawContext.getScaledWindowWidth() - 380;
+                position.y = drawContext.getScaledWindowHeight() - 62;
 
                 RenderSystem.enableBlend();
-                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/spell_display.png"), position.x, position.y, 0, 0, 62, 42, 62, 42);
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/spell_display.png"), position.x, position.y, 0, 0, 62, 62, 62, 62);
                 RenderSystem.disableBlend();
+
+                position.y += 20;
 
                 renderIcon("main", staff, drawContext);
                 renderIcon("shield", staff, drawContext);
@@ -50,6 +53,14 @@ public class SpellDisplay {
 
                 if (player.getAttached(SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT) != null && !player.hasStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT)) {
                     drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/shield_alert.png"), drawContext.getScaledWindowWidth()/2 - 17, drawContext.getScaledWindowHeight()/2 - 11, 1000, 0, 0, 34, 18, 34, 18);
+                }
+
+                // Draw ultimate bar
+                if (staff.getUltimateSpell(player) != null) {
+                    drawContext.enableScissor(position.x + 3, position.y - 17, position.x + 7, position.y - 1);
+                    drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement())), position.y - 17, staff.getElement().getColor());
+                    drawContext.disableScissor();
+                    drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement())), position.y - 5, staff.getElement().getColor());
                 }
             }
         }));
@@ -105,8 +116,8 @@ public class SpellDisplay {
             if (key.length() > 1) {
                 String[] splitKey = key.split(" ");
                 key = "";
-                for (int i = 0; i < splitKey.length; i++) {
-                    key += splitKey[i].substring(0, 1);
+                for (String index : splitKey) {
+                    key += index.substring(0, 1);
                 }
             }
 

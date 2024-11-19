@@ -53,6 +53,7 @@ public abstract class Spell {
         entity.setDamage(getDamage());
         entity.setUptime(getUptime());
         entity.setOwner(owner);
+        entity.setElement(getElement());
 
         return entity;
     }

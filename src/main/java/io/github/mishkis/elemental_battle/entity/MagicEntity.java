@@ -1,10 +1,12 @@
 package io.github.mishkis.elemental_battle.entity;
 
+import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Ownable;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -19,6 +21,7 @@ public abstract class MagicEntity extends Entity implements Ownable {
     private static final TrackedData<Integer> UPTIME = DataTracker.registerData(MagicEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Float> DAMAGE = DataTracker.registerData(MagicEntity.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Optional<UUID>> OWNER_UUID = DataTracker.registerData(MagicEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
+    private SpellElement element;
     private PlayerEntity owner;
 
     public MagicEntity(EntityType<?> type, World world) {
@@ -33,12 +36,21 @@ public abstract class MagicEntity extends Entity implements Ownable {
         dataTracker.set(UPTIME, uptime);
     }
 
+    // This only needs to be server side as it is exclusively used for ultimate
+    public void setElement(SpellElement element) {
+        this.element = element;
+    }
+
     public Float getDamage() {
         return dataTracker.get(DAMAGE);
     }
 
     public Integer getUptime() {
         return dataTracker.get(UPTIME);
+    }
+
+    public SpellElement getElement() {
+        return this.element;
     }
 
     public void setOwner(PlayerEntity owner) {

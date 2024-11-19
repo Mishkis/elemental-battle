@@ -1,13 +1,16 @@
 package io.github.mishkis.elemental_battle.entity.frost_staff;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicProjectileEntity;
 import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
@@ -98,6 +101,11 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
 
         if (entity instanceof LivingEntity livingEntity) {
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), this);
+        }
+
+        if (!this.getWorld().isClient) {
+            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 10, this.getOwner());
+            ElementalBattle.LOGGER.info(String.valueOf(this.getOwner().getAttached(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(this.getElement())));
         }
     }
 

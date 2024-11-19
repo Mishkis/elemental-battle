@@ -14,7 +14,7 @@ public class AirStaff extends MagicStaffItem {
     private final Spell useSpell = new GustSpell();
 
     @Override
-    protected SpellElement getElement() {
+    public SpellElement getElement() {
         return SpellElement.AIR;
     }
 
