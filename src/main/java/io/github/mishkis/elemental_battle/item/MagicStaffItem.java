@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.item.armor.MagicArmorItem;
 import io.github.mishkis.elemental_battle.rendering.TooltipSpellData;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -91,12 +92,15 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
 
     @Nullable
     public Spell getUltimateSpell(PlayerEntity user) {
-        for (ItemStack armor : user.getAllArmorItems()) {
-            if (!(armor.getItem() instanceof MagicArmorItem magicArmorItem && magicArmorItem.getSpell().getElement() == this.getElement())) {
-                return null;
+        if (user.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(this.getElement()) >= 1) {
+            for (ItemStack armor : user.getAllArmorItems()) {
+                if (!(armor.getItem() instanceof MagicArmorItem magicArmorItem && magicArmorItem.getSpell().getElement() == this.getElement())) {
+                    return null;
+                }
             }
+            return ultimateSpell();
         }
-        return ultimateSpell();
+        return null;
     }
 
     private TypedActionResult<ItemStack> genericCast(Spell spell, World world, PlayerEntity user, Hand hand) {
@@ -139,7 +143,12 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
     }
 
     public TypedActionResult<ItemStack> ultimate(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getUltimateSpell(user), world, user, hand);
+        TypedActionResult<ItemStack> result = genericCast(getUltimateSpell(user), world, user, hand);
+        if (result.getResult().isAccepted()) {
+            user.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).reset(this.getElement());
+        }
+
+        return result;
     }
 
     @Override

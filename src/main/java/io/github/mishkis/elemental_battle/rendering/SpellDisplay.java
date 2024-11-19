@@ -34,7 +34,7 @@ public class SpellDisplay {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
             if (player.getMainHandStack().getItem() instanceof MagicStaffItem staff) {
-                position.x = drawContext.getScaledWindowWidth() - 388;
+                position.x = drawContext.getScaledWindowWidth() - 387;
                 position.y = drawContext.getScaledWindowHeight() - 62;
 
                 RenderSystem.enableBlend();
