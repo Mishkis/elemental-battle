@@ -2,6 +2,7 @@ package io.github.mishkis.elemental_battle.mixin;
 
 import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
+import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,6 +25,9 @@ public abstract class PlayerEntityMixin extends LivingEntity{
     public void tick(CallbackInfo ci) {
         SpellCooldownManager elementalBattleSpellCooldownManager = this.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
         elementalBattleSpellCooldownManager.tick();
+
+        SpellUltimateManager spellUltimateManager = this.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT);
+        spellUltimateManager.tick();
     }
 
     @Inject(method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
