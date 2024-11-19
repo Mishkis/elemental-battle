@@ -16,7 +16,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.joml.Vector2i;
 
 public class SpellDisplay {
@@ -24,12 +26,15 @@ public class SpellDisplay {
 
     private static final Vector2i position = new Vector2i(0, 0);
 
+    private static double ultimate_white_bar_percentage = 0;
+    private static double ultimate_colored_bar_percentage = 0;
+
     public static void initialize() {
         HudRenderCallback.EVENT.register(((drawContext, tickCounter) -> {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
             if (player.getMainHandStack().getItem() instanceof MagicStaffItem staff) {
-                position.x = drawContext.getScaledWindowWidth() - 380;
+                position.x = drawContext.getScaledWindowWidth() - 388;
                 position.y = drawContext.getScaledWindowHeight() - 62;
 
                 RenderSystem.enableBlend();
@@ -56,11 +61,20 @@ public class SpellDisplay {
                 }
 
                 // Draw ultimate bar
-                if (staff.getUltimateSpell(player) != null) {
-                    drawContext.enableScissor(position.x + 3, position.y - 17, position.x + 7, position.y - 1);
-                    drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement())), position.y - 17, staff.getElement().getColor());
-                    drawContext.disableScissor();
-                    drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement())), position.y - 5, staff.getElement().getColor());
+                ultimate_white_bar_percentage = MathHelper.lerp(0.5, ultimate_white_bar_percentage, player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement()));
+                drawContext.enableScissor(position.x + 3, position.y - 17, position.x + 7, position.y - 1);
+                drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * ultimate_white_bar_percentage), position.y - 17, Colors.WHITE);
+                drawContext.disableScissor();
+                drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * ultimate_white_bar_percentage), position.y - 5, Colors.WHITE);
+
+                ultimate_colored_bar_percentage = MathHelper.lerp(0.1, ultimate_colored_bar_percentage, player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement()));
+                drawContext.enableScissor(position.x + 3, position.y - 17, position.x + 7, position.y - 1);
+                drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * ultimate_colored_bar_percentage), position.y - 17, staff.getElement().getColor());
+                drawContext.disableScissor();
+                drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * ultimate_colored_bar_percentage), position.y - 5, staff.getElement().getColor());
+
+                if (ultimate_white_bar_percentage - ultimate_colored_bar_percentage < 0.001) {
+                    ultimate_colored_bar_percentage = ultimate_white_bar_percentage;
                 }
             }
         }));
