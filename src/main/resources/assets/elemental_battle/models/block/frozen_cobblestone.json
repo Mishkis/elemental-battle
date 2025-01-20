@@ -1,0 +1,16 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "elemental_battle:block/frozen_arena/frozen_cobblestone",
+    "frozen_cobblestone": "elemental_battle:block/frozen_arena/frozen_cobblestone"
+  },
+  "elements": [
+    {   "from": [ -0.1, -0.1, 0.1 ],
+      "to": [ 16.1, 16.1, 0.1 ],
+      "faces": {
+        "north": { "uv": [ 16, 0, 0, 16 ], "texture": "#frozen_cobblestone" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#frozen_cobblestone" }
+      }
+    }
+  ]
+}
