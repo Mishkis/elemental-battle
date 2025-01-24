@@ -31,6 +31,11 @@ public class FireballEntity extends MagicProjectileEntity implements GeoEntity {
     }
 
     @Override
+    public boolean isFireImmune() {
+        return false;
+    }
+
+    @Override
     protected void onTimeOut() {
         explode();
     }

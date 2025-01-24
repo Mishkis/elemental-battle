@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Ownable;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -26,6 +25,11 @@ public abstract class MagicEntity extends Entity implements Ownable {
 
     public MagicEntity(EntityType<?> type, World world) {
         super(type, world);
+    }
+
+    @Override
+    public boolean isFireImmune() {
+        return true;
     }
 
     public void setDamage(Float damage) {
