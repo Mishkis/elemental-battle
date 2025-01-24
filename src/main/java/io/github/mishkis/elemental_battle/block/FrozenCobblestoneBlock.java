@@ -8,7 +8,6 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldAccess;
 
 public class FrozenCobblestoneBlock extends MultifaceGrowthBlock {
     public static final MapCodec<FrozenCobblestoneBlock> CODEC = FrozenCobblestoneBlock.createCodec(FrozenCobblestoneBlock::new);

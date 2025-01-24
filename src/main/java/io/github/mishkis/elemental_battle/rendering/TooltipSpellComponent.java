@@ -27,8 +27,7 @@ public class TooltipSpellComponent implements TooltipComponent {
     public void drawItems(TextRenderer textRenderer, int x, int y, DrawContext context) {
         context.drawText(textRenderer, Text.literal(spell.getSpellName()).formatted(Formatting.BOLD), x, y, color, true);
 
-        context.fill(x + this.getWidth(textRenderer) - 18, y, x + this.getWidth(textRenderer), y + 18, color);
-        context.drawTexture(spell.getIcon(), x + this.getWidth(textRenderer) - 17, y + 1, 0, 0, 16, 16, 16, 16);
+        context.drawTexture(spell.getIcon(), x + this.getWidth(textRenderer) - 25, y - 3, 0, 0, 24, 22, 24, 22);
 
         y += textRenderer.fontHeight + 1;
         context.drawText(textRenderer, Text.literal(StringUtil.capitalize(spell.getElement().toString()) + " Element"), x, y, color, true);

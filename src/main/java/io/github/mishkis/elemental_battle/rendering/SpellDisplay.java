@@ -16,8 +16,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Vector2i;
 
@@ -26,6 +26,8 @@ public class SpellDisplay {
 
     private static final Vector2i position = new Vector2i(0, 0);
 
+    private static double last_ultimate_percent = 0;
+    private static boolean gaining_ultimate = true;
     private static double ultimate_white_bar_percentage = 0;
     private static double ultimate_colored_bar_percentage = 0;
 
@@ -35,13 +37,11 @@ public class SpellDisplay {
 
             if (player.getMainHandStack().getItem() instanceof MagicStaffItem staff) {
                 position.x = drawContext.getScaledWindowWidth() - 387;
-                position.y = drawContext.getScaledWindowHeight() - 62;
+                position.y = drawContext.getScaledWindowHeight() - 90;
 
                 RenderSystem.enableBlend();
-                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/spell_display.png"), position.x, position.y, 0, 0, 62, 62, 62, 62);
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/spell_display.png"), position.x, position.y, 0, 0, 120, 88, 120, 88);
                 RenderSystem.disableBlend();
-
-                position.y += 20;
 
                 renderIcon("main", staff, drawContext);
                 renderIcon("shield", staff, drawContext);
@@ -50,31 +50,51 @@ public class SpellDisplay {
                 renderIcon("special", staff, drawContext);
                 renderIcon("ultimate", staff, drawContext);
 
-                if (player.hasStatusEffect(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT)) {
-                    RenderSystem.enableBlend();
-                    drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/locked_spell_display.png"), position.x, position.y, 0, 0, 62, 42, 62, 42);
-                    RenderSystem.disableBlend();
-                }
-
                 if (player.getAttached(SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT) != null && !player.hasStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT)) {
                     drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/shield_alert.png"), drawContext.getScaledWindowWidth()/2 - 17, drawContext.getScaledWindowHeight()/2 - 11, 1000, 0, 0, 34, 18, 34, 18);
                 }
 
                 // Draw ultimate bar
-                ultimate_white_bar_percentage = MathHelper.lerp(0.5, ultimate_white_bar_percentage, player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement()));
-                drawContext.enableScissor(position.x + 3, position.y - 17, position.x + 7, position.y - 1);
-                drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * ultimate_white_bar_percentage), position.y - 17, Colors.WHITE);
-                drawContext.disableScissor();
-                drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * ultimate_white_bar_percentage), position.y - 5, Colors.WHITE);
+                double percent = player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement());
 
-                ultimate_colored_bar_percentage = MathHelper.lerp(0.1, ultimate_colored_bar_percentage, player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).getPercent(staff.getElement()));
-                drawContext.enableScissor(position.x + 3, position.y - 17, position.x + 7, position.y - 1);
-                drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * ultimate_colored_bar_percentage), position.y - 17, staff.getElement().getColor());
+                if (percent > last_ultimate_percent) {
+                    gaining_ultimate = true;
+                }
+
+                if (percent < last_ultimate_percent) {
+                    gaining_ultimate = false;
+                }
+
+                ultimate_white_bar_percentage = MathHelper.lerp(gaining_ultimate ? 0.5 : 0.1, ultimate_white_bar_percentage, percent);
+                ultimate_colored_bar_percentage = MathHelper.lerp(gaining_ultimate ? 0.1 : 0.5, ultimate_colored_bar_percentage, percent);
+
+                RenderSystem.enableBlend();
+
+                drawContext.enableScissor(position.x + 40, position.y + 60 - (int)(32 * ultimate_white_bar_percentage), position.x + 80, position.y + 60);
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/ultimate_hexagon.png"), position.x + 40, position.y + 28, 0, 0, 40, 32, 40, 32);
                 drawContext.disableScissor();
-                drawContext.fill(position.x + 3, position.y - 1, position.x + 3 + (int)(56 * ultimate_colored_bar_percentage), position.y - 5, staff.getElement().getColor());
+
+                int color = staff.getElement().getColor();
+                drawContext.setShaderColor(ColorHelper.Argb.getRed(color)/255f, ColorHelper.Argb.getGreen(color)/255f, ColorHelper.Argb.getBlue(color)/255f, 1);
+
+                drawContext.enableScissor(position.x + 40, position.y + 60 - (int)(32 * ultimate_colored_bar_percentage), position.x + 80, position.y + 60);
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/ultimate_hexagon.png"), position.x + 40, position.y + 28, 0, 0, 40, 32, 40, 32);
+                drawContext.disableScissor();
+
+                last_ultimate_percent = percent;
+
+                drawContext.setShaderColor(1, 1, 1, 1);
+
+                RenderSystem.disableBlend();
 
                 if (ultimate_white_bar_percentage - ultimate_colored_bar_percentage < 0.001) {
                     ultimate_colored_bar_percentage = ultimate_white_bar_percentage;
+                }
+
+                if (player.hasStatusEffect(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT)) {
+                    RenderSystem.enableBlend();
+                    drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/locked_spell_display.png"), position.x, position.y, 0, 0, 120, 88, 120, 88);
+                    RenderSystem.disableBlend();
                 }
             }
         }));
@@ -89,38 +109,38 @@ public class SpellDisplay {
         switch (slot) {
             case "main":
                 spell = staff.getUseSpell(MinecraftClient.getInstance().player);
-                x += 3;
-                y += 3;
+                x += 24;
+                y += 8;
                 key = KeyBindingHelper.getBoundKeyOf(MinecraftClient.getInstance().options.useKey).getLocalizedText().getString();
                 break;
             case "shield":
                 spell = staff.getShieldSpell(MinecraftClient.getInstance().player);
-                x += 23;
-                y += 3;
+                x += 72;
+                y += 8;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.shield).getLocalizedText().getString();
                 break;
             case "dash":
                 spell = staff.getDashSpell(MinecraftClient.getInstance().player);
-                x += 43;
-                y += 3;
+                x += 14;
+                y += 33;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.dash).getLocalizedText().getString();
                 break;
             case "areaAttack":
                 spell = staff.getAreaAttackSpell(MinecraftClient.getInstance().player);
-                x += 3;
-                y += 23;
+                x += 82;
+                y += 33;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.areaAttack).getLocalizedText().getString();
                 break;
             case "special":
                 spell = staff.getSpecialSpell(MinecraftClient.getInstance().player);
-                x += 23;
-                y += 23;
+                x += 24;
+                y += 58;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.special).getLocalizedText().getString();
                 break;
             case "ultimate":
                 spell = staff.getUltimateSpell(MinecraftClient.getInstance().player);
-                x += 43;
-                y += 23;
+                x += 72;
+                y += 58;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.ultimate).getLocalizedText().getString();
                 break;
         }
@@ -136,30 +156,30 @@ public class SpellDisplay {
             }
 
             // Main spellComponent icon.
-            drawContext.drawTexture(spell.getIcon(), x, y, 0, 0, 16, 16, 16, 16);
+            drawContext.drawTexture(spell.getIcon(), x, y, 0, 0, 24, 22, 24, 22);
 
             // Renders overlay if the spellComponent is disabled.
             RenderSystem.enableBlend();
 
             if (!spell.canCast(MinecraftClient.getInstance().world, MinecraftClient.getInstance().player)) {
-                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/disabled.png"), x, y, 0, 0, 16, 16, 16, 16);
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/disabled.png"), x, y, 0, 0, 24, 22, 24, 22);
             }
 
             // Renders cooldown overlay.
             SpellCooldownManager playerSpellCooldownManager = MinecraftClient.getInstance().player.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
             if (playerSpellCooldownManager.onCooldown(spell)) {
-                drawContext.enableScissor(x, y + (int) (16 * (1 - playerSpellCooldownManager.percentageLeft(spell))), x + 16, y + 16);
-                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/on_cooldown.png"), x, y, 0, 0, 16, 16, 16, 16);
+                drawContext.enableScissor(x, y + (int) (22 * (1 - playerSpellCooldownManager.percentageLeft(spell))), x + 24, y + 22);
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/on_cooldown.png"), x, y, 0, 0, 24, 22, 24, 22);
                 drawContext.disableScissor();
             }
 
-            drawContext.drawText(MinecraftClient.getInstance().textRenderer, key, x, y + 8,0xFFFFFFFF, true);
+            if (spell instanceof EmpoweredSpell empoweredSpell && empoweredSpell.isEmpowered(MinecraftClient.getInstance().player)) {
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/empowered.png"), x, y, 0, 0, 24, 22, 24, 22);
+            }
 
             RenderSystem.disableBlend();
 
-            if (spell instanceof EmpoweredSpell empoweredSpell && empoweredSpell.isEmpowered(MinecraftClient.getInstance().player)) {
-                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/empowered.png"), x - 2, y - 2, 0, 0, 20, 20, 20, 20);
-            }
+            drawContext.drawText(MinecraftClient.getInstance().textRenderer, key, x, y,0xFFFFFFFF, true);
         }
     }
 }
