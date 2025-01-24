@@ -118,6 +118,6 @@ public class FrigidGlareSpell extends HeldSpell {
         int distance = 1000;
         Vec3d start = user.getEyePos();
         Vec3d end = user.getEyePos().add(user.getRotationVector().multiply(distance));
-        this.hitResult = ProjectileUtil.raycast(user, start, end, new Box(start.x, start.y, start.z, end.x, end.y, end.z), entity -> true, distance);
+        this.hitResult = ProjectileUtil.raycast(user, start, end, new Box(start.x, start.y, start.z, end.x, end.y, end.z), entity -> !(entity instanceof MagicDashEntity), distance);
     }
 }

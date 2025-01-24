@@ -1,20 +1,21 @@
 package io.github.mishkis.elemental_battle.item;
 
-import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.item.armor.MagicArmorItem;
 import io.github.mishkis.elemental_battle.rendering.TooltipSpellData;
 import io.github.mishkis.elemental_battle.spells.*;
-import io.github.mishkis.elemental_battle.spells.flame.ConeOfFireSpell;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
+import net.minecraft.component.type.AttributeModifierSlot;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolItem;
 import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -28,12 +29,22 @@ import software.bernie.geckolib.animation.*;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public abstract class MagicStaffItem extends Item implements GeoItem {
+public abstract class MagicStaffItem extends ToolItem implements GeoItem {
     private final String id;
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
+    // Used to see if main attack should do custom effect.
+    private boolean empoweredStrike;
+
+    public void setEmpoweredStrike() {
+        this.empoweredStrike = true;
+    }
+
     public MagicStaffItem(String id) {
-        super(new Settings().maxCount(1).rarity(Rarity.EPIC));
+        super(new MagicStaffItemToolMaterial(), new Settings().maxCount(1).rarity(Rarity.EPIC).attributeModifiers(AttributeModifiersComponent.builder()
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID, 5, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.MAINHAND)
+                .add(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID, -3.2f, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.MAINHAND)
+                .build()));
 
         this.id = id;
 
@@ -46,6 +57,8 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
     }
 
     public abstract SpellElement getElement();
+
+    protected abstract void hitAttack(LivingEntity target, PlayerEntity player);
 
     @Nullable
     protected abstract Spell useSpell();
@@ -129,6 +142,20 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
             case SPECIAL -> this.special(world, user, hand, released);
             case ULTIMATE -> this.ultimate(world, user, hand, released);
         };
+    }
+
+    // Left Click Attack
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.empoweredStrike) {
+            this.empoweredStrike = false;
+            if (attacker instanceof PlayerEntity player) {
+                hitAttack(target, player);
+
+                player.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(getElement(), 10, player);
+            }
+        }
+        return true;
     }
 
     // Main Attack
