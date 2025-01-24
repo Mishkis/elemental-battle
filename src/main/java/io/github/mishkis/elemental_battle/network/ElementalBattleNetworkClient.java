@@ -1,5 +1,7 @@
 package io.github.mishkis.elemental_battle.network;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
+import io.github.mishkis.elemental_battle.item.MagicStaffActions;
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.network.C2S.C2SKeybindPayload;
 import io.github.mishkis.elemental_battle.network.S2C.S2CGustEntityEmpoweredSet;
@@ -13,11 +15,18 @@ import io.github.mishkis.elemental_battle.spells.air.SlamDownSpell;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.Entity;
 import org.lwjgl.glfw.GLFW;
 
 public class ElementalBattleNetworkClient {
+    private static boolean shieldHeld = false;
+    private static boolean dashHeld = false;
+    private static boolean areaAttackHeld = false;
+    private static boolean specialHeld = false;
+    private static boolean ultimateHeld = false;
+
     public static KeyBinding shield = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.elemental_battle.shield",
             GLFW.GLFW_KEY_Z,
@@ -44,41 +53,63 @@ public class ElementalBattleNetworkClient {
             "keyGroup.elemental_battle"
     ));
 
+    private static void handleInput(MagicStaffActions type, Boolean released, MinecraftClient client) {
+        if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
+            staff.castByType(type, client.world, client.player, client.player.getActiveHand(), released);
+            ClientPlayNetworking.send(new C2SKeybindPayload(type, released));
+        }
+    }
+
     public static void initialize() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (shield.wasPressed()) {
-                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
-                    staff.shield(client.world, client.player, client.player.getActiveHand());
-                }
-                ClientPlayNetworking.send(new C2SKeybindPayload("shield"));
+            if (shield.isPressed()) {
+                shieldHeld = true;
+                handleInput(MagicStaffActions.SHIELD, false, client);
             }
 
-            while (dash.wasPressed()) {
-                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
-                    staff.dash(client.world, client.player, client.player.getActiveHand());
-                }
-                ClientPlayNetworking.send(new C2SKeybindPayload("dash"));
+            if (shieldHeld && !shield.isPressed()) {
+                shieldHeld = false;
+                handleInput(MagicStaffActions.SHIELD, true, client);
             }
 
-            while (areaAttack.wasPressed()) {
-                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
-                    staff.areaAttack(client.world, client.player, client.player.getActiveHand());
-                }
-                ClientPlayNetworking.send(new C2SKeybindPayload("areaAttack"));
+            if (dash.isPressed()) {
+                dashHeld = true;
+                handleInput(MagicStaffActions.DASH, false, client);
             }
 
-            while (special.wasPressed()) {
-                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
-                    staff.special(client.world, client.player, client.player.getActiveHand());
-                }
-                ClientPlayNetworking.send(new C2SKeybindPayload("special"));
+            if (dashHeld && !dash.isPressed()) {
+                dashHeld = false;
+                handleInput(MagicStaffActions.DASH, true, client);
             }
 
-            while (ultimate.wasPressed()) {
-                if (client.player.getStackInHand(client.player.getActiveHand()).getItem() instanceof MagicStaffItem staff) {
-                    staff.ultimate(client.world, client.player, client.player.getActiveHand());
-                }
-                ClientPlayNetworking.send(new C2SKeybindPayload("ultimate"));
+            if (areaAttack.isPressed()) {
+                areaAttackHeld = true;
+                handleInput(MagicStaffActions.AREA_ATTACK, false, client);
+            }
+
+            if (areaAttackHeld && !areaAttack.isPressed()) {
+                areaAttackHeld = false;
+                handleInput(MagicStaffActions.AREA_ATTACK, true, client);
+            }
+
+            if (special.isPressed()) {
+                areaAttackHeld = true;
+                handleInput(MagicStaffActions.SPECIAL, false, client);
+            }
+
+            if (specialHeld && !special.isPressed()) {
+                specialHeld = false;
+                handleInput(MagicStaffActions.SPECIAL, true, client);
+            }
+
+            if (ultimate.isPressed()) {
+                ultimateHeld = true;
+                handleInput(MagicStaffActions.ULTIMATE, false, client);
+            }
+
+            if (ultimateHeld && !ultimate.isPressed()) {
+                ultimateHeld = false;
+                handleInput(MagicStaffActions.ULTIMATE, true, client);
             }
         });
 

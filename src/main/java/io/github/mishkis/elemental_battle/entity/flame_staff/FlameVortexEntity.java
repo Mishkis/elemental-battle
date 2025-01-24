@@ -25,9 +25,9 @@ public class FlameVortexEntity extends MagicAreaAttackEntity implements GeoEntit
 
         if (this.getOwner() != null) {
             entity.setVelocity(this.getOwner().getPos().subtract(entity.getPos()).normalize());
-        }
 
-        this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+        }
     }
 
 

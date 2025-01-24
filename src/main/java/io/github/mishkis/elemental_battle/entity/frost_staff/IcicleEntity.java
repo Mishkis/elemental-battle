@@ -103,7 +103,9 @@ public class IcicleEntity extends MagicProjectileEntity implements GeoEntity {
 
         entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
         if (!this.getWorld().isClient && entity instanceof LivingEntity livingEntity) {
-            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+            if (this.getOwner() != null) {
+                this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+            }
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 2), this);
         }
 

@@ -3,13 +3,16 @@ package io.github.mishkis.elemental_battle.spells.frost;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicDashEntity;
+import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.IceTargetEntity;
-import io.github.mishkis.elemental_battle.spells.Spell;
+import io.github.mishkis.elemental_battle.particle.ElementalBattleParticles;
+import io.github.mishkis.elemental_battle.spells.HeldSpell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -17,7 +20,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class FrigidGlareSpell extends Spell {
+public class FrigidGlareSpell extends HeldSpell {
     private HitResult hitResult;
 
     @Override
@@ -55,13 +58,39 @@ public class FrigidGlareSpell extends Spell {
         raycast(user);
 
         if (hitResult != null && hitResult.getType() == HitResult.Type.ENTITY) {
-            return (((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity && livingEntity != user) || (((EntityHitResult) hitResult).getEntity() instanceof MagicDashEntity);
+            return (((EntityHitResult) hitResult).getEntity() instanceof LivingEntity livingEntity && livingEntity != user);
         }
         return false;
     }
 
     @Override
-    protected void onCast(World world, PlayerEntity user) {
+    protected int getMaxHeldTime() {
+        return 20;
+    }
+
+    @Override
+    protected int getCastDelay() {
+        return 5;
+    }
+
+    @Override
+    protected void onHeldCast(World world, PlayerEntity user) {
+        raycast(user);
+
+        if (world instanceof ServerWorld serverWorld) {
+            // Spawn particles
+            Vec3d startPos = user.getEyePos();
+            Vec3d targetPos = hitResult.getPos();
+
+            for (float i = 0; i <= 10; i++) {
+                Vec3d currentPos = startPos.lerp(targetPos, i/10);
+                serverWorld.spawnParticles(ElementalBattleParticles.FROST_PARTICLE, currentPos.x, currentPos.y, currentPos.z, 5, 0.1, 0.1, 0.1, 0.03);
+            }
+        }
+    }
+
+    @Override
+    protected void onExpire(World world, PlayerEntity user) {
         Entity entity = ((EntityHitResult) hitResult).getEntity();
         LivingEntity target;
 

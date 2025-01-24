@@ -62,28 +62,49 @@ public abstract class Spell {
     protected void onClientCast(World world, PlayerEntity user) {
     }
 
+    // Override to add effects on release.
+    protected void onRelease(World world, PlayerEntity user) {
+    }
+
     // Override to allow casting only in certain conditions.
     public boolean canCast(World world, PlayerEntity user) {
         return true;
     }
 
-    public boolean clientCast(World world, PlayerEntity user) {
+    // Overwrite if you want the spell to not automatically go on cooldown, useful in some circumstances for example the HeldSpell or ToggleSpell classes.
+    protected boolean shouldAutoCooldown() {
+        return true;
+    }
+
+    public boolean clientCast(World world, PlayerEntity user, Boolean released) {
         // This just syncs the spellComponent cooldown between server and client.
         SpellCooldownManager spellCooldownManager = user.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
-        if (!spellCooldownManager.onCooldown(this) && this.canCast(world, user)) {
-            this.onClientCast(world, user);
-            spellCooldownManager.put(this, getCooldown());
-            return true;
+        if (!spellCooldownManager.onCooldown(this)) {
+            if (released || !this.canCast(world, user)) {
+                onRelease(world, user);
+            } else {
+                this.onClientCast(world, user);
+                if (shouldAutoCooldown()) {
+                    spellCooldownManager.put(this, getCooldown());
+                }
+                return true;
+            }
         }
         return false;
     }
 
-    public boolean cast(World world, PlayerEntity user) {
+    public boolean cast(World world, PlayerEntity user, Boolean released) {
         SpellCooldownManager spellCooldownManager = user.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
-        if (!spellCooldownManager.onCooldown(this) && this.canCast(world, user)) {
-            this.onCast(world, user);
-            spellCooldownManager.put(this, getCooldown());
-            return true;
+        if (!spellCooldownManager.onCooldown(this)) {
+            if (released || !this.canCast(world, user)) {
+                onRelease(world, user);
+            } else {
+                this.onCast(world, user);
+                if (shouldAutoCooldown()) {
+                    spellCooldownManager.put(this, getCooldown());
+                }
+                return true;
+            }
         }
         return false;
     }

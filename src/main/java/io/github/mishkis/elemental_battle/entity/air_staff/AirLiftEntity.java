@@ -36,7 +36,7 @@ public class AirLiftEntity extends MagicAreaAttackEntity implements GeoEntity {
             serverPlayer.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(serverPlayer));
         }
 
-        if (!this.getWorld().isClient) {
+        if (!this.getWorld().isClient && this.getOwner() != null) {
             this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 2, this.getOwner());
             SlamDownSpell.addToSlamDownList(entity, this.getOwner());
         }

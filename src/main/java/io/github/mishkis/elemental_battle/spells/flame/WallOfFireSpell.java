@@ -2,14 +2,16 @@ package io.github.mishkis.elemental_battle.spells.flame;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
+import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.WallOfFireEntity;
+import io.github.mishkis.elemental_battle.spells.ShieldSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class WallOfFireSpell extends Spell {
+public class WallOfFireSpell extends ShieldSpell {
     @Override
     public Identifier getId() {
         return Identifier.of(ElementalBattle.MOD_ID, "wall_of_fire");
@@ -22,7 +24,7 @@ public class WallOfFireSpell extends Spell {
 
     @Override
     public int getCooldown() {
-        return 300;
+        return 30;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class WallOfFireSpell extends Spell {
     }
 
     @Override
-    protected void onCast(World world, PlayerEntity user) {
-        world.spawnEntity(genericEntity(user, new WallOfFireEntity(ElementalBattleEntities.WALL_OF_FIRE, world)));
+    protected MagicShieldEntity getShieldEntity(World world) {
+        return new WallOfFireEntity(ElementalBattleEntities.WALL_OF_FIRE, world);
     }
 }

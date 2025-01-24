@@ -4,10 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.item.MagicStaffItem;
 import io.github.mishkis.elemental_battle.network.ElementalBattleNetworkClient;
-import io.github.mishkis.elemental_battle.spells.EmpoweredSpell;
-import io.github.mishkis.elemental_battle.spells.Spell;
-import io.github.mishkis.elemental_battle.spells.SpellCooldownManager;
-import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
+import io.github.mishkis.elemental_battle.spells.*;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
@@ -16,6 +13,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
@@ -34,6 +32,7 @@ public class SpellDisplay {
     public static void initialize() {
         HudRenderCallback.EVENT.register(((drawContext, tickCounter) -> {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
+            ClientWorld world = MinecraftClient.getInstance().world;
 
             if (player.getMainHandStack().getItem() instanceof MagicStaffItem staff) {
                 position.x = drawContext.getScaledWindowWidth() - 387;
@@ -43,12 +42,12 @@ public class SpellDisplay {
                 drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/spell_display.png"), position.x, position.y, 0, 0, 120, 88, 120, 88);
                 RenderSystem.disableBlend();
 
-                renderIcon("main", staff, drawContext);
-                renderIcon("shield", staff, drawContext);
-                renderIcon("dash", staff, drawContext);
-                renderIcon("areaAttack", staff, drawContext);
-                renderIcon("special", staff, drawContext);
-                renderIcon("ultimate", staff, drawContext);
+                renderIcon("main", staff, drawContext, player, world);
+                renderIcon("shield", staff, drawContext, player, world);
+                renderIcon("dash", staff, drawContext, player, world);
+                renderIcon("areaAttack", staff, drawContext, player, world);
+                renderIcon("special", staff, drawContext, player, world);
+                renderIcon("ultimate", staff, drawContext, player, world);
 
                 if (player.getAttached(SPELL_DISPLAY_SHIELD_WARNING_ATTACHMENT) != null && !player.hasStatusEffect(ElementalBattleStatusEffects.SHIELD_EFFECT)) {
                     drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/shield_alert.png"), drawContext.getScaledWindowWidth()/2 - 17, drawContext.getScaledWindowHeight()/2 - 11, 1000, 0, 0, 34, 18, 34, 18);
@@ -100,7 +99,7 @@ public class SpellDisplay {
         }));
     }
 
-    private static void renderIcon(String slot, MagicStaffItem staff, DrawContext drawContext) {
+    private static void renderIcon(String slot, MagicStaffItem staff, DrawContext drawContext, ClientPlayerEntity player, ClientWorld world) {
         int x = position.x;
         int y = position.y;
         Spell spell = null;
@@ -108,37 +107,37 @@ public class SpellDisplay {
 
         switch (slot) {
             case "main":
-                spell = staff.getUseSpell(MinecraftClient.getInstance().player);
+                spell = staff.getUseSpell(player);
                 x += 24;
                 y += 8;
                 key = KeyBindingHelper.getBoundKeyOf(MinecraftClient.getInstance().options.useKey).getLocalizedText().getString();
                 break;
             case "shield":
-                spell = staff.getShieldSpell(MinecraftClient.getInstance().player);
+                spell = staff.getShieldSpell(player);
                 x += 72;
                 y += 8;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.shield).getLocalizedText().getString();
                 break;
             case "dash":
-                spell = staff.getDashSpell(MinecraftClient.getInstance().player);
+                spell = staff.getDashSpell(player);
                 x += 14;
                 y += 33;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.dash).getLocalizedText().getString();
                 break;
             case "areaAttack":
-                spell = staff.getAreaAttackSpell(MinecraftClient.getInstance().player);
+                spell = staff.getAreaAttackSpell(player);
                 x += 82;
                 y += 33;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.areaAttack).getLocalizedText().getString();
                 break;
             case "special":
-                spell = staff.getSpecialSpell(MinecraftClient.getInstance().player);
+                spell = staff.getSpecialSpell(player);
                 x += 24;
                 y += 58;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.special).getLocalizedText().getString();
                 break;
             case "ultimate":
-                spell = staff.getUltimateSpell(MinecraftClient.getInstance().player);
+                spell = staff.getUltimateSpell(player);
                 x += 72;
                 y += 58;
                 key = KeyBindingHelper.getBoundKeyOf(ElementalBattleNetworkClient.ultimate).getLocalizedText().getString();
@@ -161,20 +160,24 @@ public class SpellDisplay {
             // Renders overlay if the spellComponent is disabled.
             RenderSystem.enableBlend();
 
-            if (!spell.canCast(MinecraftClient.getInstance().world, MinecraftClient.getInstance().player)) {
+            if (!spell.canCast(world, player)) {
                 drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/disabled.png"), x, y, 0, 0, 24, 22, 24, 22);
             }
 
             // Renders cooldown overlay.
-            SpellCooldownManager playerSpellCooldownManager = MinecraftClient.getInstance().player.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
+            SpellCooldownManager playerSpellCooldownManager = player.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT);
             if (playerSpellCooldownManager.onCooldown(spell)) {
                 drawContext.enableScissor(x, y + (int) (22 * (1 - playerSpellCooldownManager.percentageLeft(spell))), x + 24, y + 22);
                 drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/on_cooldown.png"), x, y, 0, 0, 24, 22, 24, 22);
                 drawContext.disableScissor();
             }
 
-            if (spell instanceof EmpoweredSpell empoweredSpell && empoweredSpell.isEmpowered(MinecraftClient.getInstance().player)) {
+            if (spell instanceof EmpoweredSpell empoweredSpell && empoweredSpell.isEmpowered(player)) {
                 drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/empowered.png"), x, y, 0, 0, 24, 22, 24, 22);
+            }
+
+            if ((spell instanceof HeldSpell heldSpell && heldSpell.isHeld()) || (spell instanceof ToggledSpell toggledSpell && toggledSpell.isToggled(world, player))) {
+                drawContext.drawTexture(Identifier.of(ElementalBattle.MOD_ID, "textures/hud/held.png"), x, y, 0, 0, 24, 22, 24, 22);
             }
 
             RenderSystem.disableBlend();

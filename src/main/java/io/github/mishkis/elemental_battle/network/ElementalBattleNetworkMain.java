@@ -28,23 +28,7 @@ public class ElementalBattleNetworkMain {
                 Item heldItem = player.getStackInHand(hand).getItem();
 
                 if (heldItem instanceof MagicStaffItem staff) {
-                    switch (payload.type()) {
-                        case "shield":
-                            staff.shield(player.getWorld(), player, hand);
-                            break;
-                        case "dash":
-                            staff.dash(player.getWorld(), player, hand);
-                            break;
-                        case "areaAttack":
-                            staff.areaAttack(player.getWorld(), player, hand);
-                            break;
-                        case "special":
-                            staff.special(player.getWorld(), player, hand);
-                            break;
-                        case "ultimate":
-                            staff.ultimate(player.getWorld(), player, hand);
-                            break;
-                    }
+                    staff.castByType(payload.type(), player.getWorld(), player, hand, payload.released());
                 }
             });
         }));

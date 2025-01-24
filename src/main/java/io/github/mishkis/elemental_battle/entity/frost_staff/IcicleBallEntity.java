@@ -103,7 +103,7 @@ public class IcicleBallEntity extends MagicProjectileEntity implements GeoEntity
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), this);
         }
 
-        if (!this.getWorld().isClient) {
+        if (!this.getWorld().isClient && this.getOwner() != null) {
             this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 10, this.getOwner());
         }
     }

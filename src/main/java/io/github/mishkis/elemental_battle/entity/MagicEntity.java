@@ -78,7 +78,7 @@ public abstract class MagicEntity extends Entity implements Ownable {
     protected void onTimeOut() {
     }
 
-    // The entity will be discarded if it is ever is null, however you must still check if it is null as otherwise it could break when joining a world/
+    // The entity will be discarded if it is ever is null, however you must still check if it is null as otherwise it could break when joining a world.
     @Nullable
     @Override
     public PlayerEntity getOwner() {

@@ -1,11 +1,12 @@
 package io.github.mishkis.elemental_battle.item;
 
+import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.item.armor.MagicArmorItem;
 import io.github.mishkis.elemental_battle.rendering.TooltipSpellData;
-import io.github.mishkis.elemental_battle.spells.Spell;
-import io.github.mishkis.elemental_battle.spells.SpellElement;
-import io.github.mishkis.elemental_battle.spells.SpellUltimateManager;
+import io.github.mishkis.elemental_battle.spells.*;
+import io.github.mishkis.elemental_battle.spells.flame.ConeOfFireSpell;
 import io.github.mishkis.elemental_battle.status_effects.ElementalBattleStatusEffects;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -23,7 +25,6 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -103,16 +104,16 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
         return null;
     }
 
-    private TypedActionResult<ItemStack> genericCast(Spell spell, World world, PlayerEntity user, Hand hand) {
-        if (user.getStatusEffect(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT) != null) {
+    private TypedActionResult<ItemStack> genericCast(Spell spell, World world, PlayerEntity user, Hand hand, Boolean released) {
+        if (user.getStatusEffect(ElementalBattleStatusEffects.SPELL_LOCK_EFFECT) != null && !(spell instanceof ShieldSpell shieldSpell && shieldSpell.isToggled(world, user))) {
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
 
         if (spell != null) {
-            if (world.isClient() && spell.clientCast(world, user)) {
+            if (world.isClient() && spell.clientCast(world, user, released)) {
                 return TypedActionResult.success(user.getStackInHand(hand));
             }
-            else if (spell.cast(world, user)) {
+            else if (spell.cast(world, user, released)) {
                 return TypedActionResult.success(user.getStackInHand(hand));
             }
         }
@@ -120,30 +121,71 @@ public abstract class MagicStaffItem extends Item implements GeoItem {
         return TypedActionResult.fail(user.getStackInHand(hand));
     }
 
+    public TypedActionResult<ItemStack> castByType(MagicStaffActions type, World world, PlayerEntity user, Hand hand, Boolean released) {
+        return switch (type) {
+            case SHIELD -> this.shield(world, user, hand, released);
+            case DASH -> this.dash(world, user, hand, released);
+            case AREA_ATTACK -> this.areaAttack(world, user, hand, released);
+            case SPECIAL -> this.special(world, user, hand, released);
+            case ULTIMATE -> this.ultimate(world, user, hand, released);
+        };
+    }
+
     // Main Attack
+    // All of this code is here because I can't do the regular keybind system I have for getting the release of a keybind for RMB.
+    @Override
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
+        return Integer.MAX_VALUE;
+    }
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getUseSpell(user), world, user, hand);
+        if (getUseSpell(user) instanceof HeldSpell) {
+            if (!user.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).onCooldown(getUseSpell(user))) {
+                user.setCurrentHand(hand);
+                return TypedActionResult.success(user.getStackInHand(hand));
+            }
+
+            return TypedActionResult.pass(user.getStackInHand(hand));
+        }
+        return genericCast(getUseSpell(user), world, user, hand, false);
     }
 
-    public TypedActionResult<ItemStack> shield(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getShieldSpell(user), world, user, hand);
+    @Override
+    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        if (user instanceof PlayerEntity player) {
+            if (player.getAttachedOrCreate(SpellCooldownManager.SPELL_COOLDOWN_MANAGER_ATTACHMENT).onCooldown(getUseSpell(player))) {
+                player.clearActiveItem();
+            }
+            genericCast(getUseSpell(player), world, player, player.getActiveHand(), false);
+        }
     }
 
-    public TypedActionResult<ItemStack> dash(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getDashSpell(user), world, user, hand);
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (user instanceof PlayerEntity player) {
+            genericCast(getUseSpell(player), player.getWorld(), player, player.getActiveHand(), true);
+        }
     }
 
-    public TypedActionResult<ItemStack> areaAttack(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getAreaAttackSpell(user), world, user, hand);
+    private TypedActionResult<ItemStack> shield(World world, PlayerEntity user, Hand hand, Boolean released) {
+        return genericCast(getShieldSpell(user), world, user, hand, released);
     }
 
-    public TypedActionResult<ItemStack> special(World world, PlayerEntity user, Hand hand) {
-        return genericCast(getSpecialSpell(user), world, user, hand);
+    private TypedActionResult<ItemStack> dash(World world, PlayerEntity user, Hand hand, Boolean released) {
+        return genericCast(getDashSpell(user), world, user, hand, released);
     }
 
-    public TypedActionResult<ItemStack> ultimate(World world, PlayerEntity user, Hand hand) {
-        TypedActionResult<ItemStack> result = genericCast(getUltimateSpell(user), world, user, hand);
+    private TypedActionResult<ItemStack> areaAttack(World world, PlayerEntity user, Hand hand, Boolean released) {
+        return genericCast(getAreaAttackSpell(user), world, user, hand, released);
+    }
+
+    private TypedActionResult<ItemStack> special(World world, PlayerEntity user, Hand hand, Boolean released) {
+        return genericCast(getSpecialSpell(user), world, user, hand, released);
+    }
+
+    private TypedActionResult<ItemStack> ultimate(World world, PlayerEntity user, Hand hand, Boolean released) {
+        TypedActionResult<ItemStack> result = genericCast(getUltimateSpell(user), world, user, hand, released);
         if (result.getResult().isAccepted()) {
             user.getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).reset(this.getElement());
         }

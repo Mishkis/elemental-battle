@@ -46,7 +46,9 @@ public class FlamingDashEntity extends MagicDashEntity implements GeoEntity {
                 entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
                 entity.setOnFireForTicks(60);
 
-                this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+                if (this.getOwner() != null) {
+                    this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+                }
             }
         }
     }

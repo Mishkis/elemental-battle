@@ -4,6 +4,7 @@ import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
 import io.github.mishkis.elemental_battle.entity.MagicEntity;
 import io.github.mishkis.elemental_battle.entity.flame_staff.ConeOfFireEntity;
+import io.github.mishkis.elemental_battle.spells.HeldSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class ConeOfFireSpell extends Spell {
+public class ConeOfFireSpell extends HeldSpell {
     private final Random random = Random.create();
 
     @Override
@@ -27,7 +28,7 @@ public class ConeOfFireSpell extends Spell {
 
     @Override
     public int getCooldown() {
-        return 1;
+        return 120;
     }
 
     @Override
@@ -46,7 +47,17 @@ public class ConeOfFireSpell extends Spell {
     }
 
     @Override
-    protected void onCast(World world, PlayerEntity user) {
+    protected int getMaxHeldTime() {
+        return 120;
+    }
+
+    @Override
+    protected int getCastDelay() {
+        return 2;
+    }
+
+    @Override
+    protected void onHeldCast(World world, PlayerEntity user) {
         Vec3d spawnPos = user.getEyePos();
 
         int spawnCount = 8 + random.nextBetween(-1, 1);
@@ -54,7 +65,6 @@ public class ConeOfFireSpell extends Spell {
         float randomSpread = random.nextBetween(-1, 1) * 0.1F;
         for (int i = 0; i < spawnCount; i++) {
             MagicEntity coneOfFire = genericEntity(user, new ConeOfFireEntity(ElementalBattleEntities.CONE_OF_FIRE, world));
-            coneOfFire.setPosition(spawnPos);
 
             coneOfFire.setNoGravity(true);
 
@@ -68,6 +78,8 @@ public class ConeOfFireSpell extends Spell {
             velocity = velocity.normalize();
             velocity = velocity.multiply(0.5);
             coneOfFire.setVelocity(velocity);
+
+            coneOfFire.setPosition(spawnPos.add(velocity));
 
             world.spawnEntity(coneOfFire);
         }

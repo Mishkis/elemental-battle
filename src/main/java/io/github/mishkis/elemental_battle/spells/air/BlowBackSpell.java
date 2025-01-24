@@ -2,14 +2,16 @@ package io.github.mishkis.elemental_battle.spells.air;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
+import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.entity.air_staff.BlowBackEntity;
+import io.github.mishkis.elemental_battle.spells.ShieldSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class BlowBackSpell extends Spell {
+public class BlowBackSpell extends ShieldSpell {
     @Override
     public Identifier getId() {
         return Identifier.of(ElementalBattle.MOD_ID, "blow_back");
@@ -36,7 +38,7 @@ public class BlowBackSpell extends Spell {
     }
 
     @Override
-    protected void onCast(World world, PlayerEntity user) {
-        world.spawnEntity(genericEntity(user, new BlowBackEntity(ElementalBattleEntities.BLOW_BACK, world)));
+    protected MagicShieldEntity getShieldEntity(World world) {
+        return new BlowBackEntity(ElementalBattleEntities.BLOW_BACK, world);
     }
 }

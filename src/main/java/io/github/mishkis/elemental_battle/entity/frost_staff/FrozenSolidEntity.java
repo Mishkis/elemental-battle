@@ -82,7 +82,9 @@ public class FrozenSolidEntity extends TargetableMagicEntity implements GeoEntit
     @Override
     protected void onTimeOut() {
         if (this.getWorld() instanceof ServerWorld serverWorld) {
-            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+            if (this.getOwner() != null) {
+                this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+            }
 
             if (this.getTarget() instanceof HostileEntity hostileTarget) {
                 hostileTarget.setAiDisabled(false);

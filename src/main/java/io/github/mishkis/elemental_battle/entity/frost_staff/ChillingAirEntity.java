@@ -33,7 +33,9 @@ public class ChillingAirEntity extends MagicAreaAttackEntity implements GeoEntit
             frozenSolid.setPosition(entity.getPos());
             frozenSolid.setElement(this.getElement());
 
-            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+            if (this.getOwner() != null) {
+                this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
+            }
 
             this.getWorld().spawnEntity(frozenSolid);
         }

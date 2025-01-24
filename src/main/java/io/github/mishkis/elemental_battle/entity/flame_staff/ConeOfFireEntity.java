@@ -46,7 +46,7 @@ public class ConeOfFireEntity extends MagicProjectileEntity implements GeoEntity
             entity.damage(this.getDamageSources().indirectMagic(this, this.getOwner()), this.getDamage());
             entity.setOnFireForTicks(40);
 
-            if (!this.getWorld().isClient) {
+            if (!this.getWorld().isClient && this.getOwner() != null) {
                 this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 1, this.getOwner());
             }
 

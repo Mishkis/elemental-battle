@@ -45,7 +45,7 @@ public class BlowBackEntity extends MagicShieldEntity implements GeoEntity {
 
         entity.setVelocity(knockback_vec);
 
-        if (!this.getWorld().isClient) {
+        if (!this.getWorld().isClient && this.getOwner() != null) {
             ((ServerWorld) this.getWorld()).spawnParticles(ElementalBattleParticles.GUST_EXPLOSION_PARTICLE, entity.getX(), entity.getY() + 0.5, entity.getZ(), 2, 0.5, 0.5, 0.5, 1);
             this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 5, this.getOwner());
             SlamDownSpell.addToSlamDownList(entity, this.getOwner());

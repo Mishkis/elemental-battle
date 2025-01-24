@@ -2,14 +2,16 @@ package io.github.mishkis.elemental_battle.spells.frost;
 
 import io.github.mishkis.elemental_battle.ElementalBattle;
 import io.github.mishkis.elemental_battle.entity.ElementalBattleEntities;
+import io.github.mishkis.elemental_battle.entity.MagicShieldEntity;
 import io.github.mishkis.elemental_battle.entity.frost_staff.ShatteringWallEntity;
+import io.github.mishkis.elemental_battle.spells.ShieldSpell;
 import io.github.mishkis.elemental_battle.spells.Spell;
 import io.github.mishkis.elemental_battle.spells.SpellElement;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class ShatteringWallSpell extends Spell {
+public class ShatteringWallSpell extends ShieldSpell {
     @Override
     public Identifier getId() {
         return Identifier.of(ElementalBattle.MOD_ID, "shattering_wall");
@@ -41,7 +43,7 @@ public class ShatteringWallSpell extends Spell {
     }
 
     @Override
-    protected void onCast(World world, PlayerEntity user) {
-        world.spawnEntity(genericEntity(user, new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world)));
+    protected MagicShieldEntity getShieldEntity(World world) {
+        return new ShatteringWallEntity(ElementalBattleEntities.SHATTERING_WALL, world);
     }
 }

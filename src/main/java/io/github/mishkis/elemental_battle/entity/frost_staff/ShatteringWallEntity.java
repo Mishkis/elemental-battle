@@ -90,7 +90,9 @@ public class ShatteringWallEntity extends MagicShieldEntity implements GeoEntity
 
             icicle.setVelocity(random.nextBetween(-10, 10) * 0.1, 0.3, random.nextBetween(-10, 10) * 0.1);
 
-            this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 2, this.getOwner());
+            if (this.getOwner() != null) {
+                this.getOwner().getAttachedOrCreate(SpellUltimateManager.SPELL_ULTIMATE_MANAGER_ATTACHMENT).add(this.getElement(), 2, this.getOwner());
+            }
 
             this.getWorld().spawnEntity(icicle);
         }
